@@ -1,5 +1,5 @@
 .gleam-footer{
-    @apply bg-primary text-foreground-subtle mt-[6rem] py-4 w-full flex flex-col gap-9;
+    @apply bg-primary text-foreground-subtle pt-9 pb-4 w-full flex flex-col gap-9;
     font-family: "Manrope", sans-serif;
 }
 .footer-top{

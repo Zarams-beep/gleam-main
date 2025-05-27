@@ -109,7 +109,7 @@ export default function ContactUs() {
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-green-600 text-sm font-medium mt-2"
+                className="successful"
               >
                 ✅ Your message has been sent successfully!
               </motion.p>

@@ -8,97 +8,68 @@ import { RiMentalHealthFill, RiInformationLine } from "react-icons/ri";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpSubmitFormData } from "@/types/auth";
-// import { SignUpFormData } from "@/types/auth";
 import { signUpSchema } from "@/features/SignUpSchema";
 import { useRouter } from "next/navigation";
-// import { useDispatch } from "react-redux";
-// import { setUserData } from "@/store/slices/authSlices";
-import ImageUploader from "./imgComponent";
+import ImageUploader from "@/component/imgComponent";
+import { useDispatch } from "react-redux";
+import { setUserData } from "@/store/slices/authSlices";
+import "@/styles/auth.css";
 const SignUp: React.FC = () => {
   const router = useRouter();
-  // const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-    // watch,
     setValue,
-    trigger
+    trigger,
   } = useForm<SignUpSubmitFormData>({
     resolver: zodResolver(signUpSchema),
     mode: "onChange",
   });
-  const [isLoading, setIsLoading] = useState(false);
 
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
 
   const handleImageUpload = (file: File | null) => {
     setUploadedImage(file);
-    setValue("image", file); // Update form value
-    trigger("image"); // Trigger validation
+    setValue("image", file);
+    trigger("image");
   };
 
-  const submitData = async (data: SignUpSubmitFormData) => {
-    setIsLoading(true);
 
-    try {
-      const formData = new FormData();
-      formData.append("fullName", data.fullName);
-      formData.append("email", data.email);
-      formData.append("password", data.password);
-      if (uploadedImage) {
-        formData.append("image", uploadedImage);
-      }
+const handleShowPassword = () => {
+  setShowPassword(!showPassword);
+};
+const handleShowConfirmPassword = () => {
+  setShowConfirmPassword((prev) => !prev);
+};
 
-      const response = await fetch("https://health-sure-backend.onrender.com/auth/sign-up", {
-        method: "POST",
-        body: formData,
-      });
 
-      const result = await response.json();
+const dispatch = useDispatch();
 
-      if (!response.ok) {
-        throw new Error(result.message || "Signup failed");
-      }
-      setTimeout(() => {
-        alert("Signup successful!");
-        router.push("/auth/log-in");
-      }, 100);
-    } catch (error) {
-      const errMsg =
-        error instanceof Error ? error.message : "An unknown error occurred";
-      console.error("Signup error:", errMsg);
-      alert(errMsg);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+const submitData = (data: SignUpSubmitFormData) => {
+  dispatch(setUserData({
+    fullName: data.fullName,
+    image: uploadedImage ? URL.createObjectURL(uploadedImage) : null,
+    email: data.email,
+    token: "dummy-token",
+    id: "dummy-id",
+  }));
 
-  // Simulate the delay for 2 seconds
-  const handleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+  alert("Form submitted and Redux updated!");
+  router.push("/auth/log-in");
+};
 
-  const handleShowConfirmPassword = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
-
-  // ------ changing button color dependent on form validation ------
-  // const fullName = watch("fullName");
-  // const email = watch("email");
-  // const password = watch("password");
-  // const confirmPassword = watch("confirmPassword");
-  // const allFieldsFilled =fullName && email && password && confirmPassword;
 
   return (
     <>
-      <div className="login-container signup-container">
+      <div className="auth-container">
         {/* -------- left half of signup page -------- */}
-        <div className="login-left">
+        <div className="auth-left">
           <Image
-            src={"/hero-img-2.jpg"}
+            src={"/caroline-attwood-983a7uWhdSs-unsplash.jpg"}
             alt="login image"
             width={470}
             height={470}
@@ -107,12 +78,12 @@ const SignUp: React.FC = () => {
           />
         </div>
         {/* -------- form input of signup page -------- */}
-        <div className="login-form-container">
+        <div className="right-auth">
           {/* -------- form heading -------- */}
           <div className="form-header">
             <h2 className="form-title">Create an account</h2>
             <p className="form-subtitle">
-              Already have an account?&nbsp;&nbsp;
+              Already have an account?&nbsp;
               <Link href={"/auth/log-in"} className="">
                 Login
               </Link>
@@ -120,14 +91,14 @@ const SignUp: React.FC = () => {
           </div>
           {/* -------- form details and input -------- */}
           <form
-            className="login-form"
+            className="auth-form"
             action=""
             onSubmit={handleSubmit(submitData)}
           >
             {/* -------- form details and save details button -------- */}
-            <div className="login-form-div">
+            <div className="auth-form-div">
               {/* -------- form details only -------- */}
-              <div className="sign-up-section">
+              <div className="auth-section">
                 {/* Image Upload */}
                 <div className="input-group img-group">
                   <ImageUploader
@@ -318,21 +289,22 @@ const SignUp: React.FC = () => {
                 </label>
               </div>
             </div>
+            <div className="auth-btn">
             <button
               className={`submit-button ${
                 isValid ? "active-button" : "disabled-button"
               }`}
               type="submit"
-              disabled={!isValid || isLoading}
+              disabled={!isValid}
             >
-              {isLoading ? (
+              {isValid ? (
                 <div className="loading-spinner">
                   <FaRegCircle className="spinner-icon" />
                 </div>
               ) : (
                 "Create account"
               )}
-            </button>
+            </button></div>
           </form>
         </div>
       </div>

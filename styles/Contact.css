@@ -34,4 +34,6 @@
 .contact-us-main .right-side form button{
 @apply w-full bg-primary hover:bg-primary-surface text-foreground-subtle font-medium py-2 px-4 rounded-md transition
 }
-
+.right-side form .successful{
+    @apply text-green-600 text-[13px] md:text-[15px] font-medium mt-2
+}

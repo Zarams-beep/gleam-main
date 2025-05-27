@@ -1,0 +1,116 @@
+.auth-container{
+    @apply w-full h-full flex items-start justify-between flex-row
+}
+.auth-container-2{
+    @apply items-center
+}
+.auth-left{
+    @apply w-full h-screen md:flex hidden
+}
+.auth-left img{
+    @apply w-full h-full
+}
+.right-auth{
+    @apply w-full h-full flex flex-col gap-3 px-5 md:py-0 py-4;
+}
+.form-header{
+    @apply flex flex-col items-center justify-center;
+}
+.form-header h2{
+    @apply text-[20px] md:text-[30px] font-bold;
+}
+.form-header p{
+    @apply text-[14px] md:text-[16px]
+}
+.form-header p a, .forgot-password-link{
+    @apply text-[12px] md:text-[14px] text-[#5050c1] hover:text-accent-hover font-bold cursor-pointer;
+}
+.auth-form{
+    @apply flex flex-col gap-2 h-full
+}
+.auth-form-div{
+    @apply flex flex-col gap-3 
+}
+
+.auth-section{
+    @apply flex flex-col gap-3;
+}
+.input-group{
+    @apply flex flex-col gap-1;
+}
+.input-group .input-label{
+    @apply text-[13px] md:text-[15px] font-semibold
+}
+.input-wrapper{
+    @apply flex items-center gap-1 w-full p-2 border border-gray-700 rounded-lg shadow-md;
+}
+.input-wrapper .input-second{
+    @apply flex items-center justify-between w-full;
+}
+.input-wrapper input{
+    @apply bg-transparent border-none outline-none text-[13px] md:text-[15px]
+}
+.error-message{
+  @apply flex items-center gap-1 text-[14px] text-[red]
+}
+.checkbox-group {
+  @apply flex items-center gap-1 text-[13px];
+}
+.checkbox-group input {
+  @apply w-4 h-4 rounded border appearance-none;
+}
+.auth-btn{
+    @apply flex items-center justify-center;
+}
+.submit-button{
+    @apply shadow-md py-2 px-5 rounded-md md:text-[15px] text-[13px] font-bold hover:cursor-pointer;
+}
+.active-button{
+    @apply bg-primary text-foreground-subtle
+}
+.disabled-button{
+    @apply bg-foreground-subtle text-primary;
+}
+
+/* image styling starts */
+.img-component-sign{
+  @apply flex flex-col gap-1
+}
+.img-component-sign h4{
+  @apply text-[12px] font-bold
+}
+.img-component-sign .img-component-1{
+  @apply cursor-pointer w-[74px] h-[74px] rounded-[50%] flex items-center justify-center text-[10px] p-3 border border-primary relative
+}
+.img-component-sign .img-set{
+  @apply border border-primary relative w-[74px] h-[74px] rounded-[50%] flex items-center justify-center;
+}
+.img-component-sign .delete-edit-img{
+  @apply flex items-center justify-center gap-1 absolute
+}
+.img-component-sign .edit-container{
+  @apply flex flex-col;
+}
+.img-component-sign .delete-edit-img .edit{
+  @apply bg-white p-1 rounded-full shadow-md hover:bg-primary
+}
+.img-component-sign .delete-edit-img .edit .icon-edit{
+  @apply text-[12px] text-foreground-subtle
+}
+.img-component-sign .delete-edit-img .delete-icon{
+@apply text-[12px] text-[red]
+}
+/* image styling ends */
+
+/* forgotten modal styling starts */
+.dialog-modal{
+    @apply bg-transparent
+}
+.dialog-modal-container{
+    @apply bg-foreground-subtle
+}
+.dialog-title{
+    @apply text-[20px] md:text-[30px] font-bold;
+    font-family: "Manrope", sans-serif;
+}
+/* forgotten modal styling ends */
