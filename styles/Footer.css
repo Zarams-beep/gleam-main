@@ -1,0 +1,69 @@
+.gleam-footer{
+    @apply bg-primary text-foreground-subtle mt-[6rem] py-4 w-full flex flex-col gap-9;
+    font-family: "Manrope", sans-serif;
+}
+.footer-top{
+    @apply flex justify-between items-start gap-x-5 gap-y-10 w-full mdd:flex-row flex-col
+}
+.footer-brand{
+    @apply flex flex-col gap-2 w-full mdd:w-[40rem];
+}
+.footer-title{
+    @apply text-[20px] smm:text-[30px] font-bold flex items-center;
+    font-family: "Roboto", sans-serif;
+}
+.footer-tagline{
+    @apply text-[12px] smm:text-[14px] 
+}
+.footer-contact{
+    @apply w-full flex flex-col gap-[4rem] sm:gap-4
+}
+.footer-contact header{
+    @apply flex flex-col gap-4
+}
+.footer-contact header h4, .footer-links h4{
+    @apply text-[20px] smm:text-[30px] font-bold;
+    font-family: "Roboto", sans-serif;
+}
+.footer-contact .quote-container{
+    @apply flex flex-col gap-1
+}
+.footer-contact .quote-text{
+    @apply text-[13px] smm:text-[16px]
+}
+.footer-contact .quote-author{
+    @apply text-end font-bold text-[12px]
+}
+.newsletter-form{
+   @apply flex flex-col gap-1;
+}
+.email-input-group{
+    @apply flex items-center h-[5rem] sm:h-[3rem] sm:flex-row flex-col;
+}
+.email-input-group input{
+    @apply w-full py-3 px-2 outline-none border-none text-primary placeholder:text-primary h-full sm:rounded-tl-md sm:rounded-bl-md rounded-none;
+}
+.email-input-group button{
+    @apply flex items-center justify-center gap-1 sm:w-[10rem] w-full bg-[#860404d6] hover:bg-[#8e040491] hover:cursor-pointer h-full text-foreground-subtle font-bold sm:rounded-tr-md sm:rounded-br-md rounded-none text-[13px] smm:text-[16px]
+}
+.form-error{
+    @apply text-[#860404d6] text-[12px] smm:text-[14px] font-bold;
+}
+.footer-socials{
+    @apply flex items-center justify-between
+}
+.footer-socials button{
+    @apply w-[3rem] h-[3rem] rounded-[50%] flex items-center justify-center bg-foreground-subtle text-primary text-[14px] smm:text-[17px] font-bold
+}
+.footer-links{
+    @apply w-full mdd:w-[25rem] flex flex-col gap-3 items-start mdd:items-center justify-normal mdd:justify-center
+}
+.footer-links .link-list{
+    @apply flex flex-row mdd:flex-col gap-4 
+}
+.footer-links .link-list a{
+    @apply text-[12px] smm:text-[14px] text-foreground-subtle hover:text-[#6c6cf68c]
+}
+.footer-credit{
+    @apply text-[13px] smm:text-[15px] font-bold text-center
+}

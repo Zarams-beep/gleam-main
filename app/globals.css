@@ -1,26 +1,121 @@
-@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap");
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+*,
+*::after,
+*::before {
+  @apply m-0 p-0 box-border scroll-smooth;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Body styling */
+body {
+  @apply bg-foreground-subtle text-primary;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.container{
+  @apply w-full h-full max-w-[1412px] 2xl:max-w-[1712px] overflow-y-hidden;
+}
+.container2{
+  @apply px-[20px] sm:px-[25px] m-auto flex flex-row justify-between items-center
+}
+/* splash styling starts */
+.splash-container {
+  @apply fixed inset-0 bg-primary flex flex-col items-center justify-center z-50 py-10 px-11;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.splash-letter-container {
+  @apply flex space-x-3 h-screen w-screen px-10;
+}
+
+.card {
+  @apply w-[25rem] h-[20rem];
+}
+
+.card-inner {
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  @apply rounded shadow flex items-center justify-center text-[20rem] font-bold;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.card-front {
+  @apply bg-primary;
+}
+
+.card-back {
+  @apply text-purple-50  p-3;
+  transform: rotateY(180deg);
+}
+
+.smile-svg {
+  width: 200px;
+  height: 100px;
+  margin-top: 2rem;
+}
+
+.smile-path {
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: drawSmile 1s forwards ease-out, glitter 3s infinite ease-in-out;
+}
+
+@keyframes drawSmile {
+  to {
+    stroke-dashoffset: 0;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes glitter {
+  0%, 100% {
+    stroke: #fff;
+    filter: drop-shadow(0 0 5px #fff);
+  }
+  50% {
+    stroke: #ffe066;
+    filter: drop-shadow(0 0 10px #ffe066);
+  }
 }
+
+.splash-tagline {
+  @apply text-white text-center mt-4 text-lg font-light;
+}
+
+.sparkle-text {
+  background: linear-gradient(90deg, #fff, #ffe066, #fff);
+  background-size: 200% auto;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+/* splash styling ends */

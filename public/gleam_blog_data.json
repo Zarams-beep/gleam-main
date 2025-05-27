@@ -1,0 +1,402 @@
+[
+  {
+    "id": 1,
+    "title": "Inside Gleam's Emotion Analytics",
+    "category": "Product Updates",
+    "excerpt": "Inside Gleam's Emotion Analytics - A detailed look into product updates",
+    "image":  "/kate-sade-c_NsMp-Z1Xk-unsplash.jpg",
+    "date": "2024-03-20"
+  },
+  {
+    "id": 2,
+    "title": "Lessons Learned from Gleam Champions",
+    "category": "Stories from Gleam Users",
+    "excerpt": "Lessons Learned from Gleam Champions - A detailed look into stories from gleam users",
+    "image": "/cristofer-maximilian-NSKP7Gwa_I0-unsplash.jpg",
+    "date": "2024-04-17"
+  },
+  {
+    "id": 3,
+    "title": "Product Update: Introducing AI Compliment Filters",
+    "category": "Product Updates",
+    "excerpt": "Product Update: Introducing AI Compliment Filters - A detailed look into product updates",
+    "image":  "/marco-bianchetti-XrZN7UaePxc-unsplash.jpg",
+    "date": "2024-05-08"
+  },
+  {
+    "id": 4,
+    "title": "When Kindness Changed a Career",
+    "category": "Stories from Gleam Users",
+    "excerpt": "When Kindness Changed a Career - A detailed look into stories from gleam users",
+    "image": "/jerome-z-wS695XkKA-unsplash.jpg",
+    "date": "2024-02-17"
+  },
+  {
+    "id": 5,
+    "title": "The DNA of Strong Work Culture",
+    "category": "Culture & Connection",
+    "excerpt": "The DNA of Strong Work Culture - A detailed look into culture & connection",
+    "image": "/s-o-c-i-a-l-c-u-t--3jdwGuAEnk-unsplash.jpg",
+    "date": "2023-07-19"
+  },
+  {
+    "id": 6,
+    "title": "Inside Gleam's Emotion Analytics",
+    "category": "Product Updates",
+    "excerpt": "Inside Gleam's Emotion Analytics - A detailed look into product updates",
+    "image": "/toa-heftiba-z9snuPiPKgQ-unsplash.jpg",
+    "date": "2023-07-24"
+  },
+  {
+    "id": 7,
+    "title": "Building Connection Through Culture Rituals",
+    "category": "Culture & Connection",
+    "excerpt": "Building Connection Through Culture Rituals - A detailed look into culture & connection",
+    "image": "/olena-bohovyk-DmeZC9riGkk-unsplash.jpg",
+    "date": "2023-05-15"
+  },
+  {
+    "id": 8,
+    "title": "Small Gestures, Big Impacts",
+    "category": "Kindness at Work",
+    "excerpt": "Small Gestures, Big Impacts - A detailed look into kindness at work",
+    "image": "/thestandingdesk-yRjwn800N5A-unsplash.jpg",
+    "date": "2023-11-18"
+  },
+  {
+    "id": 9,
+    "title": "Product Update: Introducing AI Compliment Filters",
+    "category": "Product Updates",
+    "excerpt": "Product Update: Introducing AI Compliment Filters - A detailed look into product updates",
+    "image": "/jason-leung-uhxiOmoVhOo-unsplash.jpg",
+    "date": "2023-12-04"
+  },
+  {
+    "id": 10,
+    "title": "The Future of Async Connection",
+    "category": "Remote Team Tips",
+    "excerpt": "The Future of Async Connection - A detailed look into remote team tips",
+    "image": "/muhammad-rizqi-N-lCdqdAdes-unsplash.jpg",
+    "date": "2023-10-26"
+  },
+  {
+    "id": 11,
+    "title": "Kindness Wins: The New Office Mantra",
+    "category": "Kindness at Work",
+    "excerpt": "Kindness Wins: The New Office Mantra - A detailed look into kindness at work",
+    "image": "/muhammad-rizqi-N-lCdqdAdes-unsplash.jpg",
+    "date": "2024-01-06"
+  },
+  {
+    "id": 12,
+    "title": "Small Gestures, Big Impacts",
+    "category": "Kindness at Work",
+    "excerpt": "Small Gestures, Big Impacts - A detailed look into kindness at work",
+    "image": "/jason-leung-uhxiOmoVhOo-unsplash.jpg",
+    "date": "2023-04-09"
+  },
+  {
+    "id": 13,
+    "title": "Servant Leadership Reimagined",
+    "category": "Leadership & Empathy",
+    "excerpt": "Servant Leadership Reimagined - A detailed look into leadership & empathy",
+    "image": "/thestandingdesk-yRjwn800N5A-unsplash.jpg",
+    "date": "2024-02-16"
+  },
+  {
+    "id": 14,
+    "title": "Inside Gleam's Emotion Analytics",
+    "category": "Product Updates",
+    "excerpt": "Inside Gleam's Emotion Analytics - A detailed look into product updates",
+    "image": "/olena-bohovyk-DmeZC9riGkk-unsplash.jpg",
+    "date": "2024-01-16"
+  },
+  {
+    "id": 15,
+    "title": "Inside Gleam's Emotion Analytics",
+    "category": "Product Updates",
+    "excerpt": "Inside Gleam's Emotion Analytics - A detailed look into product updates",
+    "image": "/toa-heftiba-z9snuPiPKgQ-unsplash.jpg",
+    "date": "2023-05-17"
+  },
+  {
+    "id": 16,
+    "title": "Slack Integration: What You Need to Know",
+    "category": "Product Updates",
+    "excerpt": "Slack Integration: What You Need to Know - A detailed look into product updates",
+    "image": "/s-o-c-i-a-l-c-u-t--3jdwGuAEnk-unsplash.jpg",
+    "date": "2023-01-30"
+  },
+  {
+    "id": 17,
+    "title": "Celebrating Small Wins Remotely",
+    "category": "Remote Team Tips",
+    "excerpt": "Celebrating Small Wins Remotely - A detailed look into remote team tips",
+    "image": "/jerome-z-wS695XkKA-unsplash.jpg",
+    "date": "2023-03-26"
+  },
+  {
+    "id": 18,
+    "title": "Empathy-Driven Leadership in 2025",
+    "category": "Leadership & Empathy",
+    "excerpt": "Empathy-Driven Leadership in 2025 - A detailed look into leadership & empathy",
+    "image": "/marco-bianchetti-XrZN7UaePxc-unsplash.jpg",
+    "date": "2023-07-02"
+  },
+  {
+    "id": 19,
+    "title": "Connecting Remotely: The Gleam Way",
+    "category": "Remote Team Tips",
+    "excerpt": "Connecting Remotely: The Gleam Way - A detailed look into remote team tips",
+    "image": "/cristofer-maximilian-NSKP7Gwa_I0-unsplash.jpg",
+    "date": "2023-03-21"
+  },
+  {
+    "id": 20,
+    "title": "From Burnout to Brilliance: Gleam Impact",
+    "category": "Stories from Gleam Users",
+    "excerpt": "From Burnout to Brilliance: Gleam Impact - A detailed look into stories from gleam users",
+    "image": "/kate-sade-c_NsMp-Z1Xk-unsplash.jpg",
+    "date": "2023-12-09"
+  },
+  {
+    "id": 21,
+    "title": "Rethinking Culture for Gen Z Teams",
+    "category": "Culture & Connection",
+    "excerpt": "Rethinking Culture for Gen Z Teams - A detailed look into culture & connection",
+    "image": "/cristofer-maximilian-NSKP7Gwa_I0-unsplash.jpg",
+    "date": "2023-03-02"
+  },
+  {
+    "id": 22,
+    "title": "Radical Candor vs. Empathetic Leadership",
+    "category": "Leadership & Empathy",
+    "excerpt": "Radical Candor vs. Empathetic Leadership - A detailed look into leadership & empathy",
+    "image": "/marco-bianchetti-XrZN7UaePxc-unsplash.jpg",
+    "date": "2023-05-23"
+  },
+  {
+    "id": 23,
+    "title": "How Shared Stories Build Belonging",
+    "category": "Culture & Connection",
+    "excerpt": "How Shared Stories Build Belonging - A detailed look into culture & connection",
+    "image": "/jerome-z-wS695XkKA-unsplash.jpg",
+    "date": "2023-11-20"
+  },
+  {
+    "id": 24,
+    "title": "Keeping Remote Teams Engaged",
+    "category": "Remote Team Tips",
+    "excerpt": "Keeping Remote Teams Engaged - A detailed look into remote team tips",
+    "image": "/s-o-c-i-a-l-c-u-t--3jdwGuAEnk-unsplash.jpg",
+    "date": "2023-11-22"
+  },
+  {
+    "id": 25,
+    "title": "Emotional Intelligence at the Top",
+    "category": "Leadership & Empathy",
+    "excerpt": "Emotional Intelligence at the Top - A detailed look into leadership & empathy",
+    "image": "/toa-heftiba-z9snuPiPKgQ-unsplash.jpg",
+    "date": "2023-03-24"
+  },
+  {
+    "id": 26,
+    "title": "The Future of Async Connection",
+    "category": "Remote Team Tips",
+    "excerpt": "The Future of Async Connection - A detailed look into remote team tips",
+    "image": "/olena-bohovyk-DmeZC9riGkk-unsplash.jpg",
+    "date": "2023-02-20"
+  },
+  {
+    "id": 27,
+    "title": "When Kindness Changed a Career",
+    "category": "Stories from Gleam Users",
+    "excerpt": "When Kindness Changed a Career - A detailed look into stories from gleam users",
+    "image": "/thestandingdesk-yRjwn800N5A-unsplash.jpg",
+    "date": "2024-03-12"
+  },
+  {
+    "id": 28,
+    "title": "Rethinking Culture for Gen Z Teams",
+    "category": "Culture & Connection",
+    "excerpt": "Rethinking Culture for Gen Z Teams - A detailed look into culture & connection",
+    "image": "/jason-leung-uhxiOmoVhOo-unsplash.jpg",
+    "date": "2024-03-26"
+  },
+  {
+    "id": 29,
+    "title": "When Kindness Changed a Career",
+    "category": "Stories from Gleam Users",
+    "excerpt": "When Kindness Changed a Career - A detailed look into stories from gleam users",
+    "image": "/muhammad-rizqi-N-lCdqdAdes-unsplash.jpg",
+    "date": "2024-02-11"
+  },
+  {
+    "id": 30,
+    "title": "How Gleam Users Built a Recognition Habit",
+    "category": "Stories from Gleam Users",
+    "excerpt": "How Gleam Users Built a Recognition Habit - A detailed look into stories from gleam users",
+    "image": "/muhammad-rizqi-N-lCdqdAdes-unsplash.jpg",
+    "date": "2023-09-25"
+  },
+  {
+    "id": 31,
+    "title": "How Gleam Users Built a Recognition Habit",
+    "category": "Stories from Gleam Users",
+    "excerpt": "How Gleam Users Built a Recognition Habit - A detailed look into stories from gleam users",
+    "image": "/jason-leung-uhxiOmoVhOo-unsplash.jpg",
+    "date": "2024-04-20"
+  },
+  {
+    "id": 32,
+    "title": "Inside Gleam's Emotion Analytics",
+    "category": "Product Updates",
+    "excerpt": "Inside Gleam's Emotion Analytics - A detailed look into product updates",
+    "image": "/thestandingdesk-yRjwn800N5A-unsplash.jpg",
+    "date": "2023-11-18"
+  },
+  {
+    "id": 33,
+    "title": "Slack Integration: What You Need to Know",
+    "category": "Product Updates",
+    "excerpt": "Slack Integration: What You Need to Know - A detailed look into product updates",
+    "image": "/olena-bohovyk-DmeZC9riGkk-unsplash.jpg",
+    "date": "2023-07-01"
+  },
+  {
+    "id": 34,
+    "title": "Inside Gleam's Emotion Analytics",
+    "category": "Product Updates",
+    "excerpt": "Inside Gleam's Emotion Analytics - A detailed look into product updates",
+    "image": "/toa-heftiba-z9snuPiPKgQ-unsplash.jpg",
+    "date": "2023-01-27"
+  },
+  {
+    "id": 35,
+    "title": "New Feature Drop: Weekly Gratitude Summary",
+    "category": "Product Updates",
+    "excerpt": "New Feature Drop: Weekly Gratitude Summary - A detailed look into product updates",
+    "image": "/s-o-c-i-a-l-c-u-t--3jdwGuAEnk-unsplash.jpg",
+    "date": "2023-09-27"
+  },
+  {
+    "id": 36,
+    "title": "How Shared Stories Build Belonging",
+    "category": "Culture & Connection",
+    "excerpt": "How Shared Stories Build Belonging - A detailed look into culture & connection",
+    "image": "/jerome-z-wS695XkKA-unsplash.jpg",
+    "date": "2024-04-20"
+  },
+  {
+    "id": 37,
+    "title": "Compassionate Culture Shifts",
+    "category": "Kindness at Work",
+    "excerpt": "Compassionate Culture Shifts - A detailed look into kindness at work",
+    "image": "/marco-bianchetti-XrZN7UaePxc-unsplash.jpg",
+    "date": "2024-02-07"
+  },
+  {
+    "id": 38,
+    "title": "From Burnout to Brilliance: Gleam Impact",
+    "category": "Stories from Gleam Users",
+    "excerpt": "From Burnout to Brilliance: Gleam Impact - A detailed look into stories from gleam users",
+    "image": "/cristofer-maximilian-NSKP7Gwa_I0-unsplash.jpg",
+    "date": "2023-08-07"
+  },
+  {
+    "id": 39,
+    "title": "Connecting Remotely: The Gleam Way",
+    "category": "Remote Team Tips",
+    "excerpt": "Connecting Remotely: The Gleam Way - A detailed look into remote team tips",
+    "image": "/kate-sade-c_NsMp-Z1Xk-unsplash.jpg",
+    "date": "2023-05-19"
+  },
+  {
+    "id": 40,
+    "title": "Leaders Who Listen Win",
+    "category": "Leadership & Empathy",
+    "excerpt": "Leaders Who Listen Win - A detailed look into leadership & empathy",
+    "image": "/kate-sade-c_NsMp-Z1Xk-unsplash.jpg",
+    "date": "2023-10-09"
+  },
+  {
+    "id": 41,
+    "title": "Rethinking Culture for Gen Z Teams",
+    "category": "Culture & Connection",
+    "excerpt": "Rethinking Culture for Gen Z Teams - A detailed look into culture & connection",
+    "image": "/cristofer-maximilian-NSKP7Gwa_I0-unsplash.jpg",
+    "date": "2024-01-31"
+  },
+  {
+    "id": 42,
+    "title": "The Future of Async Connection",
+    "category": "Remote Team Tips",
+    "excerpt": "The Future of Async Connection - A detailed look into remote team tips",
+    "image": "/marco-bianchetti-XrZN7UaePxc-unsplash.jpg",
+    "date": "2024-05-13"
+  },
+  {
+    "id": 43,
+    "title": "Servant Leadership Reimagined",
+    "category": "Leadership & Empathy",
+    "excerpt": "Servant Leadership Reimagined - A detailed look into leadership & empathy",
+    "image": "/jerome-z-wS695XkKA-unsplash.jpg",
+    "date": "2023-03-01"
+  },
+  {
+    "id": 44,
+    "title": "Connecting Remotely: The Gleam Way",
+    "category": "Remote Team Tips",
+    "excerpt": "Connecting Remotely: The Gleam Way - A detailed look into remote team tips",
+    "image": "/s-o-c-i-a-l-c-u-t--3jdwGuAEnk-unsplash.jpg",
+    "date": "2024-04-13"
+  },
+  {
+    "id": 45,
+    "title": "Small Gestures, Big Impacts",
+    "category": "Kindness at Work",
+    "excerpt": "Small Gestures, Big Impacts - A detailed look into kindness at work",
+    "image": "/toa-heftiba-z9snuPiPKgQ-unsplash.jpg",
+    "date": "2024-01-08"
+  },
+  {
+    "id": 46,
+    "title": "Celebrating Small Wins Remotely",
+    "category": "Remote Team Tips",
+    "excerpt": "Celebrating Small Wins Remotely - A detailed look into remote team tips",
+    "image": "/olena-bohovyk-DmeZC9riGkk-unsplash.jpg",
+    "date": "2024-03-01"
+  },
+  {
+    "id": 47,
+    "title": "Compassionate Culture Shifts",
+    "category": "Kindness at Work",
+    "excerpt": "Compassionate Culture Shifts - A detailed look into kindness at work",
+    "image": "/thestandingdesk-yRjwn800N5A-unsplash.jpg",
+    "date": "2023-02-16"
+  },
+  {
+    "id": 48,
+    "title": "New Feature Drop: Weekly Gratitude Summary",
+    "category": "Product Updates",
+    "excerpt": "New Feature Drop: Weekly Gratitude Summary - A detailed look into product updates",
+    "image": "/jason-leung-uhxiOmoVhOo-unsplash.jpg",
+    "date": "2023-07-14"
+  },
+  {
+    "id": 49,
+    "title": "Rethinking Culture for Gen Z Teams",
+    "category": "Culture & Connection",
+    "excerpt": "Rethinking Culture for Gen Z Teams - A detailed look into culture & connection",
+    "image": "/muhammad-rizqi-N-lCdqdAdes-unsplash.jpg",
+    "date": "2023-11-19"
+  },
+  {
+    "id": 50,
+    "title": "How Gleam Users Built a Recognition Habit",
+    "category": "Stories from Gleam Users",
+    "excerpt": "How Gleam Users Built a Recognition Habit - A detailed look into stories from gleam users",
+    "image": "/muhammad-rizqi-N-lCdqdAdes-unsplash.jpg",
+    "date": "2023-07-26"
+  }
+]

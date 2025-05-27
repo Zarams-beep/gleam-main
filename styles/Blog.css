@@ -1,0 +1,184 @@
+.blog-main-container{
+    @apply flex flex-col gap-5
+}
+.blog-media{
+    @apply  w-full
+}
+
+/* blog hero styling starts */
+.blog-hero-section{
+    @apply flex flex-col gap-5 mt-8;
+    font-family: "Roboto", sans-serif;
+}
+.blog-hero-section header{
+    @apply flex items-center justify-center
+}
+.blog-hero-section h3{
+    @apply flex items-center justify-center gap-1 text-[30px] font-bold text-center;
+}
+.blog-hero-container{
+    @apply flex items-start gap-6 justify-between w-full md:flex-row flex-col ;
+}
+.main-featured-post{
+    @apply flex flex-col gap-14
+}
+.blog-hero-section .featured-post{
+    @apply  w-full shadow-lg
+}
+.blog-hero-section .featured-image{
+    @apply w-full h-[30rem] object-cover
+}
+.blog-hero-section .featured-image img{
+    @apply w-full h-full rounded-tl-md rounded-tr-md
+}
+.blog-hero-section .featured-content{
+    @apply flex flex-col gap-2 px-3 py-5 bg-primary rounded-bl-md rounded-br-md;
+}
+.blog-hero-section .featured-title{
+    @apply font-bold text-[20px] text-foreground-subtle;
+    font-family: "Manrope", sans-serif;
+}
+.blog-hero-section .featured-excerpt{
+    @apply text-[15px] font-semibold text-[#D6CFE6];
+}
+.read-more-link{
+    @apply font-semibold text-[15px] text-[#8f8fdfe8] hover:text-[#6c6cf68c]
+}
+.blog-hero-section .sidebar-posts{
+    @apply w-full md:w-[35rem] flex flex-col gap-4
+}
+.blog-hero-section .sidebar-card{
+    @apply bg-[#545850] flex items-center gap-3 rounded-md cursor-pointer
+}
+.blog-hero-section .sidebar-post-img{
+    @apply w-[10rem] h-[10rem]
+}
+.blog-hero-section .sidebar-post-img img{
+    @apply w-full h-full rounded-tl-md rounded-bl-md
+}
+.blog-hero-section .sidebar-text{
+    @apply flex flex-col gap-1
+}
+.blog-hero-section .sidebar-title{
+    @apply text-[14px]
+}
+.blog-hero-section .sidebar-date{
+    @apply text-[12px] text-primary-soft
+}
+/* blog hero styling ends */
+
+/*  blog category styling starts */
+.blog-category-filter{
+    @apply flex flex-col gap-10
+}
+.category-buttons-wrapper{
+    @apply grid gap-x-4 gap-y-8 w-full grid-cols-[repeat(auto-fit,minmax(100px,1fr))];
+}
+.category-button{
+    @apply border-t border-b  border-t-white border-b-white rounded-t-md rounded-b-md py-4 px-2 text-[10px] font-bold hover:border-t-primary hover:border-b-primary;
+    font-family: "Manrope", sans-serif;
+}
+.category-button-active{
+    @apply border-t-primary border-b-primary;
+}
+.blog-category-filter .featured-post{
+    @apply h-full w-full rounded-bl-md rounded-br-md;
+}
+.blog-category-filter .featured-post-img{
+    @apply w-full h-[20rem] object-cover
+}
+.blog-category-filter .featured-post-img img{
+    @apply h-full w-full rounded-tl-md rounded-tr-md;
+}
+.blog-category-filter .featured-post-content{
+    @apply py-3 px-6 mb-4 h-full;
+}
+.blog-category-filter .other-posts{
+    @apply grid gap-x-4 gap-y-8 w-full grid-cols-[repeat(auto-fit,minmax(170px,1fr))];
+}
+.blog-category-filter .post-card{
+    @apply text-foreground-subtle flex flex-col h-[20rem] cursor-pointer
+}
+.blog-category-img{
+    @apply w-full object-cover
+}
+.blog-category-img img{
+    @apply w-full h-[9rem] rounded-tl-md rounded-tr-md
+}
+.blog-category-content{
+    @apply flex flex-col gap-4 h-full bg-[#545850] py-3 px-4 rounded-bl-md rounded-br-md;
+}
+.blog-category-filter .post-card h3{
+    @apply text-[15px] text-center
+}
+.blog-category-filter .post-card p{
+    @apply text-[12px] text-center
+}
+/* blog category styling ends */
+
+/* new letter styling starts */
+.newletter-animation-container{
+    @apply fixed bottom-4 right-1 transform -translate-x-1/2 w-[90%] sm:w-[400px] bg-gradient-to-br from-primary to-primary-surface text-white px-6 py-4 rounded-2xl shadow-xl z-50  h-[15rem] xs:h-[12rem]
+}
+.newletter-container{
+    @apply flex flex-row justify-between items-start gap-3 h-full
+
+}
+.newletter-content-1{
+    @apply w-full h-full
+}
+.newletter-content-1 button{
+    @apply absolute top-5 left-8 z-[10] font-bold
+}
+.newletter-img{
+    @apply w-full h-full object-cover rounded-md
+}
+.newletter-img img{
+    @apply w-full h-full relative
+}
+.newletter-content-2{
+    @apply flex flex-col gap-3
+}
+.newletter-content-2 h4{
+    @apply text-[14px] md:text-[16px] font-bold
+}
+.newletter-content-2 p{
+    @apply text-[12px] md:text-[14px] font-semibold;
+}
+.newletter-content-2 form{
+    @apply flex flex-col gap-2
+}
+.newletter-content-2 .input-div{
+    @apply flex flex-col;
+}
+.newletter-content-2 .input-div input{
+    @apply w-full py-1 px-2 text-[14px] outline-none border border-foreground rounded-md
+}
+.newletter-content-2 .btn-container, .btn-comment{
+    @apply flex items-center justify-center;
+}
+.newletter-content-2 button, .btn-comment button{
+    @apply bg-foreground-subtle text-primary px-4 py-1 rounded-md font-medium hover:bg-foreground-subtle text-[13px] transition hover:cursor-pointer;
+}
+/* new letter styling ends */
+
+/* commemt styling starts */
+.comment-container{
+    @apply w-full flex flex-col gap-2 mt-6
+}
+.comment-container h3{
+    @apply font-bold text-[19px] md:text-[25px]
+}
+.comment-container form{
+    @apply flex flex-col gap-3
+}
+.comment-container input{
+    @apply w-full px-2 py-2 border rounded-lg md:text-[16px] text-[14px]
+}
+.comment-container textarea{
+    @apply w-full px-2 py-2 border rounded-lg h-28 md:text-[16px] text-[14px]
+}
+.btn-comment button{
+    @apply bg-primary text-foreground text-[15px]
+}
+/* comment styling ends */

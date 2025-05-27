@@ -1,0 +1,221 @@
+.about-main{
+    @apply
+        flex flex-col gap-[4rem];
+}
+/* about hero styling starts */
+.about-hero{
+    @apply bg-[#545850] text-[#D6CFE6] p-3;
+    font-family: "Nunito", sans-serif;
+}
+.about-hero-2{
+    @apply flex items-center justify-between flex-col md:flex-row-reverse gap-10
+}
+.about-hero-text{
+    @apply flex flex-col gap-2
+}
+
+.about-hero-text h1{
+    @apply text-[20px] md:text-[30px] uppercase font-bold;
+    font-family: "Roboto", sans-serif;
+}
+.about-hero-text p{
+    @apply text-[14px] md:text-[16px] text-justify
+}
+.about-hero .about-hero-img{
+    @apply w-full border-[15px] border-double p-3 bg-[#d6cfe69a] border-r-primary border-b-primary border-t-foreground-subtle 
+    border-l-foreground-subtle relative;
+    box-sizing: border-box;
+}
+.about-hero .about-hero-img img{
+    @apply w-full h-full object-cover;
+}
+/* about hero styling ends */
+
+/* about our story styling starts */
+.story-section{
+    @apply flex flex-col gap-10 h-full;
+    font-family: "Roboto", sans-serif;
+}
+.header-story-section{
+    @apply flex flex-col gap-2 text-center text-primary;
+    
+}
+.header-story-section h2{
+    @apply text-[18px] xs:text-[20px] md:text-[30px] font-bold flex justify-center gap-1;
+}
+.header-story-section h2 span{
+    @apply border-b border-primary flex items-end
+}
+.header-story-section h2 .fill-melt{
+    @apply text-[14px] xs:text-[16px] md:text-[18px]
+}
+.header-story-section h4{
+    @apply text-[13px] md:text-[15px] font-[540] text-center;
+    font-family: "Manrope", sans-serif;
+}
+.story-content{
+    @apply flex items-center flex-row-reverse gap-10 h-full md:h-[20rem];
+}
+.story-img{
+    @apply w-full h-full md:flex hidden;
+}
+.story-img img{
+    @apply w-full h-full rounded-xl shadow-xl
+}
+.story-text{
+    @apply w-full h-full shadow-2xl px-5 py-4 flex flex-col gap-5 justify-center rounded-xl md:text-[16px] text-[14px] md:bg-transparent bg-primary md:text-primary text-foreground-subtle;
+}
+.story-text .story-btn{
+    @apply flex items-center justify-center;
+}
+.story-text .story-btn button{
+    @apply bg-foreground-subtle md:bg-primary rounded-md shadow-md py-2 px-4 text-center text-[14px] md:text-[16px] text-primary md:text-foreground-subtle hover:bg-primary-surface
+}
+/* about our story styling ends */
+
+/* story styling starts */
+.story-page {
+    @apply w-full h-full;
+  }
+  .story-page-2 {
+    @apply flex flex-col px-4 py-5;
+  }
+  
+  .story-page-2 .story-page-title{
+    @apply flex flex-col items-center justify-center text-center gap-2
+  }
+  .story-page-2 .story-page-title h1{
+    @apply text-[#545850] font-bold text-[15px] sm:text-[18px] uppercase 
+  }
+  .story-page-2 .story-page-title h2{
+    @apply text-[20px] md:text-[30px] text-primary font-bold
+  }
+  .story-page-2 .story-page-title p{
+    @apply text-justify md:text-[16px] text-[14px]
+  }
+  .story-page-2 .story-page-year{
+    @apply text-center grid grid-cols-[repeat(auto-fit,minmax(70px,1fr))] w-full items-center justify-center gap-x-10 gap-y-0 pt-10;
+  }
+  .story-page-2 .story-page-year button{
+    @apply px-5 py-3 text-[#545850] cursor-pointer border-t-2 border-b-2 border-foreground-subtle rounded-md my-5 md:text-[16px] text-[14px];
+  }
+  .story-page-2 .story-page-year .story-active-year{
+    @apply text-primary border-t-2 border-b-2 border-primary ;
+  }
+  .story-motion-main{
+    @apply flex items-center justify-center w-full;
+  }
+  .story-motion-main-2{
+    @apply bg-foreground flex items-center justify-center flex-col w-[45rem] px-5 py-6 rounded-md shadow-2xl
+  }
+  .story-motion{
+    @apply flex flex-col gap-4
+  }
+  .story-motion h2{
+    @apply text-center text-[15px] md:text-[20px] text-primary font-semibold underline;
+    font-family: "Manrope", sans-serif;
+  }
+  .story-motion p{
+    @apply text-justify text-[#545850] leading-loose text-[13px] md:text-[15px] font-thin;
+     font-family: "Roboto", sans-serif;
+  }
+  .story-motion-btn{
+    @apply flex items-center justify-center
+  }
+  .story-motion-btn button{
+    @apply bg-primary text-foreground px-5 py-2 rounded-md md:text-[16px] text-[14px];
+  }
+/* story styling ends */
+
+/* core styling starts */
+.core-section, .how-works{
+  @apply w-full flex flex-col gap-7
+}
+.core-content{
+  @apply grid gap-4 grid-cols-[repeat(auto-fit,minmax(250px,1fr))] w-full;
+}
+.core-content-small{
+  @apply flex flex-col gap-2 bg-primary w-full text-foreground-subtle h-[15rem] rounded-md shadow-lg py-2 px-5 items-center justify-center
+}
+.about-core-icon{
+  @apply text-[16px] md:text-[20px];
+}
+.core-content-small h3{
+  @apply font-bold text-[13px] md:text-[15px] text-center;
+  font-family: "Roboto", sans-serif;
+}
+.core-content-small p{
+  @apply text-justify text-foreground leading-loose text-[13px] md:text-[15px] font-thin;
+  font-family: "Roboto", sans-serif;
+}
+/* core styling ends */
+
+/* how it works styling starts */
+.how-works{
+  @apply bg-primary py-4;
+}
+.how-works .header-story-section{
+  @apply text-foreground-subtle;
+}
+.how-works .header-story-section h2 span{
+  @apply border-foreground
+}
+.how-works-content{
+  @apply grid gap-x-4 gap-y-8 w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(450px,1fr))];
+}
+.how-works-content-2{
+  @apply flex items-center md:flex-row flex-col gap-5 px-3 py-5 rounded-md shadow-md bg-foreground-subtle
+}
+.how-works-content-2 button{
+  @apply bg-primary hover:bg-primary-surface text-foreground-subtle w-[3rem] h-[3rem] rounded-[50%] flex items-center justify-center text-[18px]
+}
+.small-work-content{
+  @apply flex flex-col gap-2 md:items-start items-center md:justify-normal justify-center md:text-start text-center
+}
+/* how it works styling ends */
+
+/* Testimonial styling starts */
+.social-proof-section{
+  @apply w-full overflow-x-hidden
+}
+.social-proof-main{
+  @apply w-full flex flex-col gap-4
+}
+
+.meet-team-swiper{
+  @apply my-6
+}
+
+.testimonial-block{
+  @apply flex items-center flex-col justify-between gap-5 shadow-lg py-3 px-5
+}
+.meet-team-swiper{
+  @apply bg-[#d6cfe69a] pb-9
+}
+.testimonial-img-container{
+  @apply border-4 border-r-primary border-b-primary border-t-[#1a10239e] border-l-[#1a10239e] relative p-4 w-[15rem] h-[15rem] shadow-lg;
+  box-sizing: border-box;
+}
+.testimonial-img-container img{
+  @apply w-full h-full
+}
+.testimonial-quote{
+  @apply flex flex-col gap-1 items-center justify-center;
+}
+.testimonial-quote p{
+  @apply text-[15px] text-justify;
+  font-family: "Manrope", sans-serif;
+}
+.testimonial-quote footer{
+  @apply text-end text-[10px] uppercase w-full
+}
+.about-stats{
+  @apply flex items-center justify-between smm:flex-row flex-col gap-10 m-auto
+}
+.stat-block{
+  @apply flex flex-col gap-3 shadow-lg rounded-sm py-2 px-4
+}
+.stat-block header{
+  @apply flex items-center justify-center gap-1 font-bold text-[16px]
+}
+/* Testimonial styling ends */

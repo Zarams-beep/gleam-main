@@ -1,0 +1,37 @@
+.header-section {
+    @apply bg-primary text-foreground-subtle w-full shadow-md border-b border-foreground-subtle sticky top-0 z-[1000] py-6;
+  }
+  .header-section-div{
+    @apply flex items-center justify-between px-[20px] sm:px-[30px];
+    font-family: "Manrope","sans-serif"
+  }
+  .left-side{
+    @apply flex items-center text-[30px] gap-1 font-bold;
+    font-family: "Roboto", sans-serif;
+    
+  }
+  .middle-side{
+    @apply w-[40%]
+  }
+  .middle-side ul{
+    @apply flex items-center justify-between
+ }
+ .middle-side ul li{
+    @apply text-[16px] font-semibold
+ }
+ .active{
+    @apply bg-foreground-subtle text-primary px-3 py-1
+ }
+  .right-side{
+    @apply flex items-center gap-3 justify-between
+  }
+  .right-side button{
+    @apply w-[8rem] py-2 text-[14px] rounded-md font-bold shadow-sm hover:cursor-pointer
+  }
+  .login-btn{
+    @apply bg-foreground text-primary hover:bg-foreground-subtle transition
+  }
+  .signup-btn{
+    @apply border border-foreground hover:bg-primary-surface
+    transition
+  }
