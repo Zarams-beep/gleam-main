@@ -28,7 +28,7 @@ body {
 }
 /* splash styling starts */
 .splash-container {
-  @apply fixed inset-0 bg-primary flex flex-col items-center justify-center z-50 py-10 px-11;
+  @apply fixed inset-0 bg-primary flex flex-col items-center justify-center z-50 py-10 px-4 md:px-11;
 }
 
 .splash-letter-container {
@@ -36,7 +36,7 @@ body {
 }
 
 .card {
-  @apply w-[25rem] h-[20rem];
+  @apply md:w-[25rem] w-full h-full md:h-[20rem];
 }
 
 .card-inner {
@@ -53,7 +53,7 @@ body {
 
 .card-front,
 .card-back {
-  @apply rounded shadow flex items-center justify-center text-[20rem] font-bold;
+  @apply rounded shadow flex items-center justify-center text-[4rem] sm:text-[8rem] md:text-[12rem] lg:text-[20rem] font-bold;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -101,7 +101,7 @@ body {
 }
 
 .splash-tagline {
-  @apply text-white text-center mt-4 text-lg font-light;
+  @apply text-white text-center mt-4 text-[13px] sm:text-[15px] md:text-[18px] font-light;
 }
 
 .sparkle-text {

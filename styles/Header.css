@@ -35,3 +35,14 @@
     @apply border border-foreground hover:bg-primary-surface
     transition
   }
+  .burger-menu{
+    @apply text-[15px] md:text-[35px]
+  }
+  /* media header styling starts */
+.drawer-btn{
+      @apply flex items-center gap-3 justify-between sm:flex-row flex-col;
+}
+.drawer-btn button{
+    @apply w-full py-2 text-[14px] rounded-md font-bold shadow-sm hover:cursor-pointer
+  }
+  /* media header stylingg ends */
