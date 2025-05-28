@@ -8,7 +8,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-
+import emailjs from "@emailjs/browser";
+import { useRef } from "react";
 const emailSchema = z.object({
   email: z.string().email("Please enter a valid email address."),
 });
