@@ -87,6 +87,7 @@ export default function TestimonialSection() {
                   alt={testimonial.name}
                   width={80}
                   height={80}
+                  quality="80"
                   className=""
                 />
                 </div>

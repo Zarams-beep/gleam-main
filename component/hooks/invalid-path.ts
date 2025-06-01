@@ -6,8 +6,8 @@ import { useMemo } from "react";
 const invalidPaths = [
   "/auth/log-in",
   "/auth/sign-up",
-  "/auth/forgot-password",
-  "/auth/verify",
+  // "/auth/forgot-password",
+  // "/auth/verify",
 ];
 
 export default function useIsInvalidPath() {
