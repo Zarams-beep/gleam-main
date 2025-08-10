@@ -1,54 +1,54 @@
 .auth-container{
-    @apply w-full h-full flex items-start justify-between flex-row
-}
-.auth-container-2{
-    @apply items-center
+    @apply w-full h-screen flex items-center justify-center flex-row;
 }
 .auth-left{
-    @apply w-full h-screen md:flex hidden
+    @apply w-full hidden h-full md:flex
 }
 .auth-left img{
     @apply w-full h-full
 }
+.main-right-auth{
+    @apply w-full h-full md:py-0 py-4 flex items-center 
+}
 .right-auth{
-    @apply w-full h-full flex flex-col gap-3 px-5 md:py-0 py-4;
+    @apply  flex flex-col gap-3 px-5 w-full;
 }
 .form-header{
     @apply flex flex-col items-center justify-center;
 }
 .form-header h2{
-    @apply text-[20px] md:text-[30px] font-bold;
+    @apply text-[20px] md:text-[30px] font-bold font-classic;
 }
 .form-header p{
-    @apply text-[14px] md:text-[16px]
+    @apply text-[14px] md:text-[16px] font-clean
 }
 .form-header p a, .forgot-password-link{
-    @apply text-[12px] md:text-[14px] text-[#5050c1] hover:text-accent-hover font-bold cursor-pointer;
+    @apply text-[12px] md:text-[14px] text-[#5050c1] hover:text-accent-hover font-bold cursor-pointer font-classic;
 }
 .auth-form{
     @apply flex flex-col gap-2 h-full
 }
 .auth-form-div{
-    @apply flex flex-col gap-3 
+    @apply flex flex-col gap-5;
 }
 
 .auth-section{
     @apply flex flex-col gap-3;
 }
 .input-group{
-    @apply flex flex-col gap-1;
+    @apply flex flex-col gap-1 ;
 }
 .input-group .input-label{
-    @apply text-[13px] md:text-[15px] font-semibold
+    @apply text-[13px] md:text-[15px] font-semibold font-clean
 }
 .input-wrapper{
-    @apply flex items-center gap-1 w-full p-2 border border-gray-700 rounded-lg shadow-md;
+    @apply flex items-center gap-1 w-full p-2 border border-primary-surface rounded-lg shadow-md;
 }
 .input-wrapper .input-second{
     @apply flex items-center justify-between w-full;
 }
 .input-wrapper input{
-    @apply bg-transparent border-none outline-none text-[13px] md:text-[15px]
+    @apply bg-transparent border-none outline-none text-[13px] md:text-[15px] w-full
 }
 .error-message{
   @apply flex items-center gap-1 text-[14px] text-[red]
@@ -63,13 +63,13 @@
     @apply flex items-center justify-center;
 }
 .submit-button{
-    @apply shadow-md py-2 px-5 rounded-md md:text-[15px] text-[13px] font-bold hover:cursor-pointer;
+    @apply shadow-md py-2 px-5 rounded-md md:text-[15px] text-[13px] font-bold ;
 }
 .active-button{
-    @apply bg-primary text-foreground-subtle
+    @apply bg-primary hover:bg-primary-surface text-foreground-subtle hover:cursor-pointer;
 }
 .disabled-button{
-    @apply bg-foreground-subtle text-primary;
+    @apply bg-[#545850] text-foreground-subtle;
 }
 
 /* image styling starts */

@@ -1,4 +1,3 @@
-import FooterSection from "@/component/Footer";
 import MainWrapper from "@/component/MainWrapper";
 // Styles
 import "./globals.css";
@@ -22,7 +21,6 @@ export default function RootLayout({
       </head>
       <body>
         <MainWrapper>{children}</MainWrapper>
-        <FooterSection />
       </body>
     </html>
   );

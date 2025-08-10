@@ -6,6 +6,7 @@ import HeaderSection from "@/component/Header";
 import MainLayout from "@/component/MainLayout";
 import useInvalidPaths from "./hooks/invalid-path";
 import SplashScreen from "@/component/Splash";
+import FooterSection from "@/component/Footer";
 
 function QueryParamHandler({ setUserId }: { setUserId: (id: string | undefined) => void }) {
   const searchParams = useSearchParams();
@@ -71,6 +72,8 @@ export default function ClientSideWrapper({ children }: ClientSideWrapperProps) 
         <>
           {!isInvalidPath && (isMobile ? <MediaHeaderSection /> : <HeaderSection />)}
           {children}
+           {!isInvalidPath &&         <FooterSection />
+}
         </>
       )}
     </main>
