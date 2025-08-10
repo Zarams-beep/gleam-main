@@ -2,12 +2,11 @@
     @apply bg-primary text-foreground-subtle w-full shadow-md border-b border-foreground-subtle sticky top-0 z-[1000] py-6;
   }
   .header-section-div{
-    @apply flex items-center justify-between px-[20px] sm:px-[30px];
-    font-family: "Manrope","sans-serif"
+    @apply flex items-center justify-between;
   }
+
   .left-side{
     @apply flex items-center text-[30px] gap-1 font-bold;
-    font-family: "Roboto", sans-serif;
     
   }
   .middle-side{
@@ -16,17 +15,17 @@
   .middle-side ul{
     @apply flex items-center justify-between
  }
- .middle-side ul li{
-    @apply text-[16px] font-semibold
+ .middle-side ul li, .drawer-container ul li{
+    @apply text-[16px] font-clean font-thin hover:bg-foreground-subtle hover:text-primary hover:animate-pulse hover:px-3 hover:py-1 hover:rounded-sm
  }
  .active{
-    @apply bg-foreground-subtle text-primary px-3 py-1
+    @apply bg-foreground-subtle text-primary px-3 py-1 rounded-sm
  }
   .right-side{
     @apply flex items-center gap-3 justify-between
   }
   .right-side button{
-    @apply w-[8rem] py-2 text-[14px] rounded-md font-bold shadow-sm hover:cursor-pointer
+    @apply w-[6rem] py-2 text-[14px] rounded-md font-thin shadow-sm hover:cursor-pointer uppercase font-clean
   }
   .login-btn{
     @apply bg-foreground text-primary hover:bg-foreground-subtle transition
@@ -36,13 +35,22 @@
     transition
   }
   .burger-menu{
-    @apply text-[15px] md:text-[35px]
+    @apply text-[30px] text-foreground-subtle
   }
   /* media header styling starts */
 .drawer-btn{
-      @apply flex items-center gap-3 justify-between sm:flex-row flex-col;
+      @apply flex items-center flex-col gap-3 justify-between ;
 }
 .drawer-btn button{
-    @apply w-full py-2 text-[14px] rounded-md font-bold shadow-sm hover:cursor-pointer
+    @apply w-full py-2 text-[14px] rounded-md font-thin shadow-sm hover:cursor-pointer uppercase font-clean
+  }
+  .drawer-container{
+    @apply h-screen w-screen md:w-[30rem] bg-primary text-foreground-subtle py-[5rem] px-[2rem] relative
+  }
+  .menu-icon-container{
+    @apply absolute top-8 right-4
+  }
+  .drawer-container ul{
+    @apply flex flex-col gap-4 pb-5
   }
   /* media header stylingg ends */

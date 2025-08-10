@@ -1,18 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  Drawer,
-  IconButton,
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-} from "@mui/material";
+import { Drawer } from "@mui/material"; // Keeping Drawer, removing List components
 import { CiMenuBurger } from "react-icons/ci";
 import { PiSmileyMeltingFill } from "react-icons/pi";
 import { FaXmark } from "react-icons/fa6";
+import { motion, AnimatePresence } from "framer-motion";
 import "@/styles/Header.css";
 
 export default function MediaHeaderSection() {
@@ -41,8 +34,8 @@ export default function MediaHeaderSection() {
 
   return (
     <>
-      <header className="header-section" style={{ opacity: isSticky }}>
-        <div className="header-section-div">
+      <header className="header-section">
+        <div className="header-section-div container">
           {/* Logo */}
           <div className="left-side">
             <PiSmileyMeltingFill className="logo-icon" />
@@ -50,70 +43,80 @@ export default function MediaHeaderSection() {
           </div>
 
           {/* Mobile Menu Button */}
-          <IconButton onClick={() => setDrawerOpen(true)} sx={{ color: "white" }}>
+          <div onClick={() => setDrawerOpen(true)} aria-label="menu">
             <CiMenuBurger className="burger-menu" />
-          </IconButton>
+          </div>
         </div>
       </header>
 
-      {/* MUI Drawer */}
+      {/* Drawer */}
       <Drawer
-        anchor="left"
+        anchor="right"
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        sx={{
-          "& .MuiDrawer-paper": {
-            width: "100%",
-            bgcolor:"#1A1023",
-            color: "#D6CFE6",
-          },
-        }}
+        className="drawer-main-container"
       >
-        <Box
-          role="presentation"
-          sx={{ p: 3, height: "100vh", overflowY: "auto", position: "relative" }}
-        >
-          {/* Close Icon */}
-          <IconButton
+        <div className="drawer-container">
+          {/* Close Icon with animation */}
+          <motion.div
             onClick={() => setDrawerOpen(false)}
-            sx={{
-              position: "absolute",
-              top: 8,
-              right: 8,
-              color: "#D6CFE6",
-              zIndex: 10,
-            }}
             aria-label="close"
+            className="menu-icon-container"
+            initial={{ rotate: -90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            transition={{ duration: 0.4 }}
           >
-            <FaXmark />
-          </IconButton>
+            <FaXmark className="burger-menu" />
+          </motion.div>
 
-          {/* Navigation Links */}
-          <List sx={{ mt: 4 }}>
-            {navLinks.map((link, index) => (
-              <ListItem
-                key={index}
-               component="button"
-                onClick={() => {
-                  setDrawerOpen(false);
-                  router.push(link.href);
-                }}
-              >
-                <ListItemText
-                  primary={link.text}
-                  primaryTypographyProps={{
-                    fontWeight: pathname === link.href ? "bold" : "normal",
-                    color: pathname === link.href ? "#ff7e5f" : "white",
-                    fontSize: "1.2rem",
+          {/* Navigation Links with staggered animation */}
+          <AnimatePresence>
+            <motion.ul
+              className=""
+              initial="hidden"
+              animate="show"
+              exit="hidden"
+              variants={{
+                hidden: {},
+                show: {
+                  transition: { staggerChildren: 0.15 },
+                },
+              }}
+            >
+              {navLinks.map((link) => (
+                <motion.li
+                  key={link.href}
+                  variants={{
+                    hidden: { opacity: 0, x: 30 },
+                    show: { opacity: 1, x: 0 },
                   }}
-                />
-              </ListItem>
-            ))}
-          </List>
+                  transition={{ duration: 0.4 }}
+                >
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      setDrawerOpen(false);
+                      router.push(link.href);
+                    }}
+                    className={`${
+                      pathname === link.href
+                        ? "active"
+                        : ""
+                    }`}
+                  >
+                    {link.text}
+                  </motion.button>
+                </motion.li>
+              ))}
+            </motion.ul>
+          </AnimatePresence>
 
-          {/* Auth & CTA Actions */}
-          <Box className="drawer-btn">
-            <button
+          {/* Auth Buttons */}
+          <div className="drawer-btn">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               className="login-btn"
               onClick={() => {
                 setDrawerOpen(false);
@@ -121,8 +124,10 @@ export default function MediaHeaderSection() {
               }}
             >
               Log In
-            </button>
-            <button
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               className="signup-btn"
               onClick={() => {
                 setDrawerOpen(false);
@@ -130,9 +135,9 @@ export default function MediaHeaderSection() {
               }}
             >
               Sign Up
-            </button>
-          </Box>
-        </Box>
+            </motion.button>
+          </div>
+        </div>
       </Drawer>
     </>
   );

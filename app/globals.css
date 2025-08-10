@@ -17,14 +17,11 @@
 
 /* Body styling */
 body {
-  @apply bg-foreground-subtle text-primary;
+  @apply bg-foreground-subtle text-primary overflow-x-hidden;
   font-family: Arial, Helvetica, sans-serif;
 }
-.container{
-  @apply w-full h-full max-w-[1412px] 2xl:max-w-[1712px] overflow-y-hidden;
-}
-.container2{
-  @apply px-[20px] sm:px-[25px] m-auto flex flex-row justify-between items-center
+.container {
+  @apply w-full max-w-[80rem] px-[2rem] sm:px-[4rem] md:px-[8rem] mx-auto;
 }
 /* splash styling starts */
 .splash-container {

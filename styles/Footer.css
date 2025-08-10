@@ -1,6 +1,5 @@
 .gleam-footer{
     @apply bg-primary text-foreground-subtle pt-9 pb-4 w-full flex flex-col gap-9;
-    font-family: "Manrope", sans-serif;
 }
 .footer-top{
     @apply flex justify-between items-start gap-x-5 gap-y-10 w-full mdd:flex-row flex-col
@@ -9,11 +8,10 @@
     @apply flex flex-col gap-2 w-full mdd:w-[40rem];
 }
 .footer-title{
-    @apply text-[20px] smm:text-[30px] font-bold flex items-center;
-    font-family: "Roboto", sans-serif;
+    @apply text-[20px] smm:text-[30px] font-bold flex items-center font-classic;
 }
 .footer-tagline{
-    @apply text-[12px] smm:text-[14px] 
+    @apply text-[12px] smm:text-[14px] font-clean;
 }
 .footer-contact{
     @apply w-full flex flex-col gap-[4rem] sm:gap-4
@@ -22,17 +20,16 @@
     @apply flex flex-col gap-4
 }
 .footer-contact header h4, .footer-links h4{
-    @apply text-[20px] smm:text-[30px] font-bold;
-    font-family: "Roboto", sans-serif;
+    @apply text-[20px] smm:text-[30px] font-bold font-classic;
 }
 .footer-contact .quote-container{
     @apply flex flex-col gap-1
 }
 .footer-contact .quote-text{
-    @apply text-[13px] smm:text-[16px]
+    @apply text-[13px] smm:text-[16px] font-classic
 }
 .footer-contact .quote-author{
-    @apply text-end font-bold text-[12px]
+    @apply text-end font-bold text-[12px] font-clean
 }
 .newsletter-form{
    @apply flex flex-col gap-1;
@@ -41,19 +38,19 @@
     @apply flex items-center h-[5rem] sm:h-[3rem] sm:flex-row flex-col;
 }
 .email-input-group input{
-    @apply w-full py-3 px-2 outline-none border-none text-primary placeholder:text-primary h-full sm:rounded-tl-md sm:rounded-bl-md rounded-none;
+    @apply w-full py-3 px-2 outline-none border-none text-primary placeholder:text-primary placeholder:font-clean h-full sm:rounded-tl-md sm:rounded-bl-md rounded-none font-clean;
 }
 .email-input-group button{
-    @apply flex items-center justify-center gap-1 sm:w-[10rem] w-full bg-[#860404d6] hover:bg-[#8e040491] hover:cursor-pointer h-full text-foreground-subtle font-bold sm:rounded-tr-md sm:rounded-br-md rounded-none text-[13px] smm:text-[16px]
+    @apply flex items-center justify-center gap-1 sm:w-[10rem] w-full bg-[#860404d6] hover:bg-[#8e040491] hover:cursor-pointer h-full text-foreground-subtle font-bold sm:rounded-tr-md sm:rounded-br-md rounded-none text-[13px] smm:text-[16px] font-clean;
 }
 .form-error{
-    @apply text-[#860404d6] text-[12px] smm:text-[14px] font-bold;
+    @apply text-[#860404d6] text-[12px] smm:text-[14px] font-bold font-clean;
 }
 .footer-socials{
     @apply flex items-center justify-between
 }
-.footer-socials button{
-    @apply w-[3rem] h-[3rem] rounded-[50%] flex items-center justify-center bg-foreground-subtle text-primary text-[14px] smm:text-[17px] font-bold
+.footer-socials a{
+    @apply w-[2rem] h-[2rem] rounded-[50%] flex items-center justify-center bg-foreground-subtle text-primary hover:bg-neutral-500 hover:text-foreground-subtle text-[14px] smm:text-[17px] font-bold
 }
 .footer-links{
     @apply w-full mdd:w-[25rem] flex flex-col gap-3 items-start mdd:items-center justify-normal mdd:justify-center
@@ -62,8 +59,11 @@
     @apply flex flex-row mdd:flex-col gap-4 
 }
 .footer-links .link-list a{
-    @apply text-[12px] smm:text-[14px] text-foreground-subtle hover:text-[#6c6cf68c]
+    @apply text-[12px] smm:text-[14px] text-foreground-subtle hover:text-[#6c6cf68c] font-clean;
 }
 .footer-credit{
     @apply text-[13px] smm:text-[15px] font-bold text-center
+}
+.footer-bottom{
+    @apply border-t border-t-foreground-subtle pt-3
 }

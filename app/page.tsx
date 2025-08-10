@@ -5,7 +5,7 @@ import HomePageSection from "@/component/HomePage";
 
 export default function Home() {
   return (
-    <main className="container">
+    <main className="">
       <HomePageSection />
     </main>
   );

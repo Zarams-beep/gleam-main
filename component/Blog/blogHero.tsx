@@ -1,11 +1,14 @@
 "use client";
+
 import { useState } from "react";
 import Image from "next/image";
 import { PiSmileyMeltingFill } from "react-icons/pi";
-import { useMediaQuery } from 'react-responsive';
+import { useMediaQuery } from "react-responsive";
+import { motion, AnimatePresence } from "framer-motion";
 import BlogCategoryFilter from "@/component/Blog/blogCategory";
 import CommentsSection from "@/component/Blog/blogComment";
 import NewsletterStickyCTA from "@/component/Blog/blogNewletter";
+
 const blogPosts = [
   {
     id: 1,
@@ -99,62 +102,95 @@ const blogPosts = [
 ];
 
 export default function BlogHeroSection() {
-
   const [activePost, setActivePost] = useState(blogPosts[0]);
-
   const otherPosts = blogPosts.filter((post) => post.id !== activePost.id);
-
   const isDesktop = useMediaQuery({ maxWidth: 768 });
+
   return (
     <section className="blog-hero-section">
-      <header>
-        <h3>
+      <motion.header
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.3 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h3 className="flex items-center gap-2">
           LATEST POST
           <PiSmileyMeltingFill />
         </h3>
-      </header>
+      </motion.header>
+
       <div className="blog-hero-container">
         {/* Main Active Post */}
-       <div className="main-featured-post">
-         <div className="featured-post">
-          <div className="featured-image">
-            <Image
-              src={activePost.image}
-              alt={activePost.title}
-              width={200}
-              height={200}
-              quality={100}
-            />
-          </div>
+        <div className="main-featured-post">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activePost.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              viewport={{ once: false, amount: 0.3 }}
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.4 }}
+              className="featured-post"
+            >
+              <motion.div
+                className="featured-image"
+                initial={{ scale: 0.95, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Image
+                  src={activePost.image}
+                  alt={activePost.title}
+                  width={200}
+                  height={200}
+                  quality={100}
+                />
+              </motion.div>
 
-          <div className="featured-content">
-            <h2 className="featured-title">{activePost.title}</h2>
-            <p className="featured-excerpt">{activePost.excerpt}</p>
-            <p>
-              <a href={activePost.link} className="read-more-link">
-                Read More →
-              </a>
-            </p>
-          </div>
+              <motion.div
+                className="featured-content"
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
+                <h2 className="featured-title">{activePost.title}</h2>
+                <p className="featured-excerpt">{activePost.excerpt}</p>
+                <p>
+                  <a href={activePost.link} className="read-more-link">
+                    Read More →
+                  </a>
+                </p>
+              </motion.div>
+            </motion.div>
+          </AnimatePresence>
+
+          {!isDesktop ? <BlogCategoryFilter /> : null}
         </div>
-
-         {!isDesktop ? <BlogCategoryFilter /> : null}
-       </div>
 
         {/* Sidebar Posts */}
         <div className="sidebar-posts">
-          {otherPosts.map((post) => (
-            <div
+          {otherPosts.map((post, i) => (
+            <motion.div
               key={post.id}
               className="sidebar-card"
               onClick={() => setActivePost(post)}
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.4, delay: i * 0.05 }}
+              whileHover={{ scale: 1.03, backgroundColor: "#f9f9f9" }}
+              whileTap={{ scale: 0.97 }}
             >
               <div className="sidebar-post-img">
                 <Image
                   src={post.image}
                   alt={post.title}
-                  width={90}
-                  height={90}
+                  width={100}
+                  height={100}
                   quality={100}
                 />
               </div>
@@ -163,13 +199,15 @@ export default function BlogHeroSection() {
                 <h4 className="sidebar-title">{post.title}</h4>
                 <p className="sidebar-date">{post.date}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
-         {!isDesktop ? <div>
-          <NewsletterStickyCTA />
-          <CommentsSection/>
-         </div> : null}
-        
+
+          {!isDesktop ? (
+            <div>
+              <NewsletterStickyCTA />
+              <CommentsSection />
+            </div>
+          ) : null}
         </div>
       </div>
     </section>

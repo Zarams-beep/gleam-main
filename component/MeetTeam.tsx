@@ -14,42 +14,42 @@ export default function TestimonialSection() {
       role: "CEO, Company A",
       message:
         "Gleam has transformed our culture. The positivity and recognition are unmatched!",
-      image: "/male1.jpg",
+      image: "https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D",
     },
     {
       name: "Jane Smith",
       role: "HR Manager, Company B",
       message:
         "Team morale has skyrocketed. Employees feel appreciated every day.",
-      image: "/female1.jpg",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D",
     },
     {
       name: "Mark Johnson",
       role: "Product Manager, Company C",
       message:
         "A fantastic tool for boosting engagement and fostering team connection.",
-      image: "/male2.jpg",
+      image: "https://images.unsplash.com/photo-1457449940276-e8deed18bfff?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHByb2ZpbGV8ZW58MHx8MHx8fDA%3D",
     },
     {
       name: "Sarah Lee",
       role: "Engineer, Company D",
       message:
         "I love sending compliments. It’s a game-changer for team bonding.",
-      image: "/female2.jpg",
+      image: "https://images.unsplash.com/photo-1506863530036-1efeddceb993?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHByb2ZpbGV8ZW58MHx8MHx8fDA%3D",
     },
     {
       name: "David Wright",
       role: "Marketing Director, Company E",
       message:
         "The fortune cookies are such a delightful and motivational touch!",
-      image: "/male3.jpg",
+      image: "https://images.unsplash.com/photo-1503235930437-8c6293ba41f5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzF8fHByb2ZpbGV8ZW58MHx8MHx8fDA%3D",
     },
     {
       name: "Emily Davis",
       role: "Team Lead, Company F",
       message:
         "Gleam improves appreciation across departments—simple but powerful.",
-      image: "/female3.jpg",
+      image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjN8fHByb2ZpbGV8ZW58MHx8MHx8fDA%3D",
     },
   ];
 
@@ -70,6 +70,7 @@ export default function TestimonialSection() {
         breakpoints={{
           768: { slidesPerView: 2 },
           1024: { slidesPerView: 3 },
+          2000: { slidesPerView: 4 },
         }}
         loop={true}
         navigation
@@ -85,9 +86,9 @@ export default function TestimonialSection() {
                 <Image
                   src={testimonial.image}
                   alt={testimonial.name}
-                  width={80}
-                  height={80}
-                  quality="80"
+                  width={200}
+                  height={200}
+                  quality="100"
                   className=""
                 />
                 </div>

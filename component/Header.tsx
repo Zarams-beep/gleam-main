@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { PiSmileyMeltingFill } from "react-icons/pi";
 import "@/styles/Header.css"
 export default function HeaderSection() {
-  const [isSticky, setSticky] = useState(1);
+  const [isSticky, setSticky] = useState(3);
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -26,7 +26,8 @@ export default function HeaderSection() {
   const pathname = usePathname();
   return (
     <>
-      <header className="header-section" style={{ opacity: isSticky }}>
+      <header className="header-section">
+        <div className="container">
         <div className="header-section-div">
           {/* side 1 */}
           <div className="left-side">
@@ -71,7 +72,7 @@ export default function HeaderSection() {
               Sign Up
             </button>
           </div>
-        </div>
+        </div></div>
       </header>
     </>
   );

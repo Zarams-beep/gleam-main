@@ -4,7 +4,7 @@
 }
 /* hero styling starts */
 .hero-section {
-    @apply flex flex-col-reverse md:flex-row items-center justify-between gap-5 py-12 relative w-full;
+    @apply flex flex-col-reverse lg:flex-row items-center justify-between gap-5 py-12 relative w-full;
   }
   
   .hero-header {
@@ -12,19 +12,23 @@
   }
   
   .hero-header h2 {
-    @apply text-[26px] smm:text-[36px] font-bold mb-4 text-primary;
+    @apply text-[26px] smm:text-[36px] font-bold mb-4 text-primary font-classic;
   }
   
   .hero-header p {
-    @apply text-[15px] smm:text-[18px] text-neutral-700;
+    @apply text-[15px] smm:text-[18px] text-neutral-700 font-clean;
   }
   
   .hero-cta {
     @apply mt-6 flex gap-4;
   }
   
+  .hero-cta button{
+    @apply font-clean
+  }
+
   .cta-primary {
-    @apply bg-primary text-foreground-subtle px-6 py-2 rounded-lg hover:bg-primary-surface transition smm:text-[16px] text-[13px];
+    @apply bg-primary text-foreground-subtle px-6 py-2 rounded-lg hover:bg-primary-surface transition animate-fadeIn smm:text-[16px] text-[13px];
   }
   
   .cta-secondary {
@@ -32,11 +36,11 @@
   }
   
   .hero-img-container {
-    @apply relative w-full smm:w-[490px] h-[280px]  smm:h-[400px];
+    @apply relative w-full smm:w-[460px] h-[280px]  smm:h-[300px];
   }
   
   .hero-img {
-    @apply absolute w-[10rem] smm:w-[15rem] h-[10rem] smm:h-[15rem] rounded-xl object-cover shadow-lg;
+    @apply absolute w-[10rem] smm:w-[15rem] h-[10rem] smm:h-[15rem] rounded-xl object-cover shadow-lg animate-float;
   }
   
   /* Scatter effect */
@@ -62,7 +66,7 @@
     @apply  flex items-center text-center justify-center
   }
   .feature-header h2{
-    @apply text-[18px] xs:text-[20px] md:text-[30px] font-bold flex justify-center gap-1;
+    @apply text-[18px] xs:text-[20px] md:text-[30px] font-bold flex justify-center gap-1 font-classic;
   }
   .feature-header-2{
     @apply flex items-center border-b border-primary-surface ml-1;
@@ -75,34 +79,7 @@
   }
   
   .feature-card {
-    @apply bg-primary text-foreground-subtle p-6 rounded-lg shadow-lg text-center w-full h-[15rem] flex flex-col gap-3 items-center justify-center;
-  }
-  @keyframes slideInLeft {
-    0% { transform: translateX(-100%); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
-  }
-  
-  @keyframes slideInRight {
-    0% { transform: translateX(100%); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
-  }
-  
-  @keyframes wiggle {
-    0%, 100% { transform: rotate(-3deg); }
-    50% { transform: rotate(3deg); }
-  }
-  
-  .animate-slide-in-left {
-    animation: slideInLeft 0.8s ease forwards;
-  }
-  
-  .animate-slide-in-right {
-    animation: slideInRight 0.8s ease forwards;
-  }
-  
-  .feature-card:hover {
-    animation: wiggle 0.5s ease-in-out;
-    cursor: pointer;
+    @apply bg-primary text-foreground-subtle p-6 rounded-lg shadow-lg text-center w-full h-[15rem] flex flex-col gap-3 items-center justify-center hover:animate-bounceY hover:cursor-pointer hover:bg-primary-soft;
   }
   
   .feature-icon {
@@ -138,18 +115,18 @@
   }
   
   .impact-overlay h3 {
-    @apply text-xl font-bold;
+    @apply text-xl font-bold font-classic;
   }
   
   .impact-overlay p {
-    @apply text-sm mt-2;
+    @apply text-sm mt-2 font-clean;
   }
   
 /* home page third styling ends */
 
 /* FAQ styling starts */
 .faq-section {
-    @apply w-full max-w-4xl mx-auto px-4 flex flex-col gap-8;
+    @apply w-full flex flex-col gap-8;
   }
   
   .faq-item {
@@ -159,13 +136,13 @@
     @apply flex justify-between items-center
   }
   .faq-item h3 {
-    @apply text-[15px] sm:text-[18px] font-semibold;
+    @apply text-[15px] sm:text-[18px] font-semibold font-classic;
   }
   .faq-item span{
-    @apply text-[17px] sm:text-[24px]
+    @apply text-[17px] sm:text-[24px] font-divine
   }
   .faq-item p {
-    @apply mt-2 text-neutral-400 text-[12px] sm:text-[14px] leading-relaxed transition-all duration-300 ease-in-out;
+    @apply mt-2 text-neutral-400 text-[12px] sm:text-[14px] leading-relaxed transition-all duration-300 ease-in-out font-clean;
   }
   
   /* FAQ styling ends */
@@ -175,16 +152,16 @@
   @apply bg-primary w-full h-full p-[20px] mb-7;
 }
 .testimonial-slider-section .feature-header, .testimonial-slider-section .feature-header h2{
-  @apply text-foreground-subtle
+  @apply text-foreground-subtle font-classic
 }
 .testimonial-slider-section-2{
   @apply  w-full
 }
 .smaller-slider{
-  @apply flex flex-col gap-3 bg-foreground-subtle rounded-md p-3
+  @apply flex flex-col gap-3 bg-foreground-subtle rounded-md p-3 h-full md:h-[27rem]
 }
 .slider-img{
-  @apply w-full h-[200px] object-cover
+  @apply w-full h-full md:h-[250px] object-cover
 }
 .slider-img img{
   @apply w-full h-full
@@ -196,15 +173,15 @@
   @apply text-primary text-[10px]
 }
 .slider-quote p{
-  @apply text-primary-surface text-[14px]
+  @apply text-primary-surface text-[14px] font-clean
 }
 .slider-profile{
   @apply text-center text-primary
 }
 .slider-profile h3{
-  @apply text-[15px] font-semibold
+  @apply text-[15px] font-semibold font-classic
 }
 .slider-profile p{
-  @apply text-[13px]
+  @apply text-[13px] font-clean;
 }
   /* meet team styling ends */

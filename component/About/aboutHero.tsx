@@ -1,35 +1,46 @@
-// components/AboutHero.tsx
+"use client";
 import Image from "next/image";
-import teamSmile from "@/public/caroline-attwood-983a7uWhdSs-unsplash.jpg"; 
+import { motion } from "framer-motion";
+import teamSmile from "@/public/caroline-attwood-983a7uWhdSs-unsplash.jpg";
 
 export default function AboutHero() {
   return (
     <section className="about-hero">
-      <div className="about-hero-2 container2">
+      <div className="about-hero-2 container">
         {/* Text Content */}
-        <div className="about-hero-text">
-          <h1 className="">
+        <motion.div
+          className="about-hero-text"
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          viewport={{ once: false, amount: 0.3 }}
+        >
+          <h1>
             Spreading Positivity,<br />
             One Compliment at a Time
           </h1>
-          <p className="">
-            Gleam helps companies foster workplace happiness through simple, anonymous compliments.
+          <p>
+            Gleam helps companies foster workplace happiness through simple,
+            anonymous compliments.
             Because every kind word makes a difference.
           </p>
-        </div>
+        </motion.div>
 
         {/* Image */}
-        <div className="about-hero-img">
+        <motion.div
+          className="about-hero-img"
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+          viewport={{ once: false, amount: 0.3 }}
+        >
           <Image
             src={teamSmile}
             alt="Happy team smiling"
-            quality="40"
-            // layout="fill"
-            // objectFit="cover"
+            quality={40}
             className=""
-            // priority
           />
-        </div>
+        </motion.div>
       </div>
     </section>
   );

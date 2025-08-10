@@ -1,6 +1,7 @@
 // components/CommentsSection.tsx
 "use client";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 type Comment = {
   name: string;
@@ -22,6 +23,7 @@ export default function CommentsSection() {
       message,
       timestamp: new Date().toLocaleString(),
     };
+
     setComments([newComment, ...comments]);
     setName("");
     setMessage("");
@@ -29,45 +31,83 @@ export default function CommentsSection() {
 
   return (
     <section className="comment-container">
-      <h3 className="">Leave a Comment</h3>
-      <form onSubmit={handleSubmit} className="">
-        <input
+      <motion.h3 
+        initial={{ opacity: 0, y: -10 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.4 }}
+      >
+        Leave a Comment
+      </motion.h3>
+
+      {/* Form */}
+      <motion.form
+        onSubmit={handleSubmit}
+        className=""
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
+        <motion.input
           type="text"
           placeholder="Your name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className=""
           required
+          className=""
+          whileFocus={{ scale: 1.02 }}
+          transition={{ type: "spring", stiffness: 300 }}
         />
-        <textarea
+        <motion.textarea
           placeholder="Write something kind..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className=""
           required
-        ></textarea>
-       <div className="btn-comment">
-         <button
-          type="submit"
           className=""
-        >
-          Post Comment
-        </button>
-       </div>
-      </form>
+          whileFocus={{ scale: 1.02 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        />
+        <div className="btn-comment">
+          <motion.button
+            type="submit"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            Post Comment
+          </motion.button>
+        </div>
+      </motion.form>
 
-      <div className="mt-8 space-y-6">
-        {comments.length === 0 ? (
-          <p className="text-gray-500 italic">No comments yet. Be the first!</p>
-        ) : (
-          comments.map((comment, index) => (
-            <div key={index} className="border-t pt-4">
-              <p className="font-semibold">{comment.name}</p>
-              <p className="text-sm text-gray-600 mb-1">{comment.timestamp}</p>
-              <p>{comment.message}</p>
-            </div>
-          ))
-        )}
+      {/* Comments */}
+      <div className="no-comment">
+        <AnimatePresence mode="popLayout">
+          {comments.length === 0 ? (
+            <motion.p
+              key="no-comments"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className=""
+            >
+              No comments yet. Be the first!
+            </motion.p>
+          ) : (
+            comments.map((comment, index) => (
+              <motion.div
+                key={comment.timestamp} // better than index for uniqueness
+                className="no-comment-sub"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+              >
+                <h3>{comment.name}</h3>
+                <h6>{comment.timestamp}</h6>
+                <p>{comment.message}</p>
+              </motion.div>
+            ))
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

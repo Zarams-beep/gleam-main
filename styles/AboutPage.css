@@ -1,25 +1,23 @@
 .about-main{
     @apply
-        flex flex-col gap-[4rem];
+        flex flex-col gap-20;
 }
 /* about hero styling starts */
 .about-hero{
-    @apply bg-[#545850] text-[#D6CFE6] p-3;
-    font-family: "Nunito", sans-serif;
+    @apply bg-[#545850] py-10;
 }
 .about-hero-2{
-    @apply flex items-center justify-between flex-col md:flex-row-reverse gap-10
+    @apply flex items-center justify-between flex-col lg:flex-row-reverse gap-10
 }
 .about-hero-text{
     @apply flex flex-col gap-2
 }
 
 .about-hero-text h1{
-    @apply text-[20px] md:text-[30px] uppercase font-bold;
-    font-family: "Roboto", sans-serif;
+    @apply text-[20px] md:text-[30px] uppercase font-bold text-foreground-subtle font-classic;
 }
 .about-hero-text p{
-    @apply text-[14px] md:text-[16px] text-justify
+    @apply text-[14px] md:text-[16px] text-foreground-subtle text-justify font-clean
 }
 .about-hero .about-hero-img{
     @apply w-full border-[15px] border-double p-3 bg-[#d6cfe69a] border-r-primary border-b-primary border-t-foreground-subtle 
@@ -34,36 +32,37 @@
 /* about our story styling starts */
 .story-section{
     @apply flex flex-col gap-10 h-full;
-    font-family: "Roboto", sans-serif;
 }
 .header-story-section{
     @apply flex flex-col gap-2 text-center text-primary;
     
 }
 .header-story-section h2{
-    @apply text-[18px] xs:text-[20px] md:text-[30px] font-bold flex justify-center gap-1;
+    @apply text-[18px] xs:text-[20px] md:text-[30px] font-bold flex justify-center gap-1 font-classic;
 }
 .header-story-section h2 span{
-    @apply border-b border-primary flex items-end
+    @apply border-b border-primary flex items-end 
 }
 .header-story-section h2 .fill-melt{
     @apply text-[14px] xs:text-[16px] md:text-[18px]
 }
 .header-story-section h4{
-    @apply text-[13px] md:text-[15px] font-[540] text-center;
-    font-family: "Manrope", sans-serif;
+    @apply text-[13px] md:text-[15px] font-[540] text-center font-clean;
 }
 .story-content{
-    @apply flex items-center flex-row-reverse gap-10 h-full md:h-[20rem];
+    @apply flex items-center flex-row-reverse gap-10 h-full lg:h-[25rem] w-full;
 }
 .story-img{
-    @apply w-full h-full md:flex hidden;
+    @apply w-full h-full lg:flex hidden;
 }
 .story-img img{
     @apply w-full h-full rounded-xl shadow-xl
 }
 .story-text{
-    @apply w-full h-full shadow-2xl px-5 py-4 flex flex-col gap-5 justify-center rounded-xl md:text-[16px] text-[14px] md:bg-transparent bg-primary md:text-primary text-foreground-subtle;
+    @apply w-full h-full shadow-2xl px-5 py-10 lg:py-4 flex flex-col gap-5 justify-center rounded-xl  md:bg-transparent bg-primary  font-clean leading-relaxed;
+}
+.story-text p{
+  @apply md:text-[16px] text-[14px] md:text-primary text-foreground-subtle text-justify
 }
 .story-text .story-btn{
     @apply flex items-center justify-center;
@@ -78,26 +77,26 @@
     @apply w-full h-full;
   }
   .story-page-2 {
-    @apply flex flex-col px-4 py-5;
+    @apply flex flex-col py-10;
   }
   
   .story-page-2 .story-page-title{
     @apply flex flex-col items-center justify-center text-center gap-2
   }
   .story-page-2 .story-page-title h1{
-    @apply text-[#545850] font-bold text-[15px] sm:text-[18px] uppercase 
+    @apply text-[#545850] font-bold text-[15px] sm:text-[18px] uppercase font-classic
   }
   .story-page-2 .story-page-title h2{
-    @apply text-[20px] md:text-[30px] text-primary font-bold
+    @apply text-[20px] md:text-[30px] text-primary font-bold font-clean
   }
   .story-page-2 .story-page-title p{
-    @apply text-justify md:text-[16px] text-[14px]
+    @apply text-justify md:text-[16px] text-[14px] font-clean
   }
   .story-page-2 .story-page-year{
     @apply text-center grid grid-cols-[repeat(auto-fit,minmax(70px,1fr))] w-full items-center justify-center gap-x-10 gap-y-0 pt-10;
   }
   .story-page-2 .story-page-year button{
-    @apply px-5 py-3 text-[#545850] cursor-pointer border-t-2 border-b-2 border-foreground-subtle rounded-md my-5 md:text-[16px] text-[14px];
+    @apply px-5 py-3 text-[#545850] cursor-pointer border-t-2 border-b-2 border-foreground-subtle rounded-md my-5 md:text-[16px] text-[14px] font-classic;
   }
   .story-page-2 .story-page-year .story-active-year{
     @apply text-primary border-t-2 border-b-2 border-primary ;
@@ -112,18 +111,16 @@
     @apply flex flex-col gap-4
   }
   .story-motion h2{
-    @apply text-center text-[15px] md:text-[20px] text-primary font-semibold underline;
-    font-family: "Manrope", sans-serif;
+    @apply text-center text-[15px] md:text-[20px] text-primary font-semibold underline font-classic;
   }
   .story-motion p{
-    @apply text-justify text-[#545850] leading-loose text-[13px] md:text-[15px] font-thin;
-     font-family: "Roboto", sans-serif;
+    @apply text-justify text-[#545850] leading-loose text-[13px] md:text-[15px] font-thin font-clean;
   }
   .story-motion-btn{
     @apply flex items-center justify-center
   }
   .story-motion-btn button{
-    @apply bg-primary text-foreground px-5 py-2 rounded-md md:text-[16px] text-[14px];
+    @apply bg-primary hover:bg-primary-soft text-foreground px-5 py-2 rounded-md md:text-[16px] text-[14px] font-classic;
   }
 /* story styling ends */
 

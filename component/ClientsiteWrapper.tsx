@@ -5,7 +5,7 @@ import MediaHeaderSection from "./MediaHeader";
 import HeaderSection from "@/component/Header";
 import MainLayout from "@/component/MainLayout";
 import useInvalidPaths from "./hooks/invalid-path";
-import SplashScreen from "@/component/Splash"; // 🆕 Move Splash here
+import SplashScreen from "@/component/Splash";
 
 function QueryParamHandler({ setUserId }: { setUserId: (id: string | undefined) => void }) {
   const searchParams = useSearchParams();
@@ -27,7 +27,7 @@ export default function ClientSideWrapper({ children }: ClientSideWrapperProps) 
   const [id, setUserId] = useState<string | undefined>(undefined);
   const [isMobile, setIsMobile] = useState<boolean | null>(null);
   const [hasMounted, setHasMounted] = useState(false);
-  const [showSplash, setShowSplash] = useState(true); // 🆕 Splash state
+  const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
     setHasMounted(true);
@@ -35,6 +35,14 @@ export default function ClientSideWrapper({ children }: ClientSideWrapperProps) 
 
   useEffect(() => {
     if (hasMounted) {
+      const hasShownSplash = sessionStorage.getItem("hasShownSplash");
+      if (!hasShownSplash) {
+        setShowSplash(true);
+        sessionStorage.setItem("hasShownSplash", "true");
+      } else {
+        setShowSplash(false);
+      }
+
       const checkScreenSize = () => setIsMobile(window.innerWidth < 920);
       checkScreenSize();
       window.addEventListener("resize", checkScreenSize);
@@ -47,7 +55,7 @@ export default function ClientSideWrapper({ children }: ClientSideWrapperProps) 
 
   if (!hasMounted) return <p>Loading...</p>;
 
-  if (showSplash) return <SplashScreen onFinish={() => setShowSplash(false)} />; // 🆕 Splash control
+  if (showSplash) return <SplashScreen onFinish={() => setShowSplash(false)} />;
 
   return (
     <main className={` ${isInvalidPath ? "mt-0" : ""} main-wrapping-container`}>
