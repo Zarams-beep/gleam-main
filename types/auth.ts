@@ -20,17 +20,17 @@ interface SignupState {
   };
   export type SignUpSubmitFormData = {
     fullName: string;
-    image ?: File | null;
+    image?: string | null;
     email: string;
     password: string;
     confirmPassword?: string;
-    saveDetails?:boolean;
   };
 
   export type LoginFormData= {
     email: string;
     password: string;
-    rememberMe?: boolean;
+    saveDetails?:boolean;
+
   };
   
 
@@ -44,14 +44,4 @@ interface SignupState {
     message?: string;
   };
   
-  // Type defintion for meet doctor
-  export type MeetDoctorForm ={
-    name:string;
-    phoneNumber:string;
-    email:string;
-    date:string;
-    department:string;
-    doctor:string;
-    message:string;
-  }
 export type { SignupState }

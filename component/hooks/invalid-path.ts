@@ -4,8 +4,8 @@ import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 
 const invalidPaths = [
-  "/auth/log-in",
-  "/auth/sign-up",
+  "/log-in",
+  "/sign-up",
   // "/auth/forgot-password",
   // "/auth/verify",
 ];

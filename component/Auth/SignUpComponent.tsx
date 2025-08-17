@@ -9,13 +9,17 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpSubmitFormData } from "@/types/auth";
 import { signUpSchema } from "@/features/SignUpSchema";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams} from "next/navigation";
 import ImageUploader from "@/component/imgComponent";
 import { useDispatch } from "react-redux";
 import { setUserData } from "@/store/slices/authSlices";
+
 import "@/styles/auth.css";
-const SignUp: React.FC = () => {
+const SignUpComponent: React.FC = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const errorParam = searchParams.get("error");
+  const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -30,13 +34,14 @@ const SignUp: React.FC = () => {
     mode: "onChange",
   });
 
-  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
-  const handleImageUpload = (file: File | null) => {
-    setUploadedImage(file);
-    setValue("image", file);
-    trigger("image");
-  };
+const handleImageUpload = (base64: string | null) => {
+  setUploadedImage(base64);
+  setValue("image", base64); // store as Base64 string in form data
+  trigger("image");
+};
+
 
 
 const handleShowPassword = () => {
@@ -49,18 +54,32 @@ const handleShowConfirmPassword = () => {
 
 const dispatch = useDispatch();
 
-const submitData = (data: SignUpSubmitFormData) => {
-  dispatch(setUserData({
-    fullName: data.fullName,
-    image: uploadedImage ? URL.createObjectURL(uploadedImage) : null,
-    email: data.email,
-    token: "dummy-token",
-    id: "dummy-id",
-  }));
+const [loading, setLoading] = useState(false);
 
-  alert("Form submitted and Redux updated!");
-  router.push("/auth/log-in");
+const submitData = async (data: SignUpSubmitFormData) => {
+  try {
+    setLoading(true);
+    const res = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (res.status === 201) {
+      router.push("/login?success=Account has been created");
+    } else {
+      const errMsg = await res.text();
+      setError(errMsg || "Something went wrong");
+    }
+  } catch (err) {
+    setError("Server error");
+  } finally {
+    setLoading(false);
+  }
 };
+
 
 
   return (
@@ -84,7 +103,7 @@ const submitData = (data: SignUpSubmitFormData) => {
             <h2 className="form-title">Create an account</h2>
             <p className="form-subtitle">
               Already have an account?&nbsp;
-              <Link href={"/auth/log-in"} className="">
+              <Link href={"/login"} className="">
                 Login
               </Link>
             </p>
@@ -102,8 +121,11 @@ const submitData = (data: SignUpSubmitFormData) => {
                 {/* Image Upload */}
                 <div className="input-group img-group">
                   <ImageUploader
-                    onImageUpload={(file) => handleImageUpload(file)}
-                  />
+  folder="user_profiles"
+  onUploaded={(img) => {
+    setValue("image", img?.url || null);
+  }}
+/>
                 </div>
                 {/* -------- full name -------- */}
                 <div className="input-group">
@@ -275,40 +297,27 @@ const submitData = (data: SignUpSubmitFormData) => {
                     </div>
                   )}
                 </div>
-                {/* -------- save details checkbox -------- */}
-              </div>
-              <div className="checkbox-group">
-                <input
-                  type="checkbox"
-                  name="save-details"
-                  id="save-details"
-                  className="checkbox"
-                />
-                <label htmlFor="save-details" className="checkbox-label">
-                  Save details
-                </label>
               </div>
             </div>
             <div className="auth-btn">
-            <button
-              className={`submit-button ${
-                isValid ? "active-button" : "disabled-button"
-              }`}
-              type="submit"
-              disabled={!isValid}
-            >
-              {isValid ? (
-                <div className="loading-spinner">
-                  <FaRegCircle className="spinner-icon" />
-                </div>
-              ) : (
-                "Create account"
-              )}
-            </button></div>
+           <button
+  className={`submit-button ${isValid ? "active-button" : "disabled-button"}`}
+  type="submit"
+  disabled={!isValid || loading}
+>
+  {loading ? (
+    <div className="loading-spinner">
+      <FaRegCircle className="spinner-icon" />
+    </div>
+  ) : (
+    "Create account"
+  )}
+</button>
+</div>
           </form>
         </div>
       </div>
     </>
   );
 };
-export default SignUp;
+export default SignUpComponent;

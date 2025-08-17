@@ -29,7 +29,7 @@ const steps = [
 
 export default function HowGleamWorks() {
   return (
-    <section className="how-works container2">
+    <section className="how-works container">
       <header className="header-story-section">
         <h2 className="">
           How Gleam

@@ -60,14 +60,14 @@ export default function HeaderSection() {
           <div className="right-side">
             <button
               className="login-btn"
-              onClick={() => (window.location.href = "/auth/log-in")}
+              onClick={() => (window.location.href = "/log-in")}
             >
               Log In
             </button>
 
             <button
               className="signup-btn"
-              onClick={() => (window.location.href = "/auth/sign-up")}
+              onClick={() => (window.location.href = "/sign-up")}
             >
               Sign Up
             </button>

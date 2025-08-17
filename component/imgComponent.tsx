@@ -5,25 +5,72 @@ import Image from "next/image";
 import { FaPen, FaTrash } from "react-icons/fa";
 
 interface ImageUploaderProps {
-  onImageUpload: (file: File | null) => void;
+  onUploaded: (file: { url: string; publicId: string } | null) => void;
+  folder?: string; // optional, defaults to "user_profiles"
 }
 
-const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload }) => {
+const ImageUploader: React.FC<ImageUploaderProps> = ({ onUploaded, folder }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      if (acceptedFiles.length > 0) {
-        const file = acceptedFiles[0];
-        const previewURL = URL.createObjectURL(file);
-        setSelectedImage(previewURL);
-        
-        // Directly pass the file to parent without storing it in state
-        onImageUpload(file);
+  const uploadToCloudinary = async (file: File) => {
+    const preset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+
+    if (!preset || !cloudName) {
+      setError("Cloudinary config missing (.env)");
+      onUploaded(null);
+      return;
+    }
+
+    // sanitize folder name; fallback
+    const folderName = (folder || "user_profiles").replace(/[^a-zA-Z0-9/_-]/g, "_");
+
+    setUploading(true);
+    setError(null);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", preset);
+      formData.append("folder", folderName);
+
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/upload`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error("Cloudinary upload error:", data);
+        setError(data?.error?.message || "Upload failed");
+        onUploaded(null);
+        return;
       }
-    },
-    [onImageUpload]
-  );
+
+      // You get a hosted image (URL) + public_id
+      onUploaded({ url: data.secure_url, publicId: data.public_id });
+    } catch (err) {
+      console.error("Upload failed", err);
+      setError("Upload failed");
+      onUploaded(null);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    const file = acceptedFiles?.[0];
+    if (!file) return;
+
+    // Instant preview
+    const previewURL = URL.createObjectURL(file);
+    setSelectedImage(previewURL);
+
+    // Upload to Cloudinary
+    await uploadToCloudinary(file);
+  }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
@@ -33,31 +80,39 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload }) => {
 
   const handleDelete = () => {
     setSelectedImage(null);
-    onImageUpload(null); // Notify parent that image is deleted
+    onUploaded(null);
+    setError(null);
   };
 
   return (
     <div className="img-component-sign">
       {selectedImage ? (
         <div className="img-component-1">
-          <Image
-            src={selectedImage}
-            alt="Uploaded"
-            layout="fill"
-            objectFit="cover"
-            className="img-set"
-          />
+          <div className="img-wrapper" style={{ position: "relative", width: "100%", height: 220 }}>
+            <Image
+              src={selectedImage}
+              alt="Uploaded"
+              fill
+              className="img-set"
+              style={{ objectFit: "cover" }}
+              sizes="(max-width: 768px) 100vw, 470px"
+            />
+          </div>
+
           <div className="delete-edit-img">
             <div {...getRootProps()} className="edit-container">
-              <button type="button" className="edit">
+              <button type="button" className="edit" disabled={uploading}>
                 <FaPen className="icon-edit" />
               </button>
               <input {...getInputProps()} />
             </div>
-            <button type="button" onClick={handleDelete} className="">
+            <button type="button" onClick={handleDelete} disabled={uploading}>
               <FaTrash className="delete-icon" />
             </button>
           </div>
+
+          {uploading && <p className="mt-2 text-sm">Uploading…</p>}
+          {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
         </div>
       ) : (
         <div {...getRootProps({ className: "img-component-1" })}>

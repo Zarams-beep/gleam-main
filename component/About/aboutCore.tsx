@@ -43,7 +43,7 @@ const values = [
 
 export default function CoreValuesSection() {
   return (
-    <section className="core-section container2">
+    <section className="core-section container">
          <header className="header-story-section">
               <h2 className="">
               The Heart 
