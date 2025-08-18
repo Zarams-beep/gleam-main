@@ -56,11 +56,15 @@ const authOptions: NextAuthOptions = {
   pages: { signIn: "/login", error: "/login" },
 
   callbacks: {
-    async jwt({ token, user }) {
-      // First login: merge user into token
+    async jwt({ token, user, profile }) {
+      // First login: merge user/profile into token
       if (user) {
-        token.id = (user as any).id;
-        token.fullName = (user as any).fullName ?? null;
+        token.id = (user as any).id ?? token.id;
+        token.fullName =
+          (user as any).fullName || // credentials
+          (profile as any)?.name || // google/github
+          (user as any).name || // fallback
+          (user as any).email?.split("@")[0]; // last resort
         token.saveDetails = (user as any).saveDetails ?? false;
       }
 
@@ -71,10 +75,11 @@ const authOptions: NextAuthOptions = {
 
       return token;
     },
+
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
-        session.user.fullName = (token.fullName as string) ?? null;
+        session.user.fullName = token.fullName as string;
         session.user.saveDetails = token.saveDetails as boolean;
       }
       return session;
