@@ -53,7 +53,7 @@
     @apply flex items-center flex-row-reverse gap-10 h-full lg:h-[25rem] w-full;
 }
 .story-img{
-    @apply w-full h-full lg:flex hidden;
+    @apply w-full h-full hidden lg:flex;
 }
 .story-img img{
     @apply w-full h-full rounded-xl shadow-xl

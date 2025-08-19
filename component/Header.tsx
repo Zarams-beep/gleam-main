@@ -2,14 +2,17 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { PiSmileyMeltingFill } from "react-icons/pi";
-import { useSession, signIn, signOut } from "next-auth/react"; // ⬅️ important
+import { useSession, signIn, signOut } from "next-auth/react";
+import { motion } from "framer-motion";
 import "@/styles/Header.css";
 
 export default function HeaderSection() {
-  const [isSticky, setSticky] = useState(3);
-  const { data: session, status } = useSession(); // ⬅️ session + status
+  const [isSticky, setSticky] = useState(1);
+  const { data: session, status } = useSession();
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -24,25 +27,36 @@ export default function HeaderSection() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const pathname = usePathname();
-
   return (
-    <header className="header-section" style={{ opacity: isSticky }}>
+    <motion.header
+      className="header-section"
+      animate={{ opacity: isSticky }}
+      transition={{ duration: 0.3 }}
+    >
       <div className="container">
         <div className="header-section-div">
           {/* Logo */}
-          <div className="left-side">
+          <motion.div
+            className="left-side"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <PiSmileyMeltingFill className="logo-icon" />
             <h3>GLEAM</h3>
-          </div>
+          </motion.div>
 
           {/* Navigation */}
           <nav className="middle-side">
             <ul>
-              <li className={pathname === "/" ? "active" : ""}>
+              <motion.li
+                whileHover={{ scale: 1.05 }}
+                className={pathname === "/" ? "active" : ""}
+              >
                 <Link href="/">HOME</Link>
-              </li>
-              <li
+              </motion.li>
+              <motion.li
+                whileHover={{ scale: 1.05 }}
                 className={
                   pathname.startsWith("/about-us") || pathname.startsWith("/story")
                     ? "active"
@@ -50,13 +64,19 @@ export default function HeaderSection() {
                 }
               >
                 <Link href="/about-us">ABOUT</Link>
-              </li>
-              <li className={pathname === "/blog" ? "active" : ""}>
+              </motion.li>
+              <motion.li
+                whileHover={{ scale: 1.05 }}
+                className={pathname === "/blog" ? "active" : ""}
+              >
                 <Link href="/blog">BLOG</Link>
-              </li>
-              <li className={pathname === "/contact-us" ? "active" : ""}>
+              </motion.li>
+              <motion.li
+                whileHover={{ scale: 1.05 }}
+                className={pathname === "/contact-us" ? "active" : ""}
+              >
                 <Link href="/contact-us">CONTACT</Link>
-              </li>
+              </motion.li>
             </ul>
           </nav>
 
@@ -64,28 +84,48 @@ export default function HeaderSection() {
           <div className="right-side">
             {status === "authenticated" ? (
               <>
-                <span className="user-welcome">
+                <motion.span
+                  className="user-welcome"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
                   Welcome, {session?.user?.fullName || session?.user?.name || "User"} 👋
-                </span>
-                <button onClick={() => signOut()} className="logout">
+                </motion.span>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => signOut()}
+                  className="login-btn"
+                >
                   Logout
-                </button>
+                </motion.button>
               </>
             ) : status === "loading" ? (
               <span>Loading...</span>
             ) : (
               <>
-                <button onClick={() => signIn()} className="logout">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => signIn()}
+                  className="login-btn"
+                >
                   Login
-                </button>
-                <Link href="/sign-up" className="register-link">
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="signup-btn"
+                  onClick={() => router.push("/sign-up")}
+                >
                   Register
-                </Link>
+                </motion.button>
               </>
             )}
           </div>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }
