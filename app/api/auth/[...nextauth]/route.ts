@@ -1,91 +1,70 @@
 // app/api/auth/[...nextauth]/route.ts
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
+import bcrypt from "bcryptjs";
 import User from "@/modal/User";
 import connect from "@/utils/db";
-import bcrypt from "bcryptjs";
 
-const authOptions: NextAuthOptions = {
+const handler = NextAuth({
   providers: [
     CredentialsProvider({
       id: "credentials",
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "text" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
-        saveDetails: { label: "Save Details", type: "checkbox" },
       },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials.password) {
-          throw new Error("Email and password are required");
+      async authorize(credentials: any) {
+        try {
+          await connect();
+
+          if (!credentials?.email || !credentials?.password) {
+            throw new Error("Email and password required");
+          }
+
+          const user = await User.findOne({ email: credentials.email });
+          if (!user) {
+            throw new Error("No user found with this email");
+          }
+
+          const isPasswordCorrect = await bcrypt.compare(
+            credentials.password,
+            user.password
+          );
+
+          if (!isPasswordCorrect) {
+            throw new Error("Invalid password");
+          }
+
+          return {
+            id: user._id.toString(),
+            email: user.email,
+            name: user.username,
+          };
+        } catch (err: any) {
+          console.error("Authorize Error:", err.message);
+          throw new Error("Connection failed!"); // this is the error you're seeing
         }
-
-        await connect();
-
-        const user = await User.findOne({ email: credentials.email });
-        if (!user) throw new Error("No user found");
-
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        );
-        if (!isPasswordValid) throw new Error("Invalid password");
-
-        return {
-          id: user._id.toString(),
-          email: user.email,
-          fullName: user.fullName,
-          saveDetails: credentials.saveDetails === "true",
-        };
       },
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.GOOGLE_ID!,
+      clientSecret: process.env.GOOGLE_SECRET!,
     }),
     GithubProvider({
       clientId: process.env.GITHUB_ID!,
       clientSecret: process.env.GITHUB_SECRET!,
     }),
   ],
-
-  session: { strategy: "jwt", maxAge: 24 * 60 * 60 },
-
-  pages: { signIn: "/login", error: "/login" },
-
-  callbacks: {
-    async jwt({ token, user, profile }) {
-      // First login: merge user/profile into token
-      if (user) {
-        token.id = (user as any).id ?? token.id;
-        token.fullName =
-          (user as any).fullName || // credentials
-          (profile as any)?.name || // google/github
-          (user as any).name || // fallback
-          (user as any).email?.split("@")[0]; // last resort
-        token.saveDetails = (user as any).saveDetails ?? false;
-      }
-
-      // If "Remember Me" was checked, extend expiration
-      if (token.saveDetails) {
-        token.exp = Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60; // 30 days
-      }
-
-      return token;
-    },
-
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string;
-        session.user.fullName = token.fullName as string;
-        session.user.saveDetails = token.saveDetails as boolean;
-      }
-      return session;
-    },
+  session: {
+    strategy: "jwt",
   },
-};
+  pages: {
+    signIn: "/login",
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+});
 
-const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
