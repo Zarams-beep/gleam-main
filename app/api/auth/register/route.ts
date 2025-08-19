@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import cloudinary from "@/utils/cloudinary";
 
+export const runtime = "nodejs"; // 👈 ensures logging & bcrypt work
+
 export const POST = async (req: Request) => {
   try {
     const { fullName, email, password, confirmPassword, image } = await req.json();
@@ -48,7 +50,7 @@ export const POST = async (req: Request) => {
 
     return NextResponse.json({ message: "User registered successfully" }, { status: 201 });
   } catch (error) {
-    console.error("Registration error:", error);
+    console.error("Registration error:", error); // 👈 now will show in terminal/vercel
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 };
