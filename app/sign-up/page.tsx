@@ -80,8 +80,6 @@ const submitData = async (data: SignUpSubmitFormData) => {
   }
 };
 
-
-
   return (
     <>
       <div className="auth-container">
