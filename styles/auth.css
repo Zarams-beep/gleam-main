@@ -76,14 +76,20 @@
 .img-component-sign{
   @apply flex flex-col gap-1
 }
+.img-component-sign p{
+    @apply text-[12px] text-center;
+}
 .img-component-sign h4{
   @apply text-[12px] font-bold
 }
 .img-component-sign .img-component-1{
-  @apply cursor-pointer w-[74px] h-[74px] rounded-[50%] flex items-center justify-center text-[10px] p-3 border border-primary relative
+  @apply cursor-pointer w-[79px] h-[79px] rounded-[50%] flex items-center justify-center text-[10px] p-3 border border-primary relative
+}
+.img-component-sign .img-wrapper{
+    @apply w-full h-full;
 }
 .img-component-sign .img-set{
-  @apply border border-primary relative w-[74px] h-[74px] rounded-[50%] flex items-center justify-center;
+  @apply border border-primary relative w-full h-full rounded-[50%] flex items-center justify-center;
 }
 .img-component-sign .delete-edit-img{
   @apply flex items-center justify-center gap-1 absolute

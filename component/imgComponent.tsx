@@ -88,7 +88,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUploaded, folder }) => 
     <div className="img-component-sign">
       {selectedImage ? (
         <div className="img-component-1">
-          <div className="img-wrapper" style={{ position: "relative", width: "100%", height: 220 }}>
+          <div className="img-wrapper">
             <Image
               src={selectedImage}
               alt="Uploaded"

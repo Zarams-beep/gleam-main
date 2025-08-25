@@ -23,6 +23,9 @@ body {
 .container {
   @apply w-full max-w-[80rem] px-[2rem] sm:px-[4rem] md:px-[8rem] mx-auto;
 }
+.main-dashboard-container {
+  @apply w-full max-w-[80rem] px-[1rem] sm:px-[2rem] md:px-[4rem] mx-auto;
+}
 /* splash styling starts */
 .splash-container {
   @apply fixed inset-0 bg-primary flex flex-col items-center justify-center z-50 py-10 px-4 md:px-11;

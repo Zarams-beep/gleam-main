@@ -38,14 +38,16 @@ const handler = NextAuth({
             throw new Error("Invalid password");
           }
 
+          // 👇 add both username and fullName here
           return {
             id: user._id.toString(),
             email: user.email,
-            name: user.username,
+            fullName: user.fullName,
+            image:user.image,
           };
         } catch (err: any) {
           console.error("Authorize Error:", err.message);
-          throw new Error("Connection failed!"); // this is the error you're seeing
+          throw new Error("Connection failed!");
         }
       },
     }),
@@ -60,6 +62,22 @@ const handler = NextAuth({
   ],
   session: {
     strategy: "jwt",
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.fullName = user.fullName || user.name; // attach refined name
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.user.fullName = token.fullName as string;
+      }
+      return session;
+    },
   },
   pages: {
     signIn: "/login",

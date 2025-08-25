@@ -3,7 +3,6 @@ import { useState, useEffect, ReactNode, Suspense } from "react";
 import { useSearchParams, usePathname } from "next/navigation";
 import MediaHeaderSection from "./MediaHeader";
 import HeaderSection from "@/component/Header";
-import MainLayout from "@/component/MainLayout";
 import useIsInvalidPath from "./hooks/invalid-path";
 import SplashScreen from "@/component/Splash";
 import FooterSection from "@/component/Footer";
@@ -29,12 +28,10 @@ export default function ClientSideWrapper({ children }: ClientSideWrapperProps) 
   const [hasMounted, setHasMounted] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
 
-  // Detect first mount
   useEffect(() => {
     setHasMounted(true);
   }, []);
 
-  // Splash screen + screen size listener
   useEffect(() => {
     if (!hasMounted) return;
 
@@ -48,11 +45,10 @@ export default function ClientSideWrapper({ children }: ClientSideWrapperProps) 
     return () => window.removeEventListener("resize", checkScreenSize);
   }, [hasMounted]);
 
-  const isDashboard = hasMounted && pathname.startsWith("/dashboard");
-  const useMainLayout = id !== undefined || isDashboard;
-
   if (!hasMounted) return <p>Loading...</p>;
   if (showSplash) return <SplashScreen onFinish={() => setShowSplash(false)} />;
+
+  const isDashboard = pathname.startsWith("/dashboard");
 
   return (
     <main className={`${isInvalidPath ? "mt-0" : ""} main-wrapping-container`}>
@@ -60,19 +56,12 @@ export default function ClientSideWrapper({ children }: ClientSideWrapperProps) 
         <QueryParamHandler setUserId={setUserId} />
       </Suspense>
 
-      {useMainLayout ? (
-        <MainLayout>
-          <Suspense fallback={<p>Loading page...</p>}>{children}</Suspense>
-        </MainLayout>
-      ) : (
-        <>
-          {/* Only show header + footer if path is valid */}
-          {!isInvalidPath && (isMobile ? <MediaHeaderSection /> : <HeaderSection />)}
-          {children}
-          {!isInvalidPath && <FooterSection />}
-        </>
-      )}
+      {/* 👇 Hide header/footer for dashboard pages */}
+      {!isDashboard && !isInvalidPath && (isMobile ? <MediaHeaderSection /> : <HeaderSection />)}
+      
+      {children}
+      
+      {!isDashboard && !isInvalidPath && <FooterSection />}
     </main>
   );
 }
-

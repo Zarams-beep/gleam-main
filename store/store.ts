@@ -3,11 +3,12 @@ import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage
 import authReducer from './slices/authSlices';
 import authLoginReducer from './slices/loginSlices';
-
+import sideBarReducer from './slices/sidebarSlices_';
 // Combine all reducers
 const rootReducer = combineReducers({
   auth: authReducer,
-  loginAuth: authLoginReducer
+  loginAuth: authLoginReducer,
+  sidebar:sideBarReducer
  
 });
 
