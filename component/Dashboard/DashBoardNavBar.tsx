@@ -86,7 +86,7 @@ export default function DashboardNavBarPage() {
                   className="rounded-full"
                 />
                 </div>
-                <span className="hidden sm:block font-medium">
+                <span className="">
                   {session.user?.fullName || session.user?.name}
                 </span>
                 {isDropdownOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}

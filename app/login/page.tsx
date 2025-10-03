@@ -15,6 +15,7 @@ import { loginSchema } from "@/features/LoginSchema";
 import { useRouter, useSearchParams } from "next/navigation";
 import ForgotPasswordModal from "@/component/ForgotttenPasswordModal";
 import "@/styles/auth.css";
+import { FcGoogle } from "react-icons/fc";
 import { motion } from "framer-motion";
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -113,6 +114,16 @@ const Login: React.FC = () => {
                 Sign Up
               </Link>
             </p>
+
+            <div className="google-login">
+            <button
+              onClick={() => signIn("google")}
+              className="google-auth"
+            >
+              <FcGoogle size={20} />
+              Login with Google
+            </button>
+          </div>
           </motion.div>
 
           {/* Form */}
@@ -273,6 +284,7 @@ const Login: React.FC = () => {
           </form>
         </div>
       </motion.div>
+
 
       {forgotOpen && (
         <ForgotPasswordModal

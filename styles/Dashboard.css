@@ -1,10 +1,10 @@
 /* general styling starts */
 .dashboard-main-container {
-  @apply flex min-h-screen relative m-0; 
+  @apply flex min-h-screen relative m-0;
 }
 
 .dashboard-main-container-2 {
-  @apply flex flex-col flex-1; 
+  @apply flex flex-col flex-1;
 }
 
 .dashboard-content {
@@ -13,50 +13,53 @@
 /* general styling ends */
 
 /* navbar styling starts */
-.dashboard-header-section{
-    @apply bg-primary text-foreground-subtle w-full shadow-md border-b border-foreground-subtle sticky top-0 left-0 z-[1000] py-6
+.dashboard-header-section {
+  @apply bg-primary text-foreground-subtle w-full shadow-md border-b border-foreground-subtle sticky top-0 left-0 z-[1000] py-6;
 }
-.dashboard-header-section-div{
-    @apply flex items-center justify-between gap-1
+.dashboard-header-section-div {
+  @apply flex items-center justify-between gap-1;
 }
-.dashboard-header-section .button-first{
-    @apply flex items-end gap-1;
+.dashboard-header-section .button-first {
+  @apply flex items-end gap-1;
 }
-.dashboard-header-section .button-first .img-container{
-    @apply w-[30px] h-[30px]
+.dashboard-header-section .button-first .img-container {
+  @apply w-[30px] h-[30px];
 }
-.dashboard-header-section .button-first img{
-    @apply rounded-full w-full h-full
+.dashboard-header-section .button-first img {
+  @apply rounded-full w-full h-full;
 }
-.search-container{
-  @apply box-content flex items-center bg-foreground p-2 border border-primary rounded-xl w-full
+.dashboard-header-section .button-first span {
+  @apply text-[14px] md:block hidden;
 }
-.search-container .search-icon{
-  @apply text-[20px] text-primary
+.search-container {
+  @apply box-content flex items-center bg-foreground p-2 border border-primary rounded-xl w-full;
 }
-.search-container input{
+.search-container .search-icon {
+  @apply text-[20px] text-primary;
+}
+.search-container input {
   @apply border-none outline-none bg-transparent w-full text-primary placeholder:text-primary;
 }
-.dashboard-navbar-right{
+.dashboard-navbar-right {
   @apply flex items-center gap-3 relative;
 }
-.dashboard-drop-down{
-  @apply absolute right-4 top-9 w-32 py-1 bg-white text-primary shadow-md rounded-lg overflow-hidden z-50 flex flex-col gap-1
+.dashboard-drop-down {
+  @apply absolute right-4 top-9 w-32 py-1 bg-white text-primary shadow-md rounded-lg overflow-hidden z-50 flex flex-col gap-1;
 }
-.dashboard-drop-down button{
-  @apply block w-full text-left px-4 py-2 hover:bg-gray-100
+.dashboard-drop-down button {
+  @apply block w-full text-left px-4 py-2 hover:bg-gray-100;
 }
-.dashboard-drop-down .logout{
-  @apply text-red-500
+.dashboard-drop-down .logout {
+  @apply text-red-500;
 }
-.notification{
-  @apply relative
+.notification {
+  @apply relative;
 }
-.notification span{
-  @apply absolute top-0 right-0 inline-flex h-[15px] w-[15px] rounded-full bg-red-500 text-[10px] items-center justify-center
+.notification span {
+  @apply absolute top-0 right-0 inline-flex h-[15px] w-[15px] rounded-full bg-red-500 text-[10px] items-center justify-center;
 }
-.notification-icon{
-  @apply text-[30px]
+.notification-icon {
+  @apply text-[30px];
 }
 
 /* navbar styling ends */
@@ -68,24 +71,40 @@
 }
 
 .sidebar.collapsed {
-    @apply w-[60px];
+  @apply w-[60px];
 }
-.side-bar-header{
-  @apply relative flex items-center gap-1 p-[10px] cursor-pointer
+.side-bar-header {
+  @apply relative flex items-center gap-1 p-[10px] cursor-pointer;
 }
-.side-bar-header h3{
-  @apply text-[25px] font-bold font-scripture
+.side-bar-header h3 {
+  @apply text-[25px] font-bold font-scripture;
 }
-.sidebar-main-item{
-  @apply mt-4 pt-4 border-t border-t-neutral-600
+.sidebar-main-item {
+  @apply mt-4 pt-4 border-t border-t-neutral-600;
 }
-.sidebar-item{
+.sidebar-item {
   @apply relative flex items-center gap-1 px-[10px] py-[20px] cursor-pointer hover:bg-foreground hover:text-primary rounded-sm mt-2;
 }
-.active-sidebar{
+.active-sidebar {
   @apply bg-foreground text-primary;
 }
-.sidebar-item .icon, .logo-icon {
+.sidebar-item .icon,
+.logo-icon {
   @apply text-[20px];
 }
 /* side bar styling ends */
+
+/* dashboard home styling starts */
+.home-container {
+  @apply flex flex-col gap-7;
+}
+/* dashboard home styling ends */
+/* wallet styling starts */
+.wallet-container {
+  @apply relative w-[25rem] p-6 rounded-2xl shadow-xl  bg-gradient-to-br from-primary/50 to-primary  text-foreground border border-white/20 backdrop-blur-md overflow-hidden;
+}
+.sub-wallet-container {
+  @apply space-y-6;
+}
+
+/* wallet styling ends */
