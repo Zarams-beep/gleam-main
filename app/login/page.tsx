@@ -114,7 +114,6 @@ const Login: React.FC = () => {
                 Sign Up
               </Link>
             </p>
-\
             <button
               onClick={() => signIn("google")}
               className="google-auth"
