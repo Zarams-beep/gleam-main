@@ -128,7 +128,7 @@ const Login: React.FC = () => {
               className="google-auth"
             >
               <GrGithub size={20} />
-              Login with Google
+              Login with Github
             </button>
           </motion.div>
 
