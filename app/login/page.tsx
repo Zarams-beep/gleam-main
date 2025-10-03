@@ -114,8 +114,7 @@ const Login: React.FC = () => {
                 Sign Up
               </Link>
             </p>
-
-            <div className="google-login">
+\
             <button
               onClick={() => signIn("google")}
               className="google-auth"
@@ -123,7 +122,6 @@ const Login: React.FC = () => {
               <FcGoogle size={20} />
               Login with Google
             </button>
-          </div>
           </motion.div>
 
           {/* Form */}
