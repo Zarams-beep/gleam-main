@@ -125,5 +125,7 @@
 .google-auth, .auth-provider-container{
     @apply flex items-center justify-center gap-2
 }
-
+.auth-provider-container{
+    @apply gap-4
+}
 /* google styling ends*/
