@@ -122,7 +122,8 @@
 /* forgotten modal styling ends */
 
 /* google styling starts*/
-.google-auth{
+.google-auth, .auth-provider-container{
     @apply flex items-center justify-center gap-2
 }
+
 /* google styling ends*/
