@@ -17,6 +17,7 @@ import ForgotPasswordModal from "@/component/ForgotttenPasswordModal";
 import "@/styles/auth.css";
 import { FcGoogle } from "react-icons/fc";
 import { motion } from "framer-motion";
+import { GrGithub } from "react-icons/gr";
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -119,6 +120,14 @@ const Login: React.FC = () => {
               className="google-auth"
             >
               <FcGoogle size={20} />
+              Login with Google
+            </button>
+
+            <button
+              onClick={() => signIn("github")}
+              className="google-auth"
+            >
+              <GrGithub size={20} />
               Login with Google
             </button>
           </motion.div>
