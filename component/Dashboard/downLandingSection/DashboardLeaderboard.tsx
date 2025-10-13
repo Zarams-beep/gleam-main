@@ -125,7 +125,7 @@ export default function DashboardLeaderboard() {
         </button>
 
         <span className="text-sm text-gray-600">
-          Page {page} of {totalPages}
+         {page} of {totalPages}
         </span>
 
         <button
