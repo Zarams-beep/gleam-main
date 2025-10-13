@@ -294,7 +294,7 @@
 
 /* leader styling starts*/
 .leadership-container{
-  @apply shadow-lg rounded-lg p-3 flex flex-col gap-6;
+  @apply shadow-lg rounded-3xl p-3 flex flex-col gap-6;
 }
 .leadership-container header{
   @apply flex flex-col justify-between gap-2 border-b border-b-primary-surface pb-3
@@ -357,4 +357,14 @@
   @apply bg-foreground hover:text-primary
 }
 /* leader styling ends*/
+
+/*dashboard activity styling starts*/
+.dashboard-activity-summary{
+  @apply shadow-lg rounded-3xl p-3 flex flex-col gap-6 ;
+}
+.dashboard-activity-summary h2{
+  @apply text-lg font-semibold text-primary text-center 
+}
+/*dashboard activity styling ends*/
+
 /* other dashboard styling ends */
