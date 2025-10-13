@@ -66,10 +66,9 @@
 
 /* side bar styling starts */
 .sidebar {
-  @apply h-screen bg-primary text-white w-[200px] p-[10px]  border-r border-r-neutral-600;
+  @apply h-screen w-[200px] bg-transparent bg-primary text-white sticky inset-0 p-[10px] border-r border-r-primary-surface;
   transition: width 0.2s ease;
 }
-
 .sidebar.collapsed {
   @apply w-[60px];
 }
@@ -94,17 +93,188 @@
 }
 /* side bar styling ends */
 
+/* dashboard-after-header styling starts*/
+.dashboard-after-header{
+  @apply flex flex-col gap-1;
+}
+.dashboard-after-header h1{
+  @apply text-[1.5rem] font-semibold text-primary font-calligraphy;
+}
+.dashboard-after-header p{
+  @apply text-[1rem] text-primary-surface font-calligraphy;
+}
+/* dashboard-after-header styling ends*/
 /* dashboard home styling starts */
 .home-container {
-  @apply flex flex-col gap-7;
+  @apply flex flex-col gap-[20px];
 }
 /* dashboard home styling ends */
+
+/*general wallet styling starts*/
+.wallet-arrange-container{
+  @apply grid gap-x-4 gap-y-8 w-full grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(170px,1fr))]
+}
+/*general wallet styling ends*/
+
 /* wallet styling starts */
 .wallet-container {
-  @apply relative w-[25rem] p-6 rounded-2xl shadow-xl  bg-gradient-to-br from-primary/50 to-primary  text-foreground border border-white/20 backdrop-blur-md overflow-hidden;
+  @apply relative p-6 rounded-2xl shadow-xl   text-primary backdrop-blur-md overflow-hidden;
 }
-.sub-wallet-container {
-  @apply space-y-6;
+.wallet-container-1 {
+  @apply border-b-[5px] border-b-[#464614] ;
+}
+.wallet-card { 
+  @apply flex flex-col space-y-3 rounded-[16px] p-[1.5rem]  shadow-md;
+ }
+.wallet-header{
+  @apply flex items-center md:justify-start justify-center gap-2;
+}
+.wallet-header h2{
+  @apply text-[1.2rem] font-semibold text-[#464614] font-scripture;
+}
+.wallet-header .coins{
+  @apply text-[2rem] text-[#464614];
+}
+.wallet-second-part{
+  @apply flex items-center md:flex-row flex-col justify-center md:justify-between;
+}
+.wallet-balance{
+  @apply flex items-center text-[#0e870e];
+}
+.wallet-arrow{
+  @apply text-[2rem]
+}
+.wallet-balance span{
+  @apply font-semibold text-[1.2rem] font-calligraphy;
+}
+.wallet-container-2{
+  @apply border-b-[5px] border-b-[#FFC107];
+}
+.wallet-container-2 .wallet-header h2{
+  @apply text-[1.2rem] font-semibold text-[#FFC107];
+}
+.wallet-header .streak{
+  @apply text-[2rem] text-[#FFC107];
+}
+.wallet-container-2 .wallet-balance span{
+  @apply font-semibold text-[1.2rem] text-[#bc1d1d];
 }
 
+.wallet-container-3{
+  @apply border-b-[5px] border-b-[#2196F3];
+}
+.wallet-container-3 .wallet-header h2{
+  @apply text-[1.2rem] font-semibold text-[#2196F3];
+}
+.wallet-header .people{
+  @apply text-[2rem] text-[#2196F3];
+}
+
+
+.wallet-container-4{
+  @apply border-b-[5px] border-b-[#EC407A];
+}
+.wallet-container-4 .wallet-arrow{
+  @apply text-[#bc1d1d]
+}
+.wallet-container-4 .wallet-balance span{
+  @apply text-[#bc1d1d];
+}
+
+.wallet-container-4 .wallet-header h2{
+  @apply text-[1.2rem] font-semibold text-[#EC407A];
+}
+.wallet-header .performance{
+  @apply text-[2rem] text-[#EC407A];
+}
 /* wallet styling ends */
+
+/*general chart styling starts*/
+.chart-container{
+  @apply flex lg:flex-row flex-col items-center justify-between gap-3;
+}
+/*general chart styling ends*/
+/* perfomance styling starts */
+.performance-container{
+  @apply w-full h-full bg-foreground-subtle p-1 md:p-6 rounded-2xl shadow-md
+}
+.performance-header{
+  @apply flex flex-col justify-center gap-y-3 md:flex-row md:items-center md:justify-between mb-6
+}
+.performance-header h2{
+  @apply font-[1rem] sm:font-[3rem] text-primary-surface font-scripture md:text-start text-center
+}
+.toggle-container{
+  @apply flex space-x-2 bg-primary text-foreground rounded-full p-1
+}
+.toggle-container button{
+  @apply px-3 py-1.5 rounded-full text-[12px] sm:text-sm font-medium transition-all hover:text-primary hover:bg-foreground
+}
+.toggle-container .btn-main{
+  @apply bg-foreground text-primary
+}
+.chart-box{
+  @apply w-full h-[250px];
+}
+.recharts-wrapper{
+  @apply p-0 m-0
+}
+.recharts-surface{
+  @apply w-full p-0 m-0
+}
+/* perfomance styling ends */
+
+/* streak chart styling starts */
+.streak-chart{
+  @apply w-full h-[360px] rounded-2xl shadow-md;
+}
+/* streak chart styling ends */
+
+/* other dashboard styling starts */
+.dashboard-below-section{
+  @apply flex flex-col gap-7 my-[20px];
+}
+.dashoard-sub-below-section{
+  @apply flex items-center;
+}
+
+/*award styling starts*/
+.award-container{
+  @apply shadow-lg rounded-lg p-3 flex flex-col gap-6
+}
+.award-container header{
+  @apply flex items-center justify-between;
+}
+.award-container header h2{
+  @apply text-lg font-semibold text-primary
+}
+.award-container header button{
+  @apply flex items-center text-accent hover:text-accent-hover transition
+}
+.award-container header button span{
+  @apply text-sm font-medium;
+}
+.award-container .iconArrow{
+  @apply text-[16px] md:text-[20px] 
+}
+.below-award-container{
+  @apply flex flex-col gap-4 transition-all duration-500 overflow-hidden
+}
+.below-award-sub-container{
+  @apply p-4 rounded-xl flex flex-col gap-1 items-center justify-center text-center transition-all duration-300
+}
+.title-desc-container{
+  @apply transition-all duration-500 overflow-hidden
+}
+.title-desc-container h3{
+  @apply text-sm font-semibold text-primary
+}
+.expanded-2{
+  @apply max-h-40 opacity-100
+}
+.non-expanded-2{
+  @apply max-h-0 opacity-0
+}
+/*award styling ends*/
+
+/* other dashboard styling ends */

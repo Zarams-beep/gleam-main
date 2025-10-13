@@ -24,7 +24,7 @@ body {
   @apply w-full max-w-[80rem] px-[2rem] sm:px-[4rem] md:px-[8rem] mx-auto;
 }
 .main-dashboard-container {
-  @apply w-full max-w-[100rem] px-[1rem] sm:px-[2rem] md:px-[4rem] mx-auto;
+  @apply w-full max-w-[100rem] px-[1rem] sm:px-[2rem] md:px-[4rem] mx-auto ;
 }
 /* splash styling starts */
 .splash-container {
