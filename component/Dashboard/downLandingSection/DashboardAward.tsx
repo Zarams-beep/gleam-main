@@ -1,27 +1,28 @@
 "use client";
 
 import React, { useState } from "react";
-import { FiMessageCircle, FiStar } from "react-icons/fi";
-import { FaFireAlt } from "react-icons/fa";
+import { VscStarHalf } from "react-icons/vsc";
+import { PiFireFill } from "react-icons/pi";
+import { TbMessageCircleFilled } from "react-icons/tb";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 
 const awards = [
   {
     title: "Consistency Award",
     desc: "Logged in 7 days straight!",
-    icon: <FaFireAlt className="text-[#a855f7] text-3xl" />,
+    icon: <PiFireFill className="fire-icon" />,
     unlocked: true,
   },
   {
     title: "Top Compliment Giver",
     desc: "You sent 15 compliments this week.",
-    icon: <FiMessageCircle className="text-[#7e22ce] text-3xl" />,
+    icon: <TbMessageCircleFilled className="message-icon" />,
     unlocked: true,
   },
   {
     title: "Department Star",
     desc: "Best in Safety Department (Oct)",
-    icon: <FiStar className="text-[#B794F4] text-3xl" />,
+    icon: <VscStarHalf className="star-icon" />,
     unlocked: false,
   },
 ];
@@ -61,7 +62,7 @@ export default function DashboardAward() {
             }`}
           >
             {/* ICON always visible */}
-            <div className="mb-2">{a.icon}</div>
+            <div className={`${expanded?'visible-expand':'not-visible-expand'}`}>{a.icon}</div>
 
             {/* TITLE + DESC only visible when expanded */}
             <div

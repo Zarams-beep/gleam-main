@@ -235,12 +235,12 @@
   @apply flex flex-col gap-7 my-[20px];
 }
 .dashoard-sub-below-section{
-  @apply flex items-center;
+  @apply flex items-center gap-5;
 }
 
 /*award styling starts*/
 .award-container{
-  @apply shadow-lg rounded-lg p-3 flex flex-col gap-6
+  @apply shadow-lg rounded-lg p-3 flex flex-col gap-6;
 }
 .award-container header{
   @apply flex items-center justify-between;
@@ -275,6 +275,86 @@
 .non-expanded-2{
   @apply max-h-0 opacity-0
 }
+.fire-icon{
+  @apply text-[orange]
+}
+.message-icon{
+  @apply text-[purple]
+}
+.star-icon{
+  @apply text-[lightblue]
+}
+.visible-expand{
+  @apply text-[1rem]
+}
+.not-visible-expand{
+  @apply text-[1.5rem]
+}
 /*award styling ends*/
 
+/* leader styling starts*/
+.leadership-container{
+  @apply shadow-lg rounded-lg p-3 flex flex-col gap-6;
+}
+.leadership-container header{
+  @apply flex flex-col justify-between gap-2 border-b border-b-primary-surface pb-3
+}
+.leadership-container header h2{
+  @apply text-lg font-semibold text-center text-primary mb-1
+} 
+.leadership-controls{
+  @apply flex items-center gap-3 justify-center
+}
+.leadership-controls .search-container{
+  @apply box-content flex items-center bg-foreground border border-neutral-300 rounded-2xl w-full gap-1 focus:ring-1 focus:ring-[#a855f7]
+}
+.leadership-controls .search-container .search-icon{
+  @apply text-[16px] text-primary;
+}
+.leadership-controls .search-container input{
+  @apply border-none outline-none bg-transparent w-full text-primary placeholder:text-primary;
+}
+.leadership-controls button{
+  @apply flex items-center gap-1 px-3 py-2 text-sm text-accent rounded-lg hover:text-accent-hover transition
+}
+.table-container{
+  @apply overflow-x-auto
+}
+.table-container table{
+  @apply w-full text-sm text-left border-collapse
+}
+.table-container thead tr{
+  @apply bg-neutral-300 text-neutral-500
+}
+.table-container thead tr th, .table-container tbody tr td{
+  @apply px-4 py-3 border-b border-b-primary-surface
+}
+.table-container tbody tr:nth-child(even){
+  @apply bg-foreground-subtle
+}
+.table-container tbody tr .rank{
+  @apply font-semibold
+}
+.table-container tbody tr .name{
+  @apply font-medium
+}
+.table-container tbody tr .dept{
+  @apply text-sm text-gray-500
+}
+.table-container tbody tr .points{
+  @apply font-semibold text-primary
+}
+.pagination-controls{
+  @apply flex items-center justify-between mt-4
+}
+.pagination-controls button{
+  @apply flex items-center gap-1 text-sm px-3 py-1 rounded-lg border transition
+}
+.pagination-controls button:disabled{
+  @apply opacity-50 cursor-not-allowed
+}
+.pagination-controls button:hover:enabled{
+  @apply bg-foreground hover:text-primary
+}
+/* leader styling ends*/
 /* other dashboard styling ends */
