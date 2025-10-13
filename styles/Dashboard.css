@@ -238,7 +238,7 @@
 
 /*award styling starts*/
 .award-container{
-  @apply shadow-lg rounded-lg p-3 flex flex-col gap-6;
+  @apply shadow-lg rounded-3xl p-3 flex flex-col gap-6;
 }
 .award-container header{
   @apply flex items-center justify-between;
