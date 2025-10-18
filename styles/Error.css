@@ -1,0 +1,18 @@
+.error-container{
+    @apply min-h-screen flex flex-col items-center justify-center bg-neutral-500 p-6;
+}
+.error-sub-container{
+    @apply max-w-md w-full bg-foreground rounded-2xl shadow-lg p-8 text-center;
+}
+.error-image-container{
+    @apply flex justify-center mb-6;
+}
+.error-sub-container h1{
+    @apply text-2xl font-bold text-primary mb-2;
+}
+.error-sub-container p{
+    @apply text-primary-surface mb-6;
+}
+.error-sub-container button{
+    @apply px-6 py-3 bg-accent hover:bg-accent-hover text-[16px] font-semibold rounded-lg transition-all;
+}
