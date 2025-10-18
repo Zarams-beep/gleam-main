@@ -4,7 +4,7 @@ import { RootState } from "@/store/store";
 import { setActiveItem, toggleCollapse } from "@/store/slices/sidebarSlices_";
 import { useCallback, useEffect, useState } from "react";
 import { PiSmileyMeltingFill } from "react-icons/pi";
-import { useRouter } from "next/navigation"; // ✅ import router
+import { useRouter } from "next/navigation"; 
 import "@/styles/Dashboard.css";
 
 export default function DashboardSidebar() {
@@ -12,7 +12,7 @@ export default function DashboardSidebar() {
     (state: RootState) => state.sidebar
   );
   const dispatch = useDispatch();
-  const router = useRouter(); // ✅ initialize router
+  const router = useRouter();
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -37,7 +37,7 @@ export default function DashboardSidebar() {
 
   const handleItemClick = (item: any) => {
     dispatch(setActiveItem(item.id));
-    if (item.path) router.push(item.path); // ✅ navigate to page
+    if (item.path) router.push(item.path); 
   };
 
   return (
