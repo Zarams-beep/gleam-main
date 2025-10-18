@@ -4,6 +4,7 @@ import { RootState } from "@/store/store";
 import { setActiveItem, toggleCollapse } from "@/store/slices/sidebarSlices_";
 import { useCallback, useEffect, useState } from "react";
 import { PiSmileyMeltingFill } from "react-icons/pi";
+import { useRouter } from "next/navigation"; // ✅ import router
 import "@/styles/Dashboard.css";
 
 export default function DashboardSidebar() {
@@ -11,10 +12,10 @@ export default function DashboardSidebar() {
     (state: RootState) => state.sidebar
   );
   const dispatch = useDispatch();
+  const router = useRouter(); // ✅ initialize router
 
   const [isMobile, setIsMobile] = useState(false);
 
-  // Responsive check
   useEffect(() => {
     const checkScreenSize = () => setIsMobile(window.innerWidth < 600);
     checkScreenSize();
@@ -22,19 +23,22 @@ export default function DashboardSidebar() {
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
-  // Expand on hover (desktop only)
   const handleMouseEnter = useCallback(() => {
     if (!isMobile && isCollapsed) {
       dispatch(toggleCollapse());
     }
   }, [isMobile, isCollapsed, dispatch]);
 
-  // Collapse on leave (desktop only)
   const handleMouseLeave = useCallback(() => {
     if (!isMobile && !isCollapsed) {
       dispatch(toggleCollapse());
     }
   }, [isMobile, isCollapsed, dispatch]);
+
+  const handleItemClick = (item: any) => {
+    dispatch(setActiveItem(item.id));
+    if (item.path) router.push(item.path); // ✅ navigate to page
+  };
 
   return (
     <aside
@@ -42,13 +46,11 @@ export default function DashboardSidebar() {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Logo */}
       <div className="side-bar-header">
         <PiSmileyMeltingFill className="logo-icon" />
         {!isCollapsed && <h3>GLEAM</h3>}
       </div>
 
-      {/* Sidebar Items */}
       <div className="sidebar-main-item">
         {items.map((item) => {
           const Icon = item.icon;
@@ -58,7 +60,7 @@ export default function DashboardSidebar() {
               className={`sidebar-item ${
                 activeItem === item.id ? "active-sidebar" : ""
               }`}
-              onClick={() => dispatch(setActiveItem(item.id))}
+              onClick={() => handleItemClick(item)} 
             >
               <Icon className="icon" />
               {!isCollapsed && <span>{item.label}</span>}
