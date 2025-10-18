@@ -364,5 +364,146 @@
   @apply text-lg font-semibold text-primary text-center 
 }
 /*dashboard activity styling ends*/
-
 /* other dashboard styling ends */
+
+/* message styling starts */
+.chat-sidebar {
+  @apply h-screen w-full md:w-[400px] text-primary sticky inset-0 py-[10px] px-6 border bg-foreground border-neutral-300 rounded-2xl shadow-md flex flex-col gap-4 overflow-y-auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  transition: width 0.2s ease;
+}
+
+.chat-sidebar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.chat-sidebar header{
+  @apply flex flex-col gap-2;
+}
+.chat-sidebar header .header-1{
+  @apply flex items-center justify-between;
+}
+.chat-sidebar header .header-1 h2{
+  @apply text-[1.5rem] font-semibold text-primary font-calligraphy;
+} 
+.chat-sidebar .search-container{
+  @apply border-neutral-500
+}
+
+.chat-item{
+  @apply  flex items-center gap-3 p-2 hover:bg-foreground-subtle cursor-pointer rounded-lg;
+}
+.chat-avatar{
+  @apply  w-12 h-12 rounded-full object-cover
+}
+.chat-details{
+  @apply flex-1 flex flex-col gap-1
+}
+.chat-header{
+  @apply  flex justify-between;
+}
+.chat-name{
+  @apply font-semibold text-primary
+}
+.chat-time{
+  @apply text-xs text-neutral-400 self-end
+}
+.little-chat-detail{
+  @apply flex items-center justify-between;
+}
+.chat-preview{
+  @apply text-neutral-500 text-sm truncate w-full
+}
+.unread-count{
+  @apply  bg-green-500 text-white text-xs px-2 py-1 rounded-full
+}
+
+/* chat window styling starts */
+.message-main-container{
+  @apply flex gap-3
+}
+.chat-window{
+  @apply flex flex-col h-screen bg-foreground border border-neutral-300 rounded-2xl shadow-md w-full overflow-y-auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  transition: width 0.2s ease;
+}
+.chat-sidebar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+.chat-window .chat-header{
+  @apply  flex items-center gap-3 p-6 border-b border-b-neutral-300 
+}
+.chat-window .chat-header-left{
+  @apply flex justify-between items-center w-full;
+}
+.chat-header-left button{
+  @apply flex md:hidden text-2xl text-neutral-400 hover:text-black
+}
+.chat-header-left > div:first-child {
+  @apply flex items-center gap-1 ;
+}
+.chat-window .chat-header-right{
+  @apply flex items-center border border-neutral-500 text-primary;
+}
+.iconCall{
+  @apply border border-neutral-500 h-10 w-10 p-2 text-[10px] self-center cursor-pointer hover:bg-foreground-subtle
+}
+.chat-window .chat-header img{
+  @apply w-10 h-10 rounded-full object-cover;
+}
+.chat-window .chat-header h2{
+  @apply font-semibold text-primary
+}
+.chat-messages{
+  @apply  flex-1 p-6 overflow-y-auto bg-foreground-subtle;
+}
+.chat-messages p{
+  @apply mb-2;
+}
+.chat-line{
+  @apply flex  
+}
+.chat-line.with-you{
+  @apply justify-end
+}
+.chat-line.with-others{
+  @apply justify-start
+}
+.message-bubble{
+  @apply px-3 py-2 rounded-2xl max-w-[70%]
+}
+.message-bubble.text-right-highlight{
+  @apply text-right bg-primary text-neutral-400 
+  self-end
+}
+
+.message-bubble.text-left-highlight{
+  @apply text-left bg-neutral-400 text-primary self-start
+}
+/* chat window styling ends */
+/* message styling ends */
+.show-bar-container {
+  @apply transition-all duration-300 md:block;
+}
+.show-bar-container.show-bar {
+  @apply w-full md:w-[400px] md:flex;
+}
+.show-bar-container.dont-show-bar {
+  @apply hidden md:flex; 
+}
+
+.show-chat-main {
+  @apply transition-all duration-300 w-full;
+}
+.show-chat-main.show-chat {
+  @apply hidden md:flex; 
+}
+.show-chat-main.dont-show-chat {
+  @apply flex md:flex;
+}
+
+.chat-not-selected {
+  @apply flex items-center justify-center w-full text-neutral-500;
+}

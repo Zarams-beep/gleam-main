@@ -23,7 +23,7 @@ const initialState: SidebarState = {
   activeItem: "home",
   items: [
     { id: "home", label: "Home", icon: RiHomeSmileLine, path: "/dashboard" },
-    { id: "message", label: "Message", icon: LuMessageCircleHeart, path: "/dashboard/messages" },
+    { id: "message", label: "Message", icon: LuMessageCircleHeart, path: "/dashboard/message" },
     { id: "award", label: "Award", icon: FaAward, path: "/dashboard/awards" },
     { id: "team", label: "Team", icon: RiTeamFill, path: "/dashboard/team" },
     { id: "fortune", label: "Fortune", icon: MdCookie, path: "/dashboard/fortune" },
