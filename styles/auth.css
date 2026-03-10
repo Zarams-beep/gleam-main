@@ -1,131 +1,505 @@
-.auth-container{
-    @apply w-full h-screen flex items-center justify-center flex-row;
-}
-.auth-left{
-    @apply w-full hidden h-full md:flex
-}
-.auth-left img{
-    @apply w-full h-full
-}
-.main-right-auth{
-    @apply w-full h-full md:py-0 py-4 flex items-center 
-}
-.right-auth{
-    @apply  flex flex-col gap-3 px-5 w-full;
-}
-.form-header{
-    @apply flex flex-col items-center justify-center;
-}
-.form-header h2{
-    @apply text-[20px] md:text-[30px] font-bold font-classic;
-}
-.form-header p{
-    @apply text-[14px] md:text-[16px] font-clean
-}
-.form-header p a, .forgot-password-link{
-    @apply text-[12px] md:text-[14px] text-[#5050c1] hover:text-accent-hover font-bold cursor-pointer font-classic;
-}
-.auth-form{
-    @apply flex flex-col gap-2 h-full
-}
-.auth-form-div{
-    @apply flex flex-col gap-5;
+/* ============================================================
+   AUTH.CSS — Gleam Auth Pages
+   Soft luminous aesthetic: warm whites, deep indigo, glowing
+   accents. Feels like a premium SaaS product.
+   ============================================================ */
+
+/* ── Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
+
+/* ── Root tokens ── */
+:root {
+  --auth-bg: #f4f3ff;
+  --auth-card: #ffffff;
+  --auth-border: #e4e2f8;
+  --auth-input-bg: #faf9ff;
+  --auth-accent: #5b50e8;
+  --auth-accent-soft: #ede9ff;
+  --auth-accent-hover: #4640d4;
+  --auth-text: #1a1740;
+  --auth-muted: #7b77a8;
+  --auth-error: #e53e3e;
+  --auth-success: #059669;
+  --auth-shadow: 0 8px 40px rgba(91, 80, 232, 0.10);
+  --auth-radius: 14px;
 }
 
-.auth-section{
-    @apply flex flex-col gap-3;
+/* ── Layout ── */
+.auth-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  background: var(--auth-bg);
+  font-family: 'DM Sans', sans-serif;
 }
-.input-group{
-    @apply flex flex-col gap-1 ;
+
+/* ── Left image panel ── */
+.auth-left {
+  display: none;
+  position: relative;
+  overflow: hidden;
 }
-.input-group .input-label{
-    @apply text-[13px] md:text-[15px] font-semibold font-clean
+
+@media (min-width: 768px) {
+  .auth-left {
+    display: flex;
+    width: 45%;
+    flex-shrink: 0;
+  }
 }
-.input-wrapper{
-    @apply flex items-center gap-1 w-full p-2 border border-primary-surface rounded-lg shadow-md;
+
+.auth-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.input-wrapper .input-second{
-    @apply flex items-center justify-between w-full;
+
+/* Overlay gradient on image */
+.auth-left::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(91, 80, 232, 0.35) 0%,
+    rgba(26, 23, 64, 0.55) 100%
+  );
 }
-.input-wrapper input{
-    @apply bg-transparent border-none outline-none text-[13px] md:text-[15px] w-full
+
+/* ── Right form panel ── */
+.main-right-auth {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  overflow-y: auto;
 }
-.error-message{
-  @apply flex items-center gap-1 text-[14px] text-[red]
+
+.right-auth {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  /* sign-up has more fields, reduce gap slightly */
 }
+
+/* ── Form header ── */
+.form-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.form-header h2 {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 800;
+  color: var(--auth-text);
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.form-header p {
+  font-size: 0.9rem;
+  color: var(--auth-muted);
+  margin: 0;
+}
+
+.form-header p a,
+.forgot-password-link {
+  color: var(--auth-accent);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.form-header p a:hover,
+.forgot-password-link:hover {
+  color: var(--auth-accent-hover);
+  text-decoration: underline;
+}
+
+/* ── OAuth providers ── */
+.auth-provider-container {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.google-auth {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0.65rem 1rem;
+  background: var(--auth-card);
+  border: 1.5px solid var(--auth-border);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--auth-text);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.google-auth:hover {
+  border-color: var(--auth-accent);
+  background: var(--auth-accent-soft);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(91, 80, 232, 0.12);
+}
+
+/* ── Divider ── */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--auth-muted);
+  font-size: 0.8rem;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--auth-border);
+}
+
+/* ── Form ── */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auth-form-div {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auth-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+/* ── Input groups ── */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.input-group .input-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--auth-text);
+  letter-spacing: 0.01em;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background: var(--auth-input-bg);
+  border: 1.5px solid var(--auth-border);
+  border-radius: var(--auth-radius);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-wrapper:focus-within {
+  border-color: var(--auth-accent);
+  box-shadow: 0 0 0 3px rgba(91, 80, 232, 0.10);
+  background: #fff;
+}
+
+.input-wrapper .input-second {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.input-wrapper input,
+.input-wrapper select {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 0.9rem;
+  width: 100%;
+  color: var(--auth-text);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.input-wrapper input::placeholder {
+  color: #b0aed0;
+}
+
+/* Select specific */
+.input-wrapper select {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.input-normal {
+  /* handled by .input-wrapper:focus-within */
+}
+
+.input-error ~ .input-wrapper,
+.input-wrapper:has(.input-error) {
+  border-color: var(--auth-error) !important;
+}
+
+/* ── Error message ── */
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  color: var(--auth-error);
+}
+
+.error-text {
+  margin: 0;
+}
+
+/* ── Checkbox ── */
 .checkbox-group {
-  @apply flex items-center gap-1 text-[13px];
-}
-.checkbox-group input {
-  @apply w-4 h-4 rounded border appearance-none;
-}
-.auth-btn{
-    @apply flex items-center justify-center;
-}
-.submit-button{
-    @apply shadow-md py-2 px-5 rounded-md md:text-[15px] text-[13px] font-bold ;
-}
-.active-button{
-    @apply bg-primary hover:bg-primary-surface text-foreground-subtle hover:cursor-pointer;
-}
-.disabled-button{
-    @apply bg-[#545850] text-foreground-subtle;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--auth-muted);
 }
 
-/* image styling starts */
-.img-component-sign{
-  @apply flex flex-col gap-1
+.checkbox-group input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--auth-accent);
+  cursor: pointer;
 }
-.img-component-sign p{
-    @apply text-[12px] text-center;
-}
-.img-component-sign h4{
-  @apply text-[12px] font-bold
-}
-.img-component-sign .img-component-1{
-  @apply cursor-pointer w-[79px] h-[79px] rounded-[50%] flex items-center justify-center text-[10px] p-3 border border-primary relative
-}
-.img-component-sign .img-wrapper{
-    @apply w-full h-full;
-}
-.img-component-sign .img-set{
-  @apply border border-primary relative w-full h-full rounded-[50%] flex items-center justify-center;
-}
-.img-component-sign .delete-edit-img{
-  @apply flex items-center justify-center gap-1 absolute
-}
-.img-component-sign .edit-container{
-  @apply flex flex-col;
-}
-.img-component-sign .delete-edit-img .edit{
-  @apply bg-white p-1 rounded-full shadow-md hover:bg-primary
-}
-.img-component-sign .delete-edit-img .edit .icon-edit{
-  @apply text-[12px] text-foreground-subtle
-}
-.img-component-sign .delete-edit-img .delete-icon{
-@apply text-[12px] text-[red]
-}
-/* image styling ends */
 
-/* forgotten modal styling starts */
-.dialog-modal{
-    @apply bg-transparent
+.checkbox-label {
+  cursor: pointer;
 }
-.dialog-modal-container{
-    @apply bg-foreground-subtle
-}
-.dialog-title{
-    @apply text-[20px] md:text-[30px] font-bold;
-    font-family: "Manrope", sans-serif;
-}
-/* forgotten modal styling ends */
 
-/* google styling starts*/
-.google-auth, .auth-provider-container{
-    @apply flex items-center justify-center gap-2
+/* ── Submit button ── */
+.auth-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
 }
-.auth-provider-container{
-    @apply gap-4
+
+.submit-button {
+  width: 100%;
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--auth-radius);
+  font-size: 0.95rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  font-family: 'Sora', sans-serif;
+  letter-spacing: 0.01em;
+  transition: all 0.2s;
 }
-/* google styling ends*/
+
+.active-button {
+  background: linear-gradient(135deg, var(--auth-accent) 0%, #7c6ef5 100%);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(91, 80, 232, 0.30);
+}
+
+.active-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(91, 80, 232, 0.38);
+}
+
+.active-button:active {
+  transform: translateY(0);
+}
+
+.disabled-button {
+  background: #e8e6f4;
+  color: #b0aed0;
+  cursor: not-allowed;
+}
+
+/* ── Loading spinner ── */
+.loading-spinner {
+  display: inline-flex;
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Profile image uploader ── */
+.img-component-sign {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.img-component-sign p {
+  font-size: 0.75rem;
+  color: var(--auth-muted);
+  text-align: center;
+}
+
+.img-component-sign h4 {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--auth-text);
+}
+
+.img-component-sign .img-component-1 {
+  cursor: pointer;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  padding: 0.75rem;
+  border: 2px dashed var(--auth-accent);
+  background: var(--auth-accent-soft);
+  position: relative;
+  color: var(--auth-accent);
+  transition: all 0.2s;
+}
+
+.img-component-sign .img-component-1:hover {
+  background: #ddd9ff;
+  transform: scale(1.04);
+}
+
+.img-component-sign .img-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.img-component-sign .img-set {
+  border: 2px solid var(--auth-accent);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-component-sign .delete-edit-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  position: absolute;
+}
+
+.img-component-sign .edit-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.img-component-sign .delete-edit-img .edit {
+  background: white;
+  padding: 4px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.img-component-sign .delete-edit-img .edit:hover {
+  background: var(--auth-accent-soft);
+}
+
+.img-component-sign .delete-edit-img .edit .icon-edit {
+  font-size: 11px;
+  color: var(--auth-accent);
+}
+
+.img-component-sign .delete-edit-img .delete-icon {
+  font-size: 11px;
+  color: var(--auth-error);
+}
+
+/* ── Forgotten password modal ── */
+.dialog-modal {
+  background: transparent;
+}
+
+.dialog-modal-container {
+  background: var(--auth-card);
+  border-radius: var(--auth-radius);
+  border: 1.5px solid var(--auth-border);
+  box-shadow: var(--auth-shadow);
+}
+
+.dialog-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--auth-text);
+}
+
+/* ── Input error border fix ── */
+.input-error {
+  border-color: var(--auth-error) !important;
+}
+
+/* ── Show password toggle ── */
+.show-password-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  color: var(--auth-muted);
+  transition: color 0.2s;
+}
+
+.show-password-toggle:hover {
+  color: var(--auth-accent);
+}
+
+/* ── Login image ── */
+.login-image {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Linking auth ── */
+.linking-auth {
+  color: var(--auth-accent) !important;
+  font-weight: 700 !important;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.linking-auth:hover {
+  color: var(--auth-accent-hover) !important;
+}
+
+/* ── Image group ── */
+.img-group {
+  align-items: center;
+}

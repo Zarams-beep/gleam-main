@@ -37,6 +37,24 @@
   .burger-menu{
     @apply text-[30px] text-foreground-subtle hover:cursor-pointer
   }
+  /* logged-in header pill */
+  .header-user-btn {
+    font-family: 'DM Sans', sans-serif;
+  }
+  .header-skeleton {
+    width: 140px;
+    height: 38px;
+    border-radius: 40px;
+    background: rgba(255,255,255,0.12);
+    animation: header-pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes header-pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.4; }
+  }
+  .user-welcome {
+    @apply text-[14px] font-clean;
+  }
   /* media header styling starts */
 .drawer-btn{
       @apply flex items-center flex-col gap-3 justify-between ;

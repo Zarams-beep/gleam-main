@@ -1,20 +1,13 @@
-import mongoose from "mongoose";
+// utils/db.ts
+// ─── MongoDB/Mongoose has been replaced by NeonDB (PostgreSQL) ────────────────
+// Auth and user data now live in NeonDB via the Express backend.
+// This file is kept as a no-op so any remaining imports don't break,
+// but nothing here connects to MongoDB anymore.
 
 const connect = async () => {
-  if (mongoose.connections[0].readyState) {
-    // Already connected
-    return;
-  }
-
-  try {
-    await mongoose.connect(process.env.MONGO as string, {
-      // optional: you can add useNewUrlParser and useUnifiedTopology if needed
-    });
-    console.log("MongoDB connected");
-  } catch (error) {
-    console.error("MongoDB connection error:", error);
-    throw new Error("Connection failed!");
-  }
+  // No-op: DB connection is handled by the Express backend (gleam-backend)
+  // which connects to NeonDB (PostgreSQL) via utils/db.js → pg Pool.
+  return;
 };
 
 export default connect;

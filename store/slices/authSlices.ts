@@ -1,35 +1,39 @@
+// store/slices/authSlices.ts
+// ─── Only holds non-sensitive multi-step signup form state ───────────────────
+// Passwords are NEVER stored here. react-hook-form manages them locally.
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AuthState {
   fullName: string;
-  image: string | null; // New: Store user image
-  email:string;
-  password:string;
-  confirmPassword:string;
+  image: string | null;
+  email: string;
 }
 
 const initialState: AuthState = {
   fullName: "",
   image: null,
-  email:"",
-  password:"",
-  confirmPassword:"",
+  email: "",
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUserData: (state, action: PayloadAction<{ fullName: string; image: string | null; email: string; password:string; confirmPassword:string;
-    }>) => {
+    setUserData: (
+      state,
+      action: PayloadAction<{ fullName: string; image: string | null; email: string }>
+    ) => {
       state.fullName = action.payload.fullName;
       state.image = action.payload.image;
-      state.email=action.payload.email;
-      state.password=action.payload.password;
-      state.confirmPassword=action.payload.confirmPassword
+      state.email = action.payload.email;
+    },
+    clearUserData: (state) => {
+      state.fullName = "";
+      state.image = null;
+      state.email = "";
     },
   },
 });
 
-export const { setUserData } = authSlice.actions;
+export const { setUserData, clearUserData } = authSlice.actions;
 export default authSlice.reducer;

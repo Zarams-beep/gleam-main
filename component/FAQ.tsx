@@ -1,3 +1,5 @@
+// component/FAQ.tsx
+// ─── Heading fixed from "How Does Gleam Works" → "Frequently Asked Questions"
 "use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -15,7 +17,7 @@ const faqs = [
   {
     question: "How do I add employees?",
     answer:
-      "Upload your employee database grouped by department/unit. This helps us personalize messages and ensure each team connects meaningfully.",
+      "Upload your employee database grouped by department/unit. This helps us personalise messages and ensure each team connects meaningfully.",
   },
   {
     question: "What do employees do daily?",
@@ -42,16 +44,13 @@ const faqs = [
 export default function FAQComponent() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const toggleFAQ = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
   return (
     <div className="faq-section container">
+      {/* ✅ Fixed heading */}
       <header className="feature-header">
-        <h2>How Does</h2>
+        <h2>Frequently</h2>
         <div className="feature-header-2">
-          <h2>Gleam Works</h2>
+          <h2>Asked Questions</h2>
           <PiSmileyMeltingFill className="icon-features" />
         </div>
       </header>
@@ -67,12 +66,10 @@ export default function FAQComponent() {
         >
           <div
             className="faq-header-container"
-            onClick={() => toggleFAQ(index)}
+            onClick={() => setOpenIndex(openIndex === index ? null : index)}
           >
             <h3>{faq.question}</h3>
-            <span>
-              {openIndex === index ? <HiMiniMinus /> : <GoPlus />}
-            </span>
+            <span>{openIndex === index ? <HiMiniMinus /> : <GoPlus />}</span>
           </div>
 
           <AnimatePresence initial={false}>

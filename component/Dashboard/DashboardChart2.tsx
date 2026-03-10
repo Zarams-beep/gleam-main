@@ -1,18 +1,37 @@
+// component/Dashboard/DashboardChart2.tsx
+// ─── Streak / coins donut chart — driven by real props from dashboard ─────────
 "use client";
-
-import React from "react";
+import { useMemo } from "react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
-const streakData = [
-  { name: "1-3 Days", value: 10 },
-  { name: "4-7 Days", value: 25 },
-  { name: "8-14 Days", value: 40 },
-  { name: "15+ Days", value: 20 },
-];
+interface Props {
+  streak?: number;
+  coins?: number;
+  loading?: boolean;
+}
 
 const COLORS = ["#B794F4", "#a855f7", "#7e22ce", "#FFD166"];
 
-export default function StreakPieChart() {
+export default function StreakPieChart({ streak = 0, coins = 0, loading }: Props) {
+  // Build meaningful segments from real data
+  const streakData = useMemo(() => {
+    if (streak === 0 && coins === 0) {
+      return [{ name: "No activity yet", value: 1 }];
+    }
+    return [
+      { name: "Streak (days)", value: streak },
+      { name: "Coins earned",  value: Math.min(coins, 100) }, // cap at 100 for visual balance
+    ];
+  }, [streak, coins]);
+
+  if (loading) {
+    return (
+      <div className="streak-chart">
+        <div className="chart-skeleton" />
+      </div>
+    );
+  }
+
   return (
     <div className="streak-chart">
       <ResponsiveContainer width="100%" height="100%">
@@ -28,28 +47,17 @@ export default function StreakPieChart() {
             paddingAngle={3}
             label
           >
-            {streakData.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            {streakData.map((_, i) => (
+              <Cell key={`cell-${i}`} fill={COLORS[i % COLORS.length]} />
             ))}
           </Pie>
           <Tooltip
-             contentStyle={{
-    backgroundColor: "#fff",
-    borderRadius: "10px",        
-    border: "none",
-    boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
-    padding: "12px 16px",       
-  }}
-  labelStyle={{
-    color: "#1A1023", 
-    fontWeight: 700,
-    fontSize: 14,
-  }}
-  itemStyle={{
-    color: "#4f46e5", 
-    fontWeight: 500,
-    fontSize: 13,
-  }}
+            contentStyle={{
+              backgroundColor: "#fff", borderRadius: "10px",
+              border: "none", boxShadow: "0 4px 15px rgba(0,0,0,0.15)", padding: "12px 16px",
+            }}
+            labelStyle={{ color: "#1A1023", fontWeight: 700, fontSize: 14 }}
+            itemStyle={{ color: "#4f46e5", fontWeight: 500, fontSize: 13 }}
           />
           <Legend
             verticalAlign="bottom"

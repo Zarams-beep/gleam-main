@@ -1,39 +1,43 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { persistReducer, persistStore } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // defaults to localStorage
-import authReducer from './slices/authSlices';
-import authLoginReducer from './slices/loginSlices';
-import sideBarReducer from './slices/sidebarSlices_';
-// Combine all reducers
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+import authReducer from "./slices/authSlices";
+import authLoginReducer from "./slices/loginSlices";
+import sideBarReducer from "./slices/sidebarSlices_";
+import userReducer from "./slices/userSlice";
+import orgReducer from "./slices/orgSlice";
+import statsReducer from "./slices/statsSlice";
+
 const rootReducer = combineReducers({
+  // legacy (kept for existing auth pages)
   auth: authReducer,
   loginAuth: authLoginReducer,
-  sidebar:sideBarReducer
- 
+  sidebar: sideBarReducer,
+  // new gleam slices
+  user: userReducer,
+  org: orgReducer,
+  stats: statsReducer,
 });
 
-// Persist config
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage,
-  whitelist: ['auth'],// Add other reducers here if you want to persist them
+  // ✅ Do NOT persist "user" — it always gets re-fetched from /me on load
+  // Persisting user caused stale name/role from previous sessions to show
+  whitelist: ["auth", "org"],
 };
 
-// Create persisted reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Configure store
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false, // Disable for redux-persist compatibility
-    }),
+    getDefaultMiddleware({ serializableCheck: false }),
 });
 
-// Create persistor
 const persistor = persistStore(store);
+
 export { store, persistor };
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-

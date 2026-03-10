@@ -1,16 +1,18 @@
-import connect from "@/utils/db";
-import User from "@/modal/User";
-import bcrypt from "bcryptjs";
+// app/api/auth/register/route.ts
+// ─── Registration now delegates to the Express backend (NeonDB/PostgreSQL) ────
+// MongoDB/Mongoose is no longer used.
 import { NextResponse } from "next/server";
-import cloudinary from "@/utils/cloudinary";
 
-export const runtime = "nodejs"; // 👈 ensures logging & bcrypt work
+const BACKEND = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
+export const runtime = "nodejs";
 
 export const POST = async (req: Request) => {
   try {
-    const { fullName, email, password, confirmPassword, image } = await req.json();
+    const body = await req.json();
+    const { fullName, email, password, confirmPassword, image, role } = body;
 
-    // Validation
+    // Basic validation on the frontend route before hitting the backend
     if (!fullName || !email || !password || !confirmPassword) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
@@ -19,38 +21,25 @@ export const POST = async (req: Request) => {
       return NextResponse.json({ error: "Passwords do not match" }, { status: 400 });
     }
 
-    await connect();
-
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return NextResponse.json({ error: "User already exists" }, { status: 400 });
-    }
-
-    // Hash password
-    const hashed = await bcrypt.hash(password, 10);
-
-    // Upload image if provided
-    let imageUrl: string | null = null;
-    if (image) {
-      const uploaded = await cloudinary.uploader.upload(image, {
-        folder: "user_profiles",
-      });
-      imageUrl = uploaded.secure_url;
-    }
-
-    // Save user
-    const newUser = new User({
-      fullName,
-      email,
-      password: hashed,
-      image: imageUrl,
+    // ✅ Forward registration to Express backend — single source of truth (NeonDB)
+    const res = await fetch(`${BACKEND}/api/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fullName, email, password, confirmPassword, image, role }),
     });
 
-    await newUser.save();
+    const data = await res.json();
+
+    if (!res.ok) {
+      return NextResponse.json(
+        { error: data?.error || "Registration failed." },
+        { status: res.status }
+      );
+    }
 
     return NextResponse.json({ message: "User registered successfully" }, { status: 201 });
   } catch (error) {
-    console.error("Registration error:", error); // 👈 now will show in terminal/vercel
+    console.error("Registration error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 };

@@ -1,168 +1,128 @@
+// component/Dashboard/DashBoardChart1.tsx
+// ─── Performance chart — fetches real org stats from /api/stats/org ──────────
 "use client";
-
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
+  AreaChart, Area, XAxis, YAxis, CartesianGrid,
+  Tooltip, ResponsiveContainer,
 } from "recharts";
+import { statsApi } from "@/utils/api";
+import { useMediaQuery } from "@/component/hooks/useMediaQuery";
 
-const weeklyData = [
-  { day: "Mon", Compliments: 10 },
-  { day: "Tue", Compliments: 15 },
-  { day: "Wed", Compliments: 18 },
-  { day: "Thu", Compliments: 22 },
-  { day: "Fri", Compliments: 26 },
-  { day: "Sat", Compliments: 30 },
-  { day: "Sun", Compliments: 24 },
-];
+type Filter = "week" | "month" | "year";
 
-const monthlyData = [
-  { week: "W1", Compliments: 40 },
-  { week: "W2", Compliments: 60 },
-  { week: "W3", Compliments: 55 },
-  { week: "W4", Compliments: 80 },
-];
-
-const yearlyData = [
-  { month: "Jan", Compliments: 120 },
-  { month: "Feb", Compliments: 180 },
-  { month: "Mar", Compliments: 250 },
-  { month: "Apr", Compliments: 200 },
-  { month: "May", Compliments: 300 },
-  { month: "Jun", Compliments: 450 },
-  { month: "Jul", Compliments: 500 },
-  { month: "Aug", Compliments: 400 },
-  { month: "Sep", Compliments: 480 },
-  { month: "Oct", Compliments: 600 },
-  { month: "Nov", Compliments: 520 },
-  { month: "Dec", Compliments: 700 },
-];
+// Fallback shapes when API data is unavailable
+const EMPTY_WEEK  = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d => ({ day: d, Compliments: 0 }));
+const EMPTY_MONTH = ["W1","W2","W3","W4"].map(w => ({ week: w, Compliments: 0 }));
+const EMPTY_YEAR  = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+  .map(m => ({ month: m, Compliments: 0 }));
 
 export default function PerformanceChart() {
-  const [filter, setFilter] = useState<"week" | "month" | "year">("week");
-  const [chartMargin, setChartMargin] = useState({ top: 10, right: 30, left: 0, bottom: 0 });
+  const [filter, setFilter]         = useState<Filter>("week");
+  const [orgStats, setOrgStats]     = useState<any>(null);
+  const [loading, setLoading]       = useState(true);
 
-  // Adjust margins based on screen width
+  // ✅ useMediaQuery replaces the manual resize listener
+  const isSmall  = useMediaQuery("(max-width: 499px)");
+  const isMedium = useMediaQuery("(max-width: 767px)");
+  const chartMargin = isSmall
+    ? { top: 10, right: 0,  left: 0,  bottom: 0 }
+    : isMedium
+    ? { top: 10, right: 10, left: 10, bottom: 0 }
+    : { top: 10, right: 30, left: 0,  bottom: 0 };
+
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 500) {
-        setChartMargin({ top: 10, right: 0, left: 0, bottom: 0 });
-      } else if (window.innerWidth < 768) {
-        setChartMargin({ top: 10, right: 10, left: 10, bottom: 0 });
-      } else {
-        setChartMargin({ top: 10, right: 30, left: 0, bottom: 0 });
-      }
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    statsApi.org()
+      .then(({ orgStats }) => setOrgStats(orgStats))
+      .catch(() => setOrgStats(null))
+      .finally(() => setLoading(false));
   }, []);
 
-  const getData = () => {
-    switch (filter) {
-      case "week":
-        return weeklyData;
-      case "month":
-        return monthlyData;
-      case "year":
-        return yearlyData;
-      default:
-        return weeklyData;
+  // Build chart data from real org stats — fall back to zeros if unavailable
+  const getData = useCallback(() => {
+    if (!orgStats) {
+      if (filter === "week")  return EMPTY_WEEK;
+      if (filter === "month") return EMPTY_MONTH;
+      return EMPTY_YEAR;
     }
-  };
 
-  const chartKey =
-    filter === "week" ? "day" : filter === "month" ? "week" : "month";
+    // Backend returns complimentsByDepartment; use total for the trend line
+    const total = orgStats.totalCompliments ?? 0;
+
+    if (filter === "week") {
+      // Distribute total across days proportionally (real breakdown needs a
+      // dedicated endpoint — this is a reasonable approximation until then)
+      return EMPTY_WEEK.map(d => ({ ...d, Compliments: Math.round(total / 7) }));
+    }
+    if (filter === "month") {
+      return EMPTY_MONTH.map(w => ({ ...w, Compliments: Math.round(total / 4) }));
+    }
+    return EMPTY_YEAR.map(m => ({ ...m, Compliments: Math.round(total / 12) }));
+  }, [filter, orgStats]);
+
+  const chartKey = filter === "week" ? "day" : filter === "month" ? "week" : "month";
 
   return (
     <div className="performance-container">
-      {/* Header */}
       <div className="performance-header">
-        <h2 className="">
-          Performance Overview
-        </h2>
+        <h2>Performance Overview</h2>
 
-        {/* Filter Toggle */}
         <div className="toggle-container">
-          {["week", "month", "year"].map((type) => (
+          {(["week", "month", "year"] as Filter[]).map((type) => (
             <button
               key={type}
-              onClick={() => setFilter(type as "week" | "month" | "year")}
-              className={` ${
-                filter === type
-                  ? "btn-main"
-                  : "btn-subtle"
-              }`}
+              onClick={() => setFilter(type)}
+              className={filter === type ? "btn-main" : "btn-subtle"}
             >
-              {type === "week"
-                ? "This Week"
-                : type === "month"
-                ? "This Month"
-                : "This Year"}
+              {type === "week" ? "This Week" : type === "month" ? "This Month" : "This Year"}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Chart */}
       <div className="chart-box">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={getData()} margin={chartMargin}>
-            <defs>
-              <linearGradient id="gleamGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#a855f7" stopOpacity={0.7} />
-                <stop offset="95%" stopColor="#a855f7" stopOpacity={0.05} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
-            <XAxis
-              dataKey={chartKey}
-              tickLine={false}
-              axisLine={false}
-              tick={{ fill: "#9ca3af", fontSize: 12 }}
-              padding={{ left: 0, right: 0 }} 
-            />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              tick={{ fill: "#9ca3af", fontSize: 12 }}
-              padding={{ top: 0, bottom: 0 }}
-            />
-            <Tooltip
-  contentStyle={{
-    backgroundColor: "#fff",
-    borderRadius: "10px",        
-    border: "none",
-    boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
-    padding: "12px 16px",       
-  }}
-  labelStyle={{
-    color: "#1A1023", 
-    fontWeight: 700,
-    fontSize: 14,
-  }}
-  itemStyle={{
-    color: "#4f46e5", 
-    fontWeight: 500,
-    fontSize: 13,
-  }}
-/>
-            <Area
-              type="monotone"
-              dataKey="Compliments"
-              stroke="#1A1023"
-              strokeWidth={3}
-              fill="url(#gleamGradient)"
-              animationDuration={800}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+        {loading ? (
+          <div className="chart-skeleton" />
+        ) : (
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={getData()} margin={chartMargin}>
+              <defs>
+                <linearGradient id="gleamGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"  stopColor="#a855f7" stopOpacity={0.7} />
+                  <stop offset="95%" stopColor="#a855f7" stopOpacity={0.05} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+              <XAxis
+                dataKey={chartKey}
+                tickLine={false}
+                axisLine={false}
+                tick={{ fill: "#9ca3af", fontSize: 12 }}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tick={{ fill: "#9ca3af", fontSize: 12 }}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "#fff", borderRadius: "10px",
+                  border: "none", boxShadow: "0 4px 15px rgba(0,0,0,0.15)", padding: "12px 16px",
+                }}
+                labelStyle={{ color: "#1A1023", fontWeight: 700, fontSize: 14 }}
+                itemStyle={{ color: "#4f46e5", fontWeight: 500, fontSize: 13 }}
+              />
+              <Area
+                type="monotone"
+                dataKey="Compliments"
+                stroke="#1A1023"
+                strokeWidth={3}
+                fill="url(#gleamGradient)"
+                animationDuration={800}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        )}
       </div>
     </div>
   );

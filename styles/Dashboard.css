@@ -1,14 +1,45 @@
+/* ── Google Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
+
+/* ── Dashboard tokens ── */
+:root {
+  --dash-accent: #5b50e8;
+  --dash-accent-soft: #ede9ff;
+  --dash-accent-hover: #4640d4;
+  --dash-warning-bg: #fffbeb;
+  --dash-warning-border: #fde68a;
+  --dash-warning-text: #92400e;
+  --dash-info-bg: #eff6ff;
+  --dash-info-border: #bfdbfe;
+  --dash-info-text: #1e40af;
+  --dash-success-bg: #f0fdf4;
+  --dash-card-shadow: 0 2px 16px rgba(91,80,232,0.07);
+  --dash-card-radius: 16px;
+}
+
 /* general styling starts */
 .dashboard-main-container {
-  @apply flex min-h-screen relative m-0;
+  @apply flex m-0;
+  font-family: 'DM Sans', sans-serif;
+  width: 100vw;
+  height: 100vh;          /* full viewport height */
+  overflow: hidden;       /* prevents outer scroll */
 }
 
 .dashboard-main-container-2 {
   @apply flex flex-col flex-1;
+  min-width: 0;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .dashboard-content {
-  @apply flex-1 p-6 bg-foreground overflow-y-hidden;
+  @apply flex-1 bg-foreground overflow-y-auto;
+  min-height: 0;          /* critical for flex scroll child */
+}
+/* Used by the dashboard home page chart/section layout */
+.other-dashboard-container {
+  @apply flex flex-col gap-5 mt-2;
 }
 /* general styling ends */
 
@@ -66,8 +97,23 @@
 
 /* side bar styling starts */
 .sidebar {
-  @apply h-screen w-[200px] bg-transparent bg-primary text-white sticky inset-0 p-[10px] border-r border-r-primary-surface;
+  @apply w-[200px] bg-primary text-white flex-shrink-0 p-[10px] border-r border-r-primary-surface;
+  height: 100vh;           /* fills the full viewport */
   transition: width 0.2s ease;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.15) transparent;
+}
+.sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.18);
+  border-radius: 4px;
 }
 .sidebar.collapsed {
   @apply w-[60px];
@@ -98,10 +144,13 @@
   @apply flex flex-col gap-1;
 }
 .dashboard-after-header h1{
-  @apply text-[1.5rem] font-semibold text-primary font-calligraphy;
+  font-family: 'Sora', sans-serif;
+  @apply text-[1.5rem] font-bold text-primary;
+  letter-spacing: -0.02em;
 }
 .dashboard-after-header p{
-  @apply text-[1rem] text-primary-surface font-calligraphy;
+  font-family: 'DM Sans', sans-serif;
+  @apply text-[0.92rem] text-primary-surface;
 }
 /* dashboard-after-header styling ends*/
 /* dashboard home styling starts */
