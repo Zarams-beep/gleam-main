@@ -25,7 +25,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(!cachedStats);
 
   useEffect(() => {
-    // ✅ Skip fetch if we have fresh data in Redux (avoids hammering the API)
+    //  Skip fetch if we have fresh data in Redux (avoids hammering the API)
     const isFresh = lastFetched && Date.now() - lastFetched < STATS_STALE_MS;
     if (cachedStats && isFresh) {
       setLocalStats(cachedStats);
