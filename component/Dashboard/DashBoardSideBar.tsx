@@ -1,20 +1,22 @@
 "use client";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
-import { setActiveItem, toggleCollapse } from "@/store/slices/sidebarSlices_";
+import { setActiveItem, toggleCollapse, initialState } from "@/store/slices/sidebarSlices_";
 import { useCallback, useEffect, useState } from "react";
 import { PiSmileyMeltingFill } from "react-icons/pi";
 import { useRouter, usePathname } from "next/navigation";
 import "@/styles/Dashboard.css";
 
 export default function DashboardSidebar() {
-  const { items, isCollapsed } = useSelector((state: RootState) => state.sidebar);
+  const { items: rawItems, isCollapsed } = useSelector((state: RootState) => state.sidebar);
   const dispatch = useDispatch();
   const router   = useRouter();
   const pathname = usePathname();
   const user     = useSelector((state: RootState) => (state as any).user?.user);
   const isAdmin  = ["super_admin", "admin", "org_admin"].includes(user?.role ?? "");
-  const visibleItems = items.filter((item: any) => !item.adminOnly || isAdmin);
+  // Guard against stale persisted state where items could be undefined or corrupted
+  const items = Array.isArray(rawItems) ? rawItems : initialState.items;
+  const visibleItems = items.filter((item: any) => item?.id && (!item.adminOnly || isAdmin));
 
   const [isMobile, setIsMobile] = useState(false);
 

@@ -20,7 +20,7 @@ interface SidebarState {
   activeItem: string | null;
 }
 
-const initialState: SidebarState = {
+export const initialState: SidebarState = {
   isCollapsed: true,
   activeItem: "home",
   items: [

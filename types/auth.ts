@@ -62,6 +62,7 @@ export type GleamUser = {
   orgId: string | null;
   department: string | null;
   role: "super_admin" | "admin" | "org_admin" | "hr" | "employee" | "member";
+  status?: "approved" | "pending" | "rejected";
   stats: UserStats;
 };
 

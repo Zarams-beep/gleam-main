@@ -6,7 +6,7 @@ import { useAppSelector } from "@/store/hooks";
 import { userApi } from "@/utils/api";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { FiEdit2, FiCheck, FiX } from "react-icons/fi";
+import { FiEdit2, FiCheck, FiX, FiSend, FiHeart, FiTrendingUp } from "react-icons/fi";
 import { MdOutlineEmail, MdOutlineLocationOn, MdOutlineBadge } from "react-icons/md";
 import { PiCoins, PiFireSimpleBold } from "react-icons/pi";
 import { RiTeamFill } from "react-icons/ri";
@@ -57,11 +57,11 @@ export default function ProfilePage() {
     .split(" ").map((n) => n[0]).slice(0, 2).join("").toUpperCase();
 
   const statCards = [
-    { label: "Coins",     value: stats?.coins         ?? 0, icon: "🪙",  bg: "#fef9c3", color: "#a16207" },
-    { label: "Streak",    value: `${stats?.streak ?? 0}d`, icon: "🔥",  bg: "#fff7ed", color: "#c2410c" },
-    { label: "Sent",      value: stats?.totalSent     ?? 0, icon: "✉️",  bg: "#ede9fe", color: "#7c3aed" },
-    { label: "Received",  value: stats?.totalReceived ?? 0, icon: "💌",  bg: "#fce7f3", color: "#db2777" },
-    { label: "Performance", value: `${stats?.performance ?? 0}%`, icon: "📈", bg: "#d1fae5", color: "#059669" },
+    { label: "Coins",       value: stats?.coins         ?? 0,              icon: <PiCoins style={{ fontSize: 18, color: "#a16207" }} />,         bg: "#fef9c3", color: "#a16207" },
+    { label: "Streak",     value: `${stats?.streak ?? 0} days`,            icon: <PiFireSimpleBold style={{ fontSize: 18, color: "#c2410c" }} />,  bg: "#fff7ed", color: "#c2410c" },
+    { label: "Sent",       value: stats?.totalSent     ?? 0,              icon: <FiSend style={{ fontSize: 16, color: "#7c3aed" }} />,            bg: "#ede9fe", color: "#7c3aed" },
+    { label: "Received",   value: stats?.totalReceived ?? 0,              icon: <FiHeart style={{ fontSize: 16, color: "#db2777" }} />,           bg: "#fce7f3", color: "#db2777" },
+    { label: "Performance", value: `${stats?.performance ?? 0}%`,         icon: <FiTrendingUp style={{ fontSize: 16, color: "#059669" }} />,      bg: "#d1fae5", color: "#059669" },
   ];
 
   return (
@@ -163,9 +163,10 @@ export default function ProfilePage() {
           {org?.name && <InfoRow icon={<RiTeamFill style={{ color: "#059669" }} />} label="Organisation" value={org.name} />}
           {user?.department && <InfoRow icon={<MdOutlineLocationOn style={{ color: "#2563eb" }} />} label="Department" value={user.department} />}
           <InfoRow icon={<MdOutlineBadge style={{ color: "#d97706" }} />} label="Account Status" value={
-            user?.status === "approved" ? "✅ Active"
-            : user?.status === "pending" ? "⏳ Pending Approval"
-            : "❌ Rejected"
+            user?.status === "approved" ? "Active"
+            : user?.status === "pending" ? "Pending Approval"
+            : user?.status === "rejected" ? "Rejected"
+            : "Active"
           } />
         </div>
       </motion.div>
@@ -183,7 +184,7 @@ export default function ProfilePage() {
               background: s.bg, borderRadius: 16, padding: "1.1rem 1rem",
               textAlign: "center", border: `1.5px solid ${s.color}22`,
             }}>
-              <div style={{ fontSize: "1.5rem", marginBottom: 4 }}>{s.icon}</div>
+              <div style={{ fontSize: "1.2rem", marginBottom: 4, display: "flex", justifyContent: "center" }}>{s.icon}</div>
               <p style={{ fontWeight: 800, margin: 0, color: s.color, fontSize: "1.1rem", fontFamily: "'Sora', sans-serif" }}>
                 {s.value}
               </p>

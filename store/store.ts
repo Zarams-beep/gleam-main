@@ -23,9 +23,11 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage,
-  // ✅ Do NOT persist "user" — it always gets re-fetched from /me on load
-  // Persisting user caused stale name/role from previous sessions to show
+  // Only persist auth + org
+  // sidebar is excluded because it contains non-serializable icon functions
+  // user is excluded because it must always be re-fetched fresh from /me
   whitelist: ["auth", "org"],
+  blacklist: ["sidebar", "user", "loginAuth", "stats"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -37,6 +39,21 @@ const store = configureStore({
 });
 
 const persistor = persistStore(store);
+
+// One-time migration: clear stale sidebar data from localStorage
+// The sidebar slice contains non-serializable icon functions and must never be persisted
+if (typeof window !== "undefined") {
+  try {
+    const raw = localStorage.getItem("persist:root");
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed.sidebar) {
+        delete parsed.sidebar;
+        localStorage.setItem("persist:root", JSON.stringify(parsed));
+      }
+    }
+  } catch { /* ignore */ }
+}
 
 export { store, persistor };
 export type RootState = ReturnType<typeof store.getState>;
