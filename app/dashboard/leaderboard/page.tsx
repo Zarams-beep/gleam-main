@@ -7,6 +7,9 @@ import { useAppSelector } from "@/store/hooks";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { MdLeaderboard } from "react-icons/md";
+import { GiLaurelsTrophy } from "react-icons/gi";
+import { PiMedalFill, PiCoinsLight, PiFireSimple } from "react-icons/pi";
+import { LuHeart } from "react-icons/lu";
 
 export default function LeaderboardPage() {
   const user = useAppSelector((s) => s.user.user);
@@ -31,8 +34,12 @@ export default function LeaderboardPage() {
     }
   }, [tab, deptFilter]);
 
-  const medal = (rank: number) =>
-    rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : `#${rank}`;
+  const medal = (rank: number) => {
+    if (rank === 1) return <GiLaurelsTrophy style={{ color: "#f59e0b", fontSize: 20 }} />;
+    if (rank === 2) return <PiMedalFill style={{ color: "#9ca3af", fontSize: 20 }} />;
+    if (rank === 3) return <PiMedalFill style={{ color: "#b45309", fontSize: 20 }} />;
+    return <span style={{ fontWeight: 700, color: "#6b7280" }}>#{rank}</span>;
+  };
 
   return (
     <div style={{ padding: "1.75rem", maxWidth: 760, margin: "0 auto" }}>
@@ -119,12 +126,12 @@ export default function LeaderboardPage() {
                   {e.fullName}
                   {e.isCurrentUser && <span style={{ fontSize: "0.75rem", color: "#7c3aed", marginLeft: 8 }}>You</span>}
                 </p>
-                <p style={{ fontSize: "0.8rem", color: "#9ca3af", margin: 0 }}>{e.department ?? "—"}</p>
+                <p style={{ fontSize: "0.8rem", color: "#9ca3af", margin: 0 }}>{e.department ?? "N/A"}</p>
               </div>
               <div style={{ display: "flex", gap: 20, fontSize: "0.85rem", color: "#6b7280" }}>
-                <span>🪙 {e.coins}</span>
-                <span>🔥 {e.streak}</span>
-                <span>💌 {e.complimentsSent}</span>
+                <span style={{ display: "flex", alignItems: "center", gap: 3 }}><PiCoinsLight style={{ color: "#d97706" }} /> {e.coins}</span>
+                <span style={{ display: "flex", alignItems: "center", gap: 3 }}><PiFireSimple style={{ color: "#f97316" }} /> {e.streak}</span>
+                <span style={{ display: "flex", alignItems: "center", gap: 3 }}><LuHeart style={{ color: "#ec4899" }} /> {e.complimentsSent}</span>
               </div>
             </motion.div>
           ))}

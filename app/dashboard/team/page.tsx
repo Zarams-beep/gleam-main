@@ -9,6 +9,7 @@ import Image from "next/image";
 import { RiTeamFill } from "react-icons/ri";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { MdOutlineLocationOn } from "react-icons/md";
+import { PiCoinsLight, PiFireSimple } from "react-icons/pi";
 import { IoSearch } from "react-icons/io5";
 import { FiCopy, FiCheck } from "react-icons/fi";
 
@@ -313,11 +314,11 @@ export default function TeamPage() {
 
                       {/* Stats pills */}
                       <div style={{ display: "flex", justifyContent: "center", gap: 6 }}>
-                        <span style={{ fontSize: "0.72rem", background: "#fef9c3", color: "#a16207", borderRadius: 20, padding: "3px 8px", fontWeight: 600 }}>
-                          🪙 {m.coins}
+                        <span style={{ fontSize: "0.72rem", background: "#fef9c3", color: "#a16207", borderRadius: 20, padding: "3px 8px", fontWeight: 600, display: "flex", alignItems: "center", gap: 3 }}>
+                          <PiCoinsLight style={{ fontSize: 11 }} /> {m.coins}
                         </span>
-                        <span style={{ fontSize: "0.72rem", background: "#fff7ed", color: "#c2410c", borderRadius: 20, padding: "3px 8px", fontWeight: 600 }}>
-                          🔥 {m.streak}
+                        <span style={{ fontSize: "0.72rem", background: "#fff7ed", color: "#c2410c", borderRadius: 20, padding: "3px 8px", fontWeight: 600, display: "flex", alignItems: "center", gap: 3 }}>
+                          <PiFireSimple style={{ fontSize: 11 }} /> {m.streak}
                         </span>
                       </div>
                     </motion.div>

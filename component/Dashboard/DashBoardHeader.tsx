@@ -5,6 +5,9 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useAppSelector } from "@/store/hooks";
+import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
+import { MdOutlineLocationOn, MdOutlineWarningAmber, MdOutlineAdminPanelSettings } from "react-icons/md";
+import { RiShieldCheckLine } from "react-icons/ri";
 
 const ROLE_CONFIG: Record<string, { label: string; bg: string; color: string }> = {
   super_admin: { label: "Super Admin", bg: "#fee2e2", color: "#dc2626" },
@@ -14,6 +17,14 @@ const ROLE_CONFIG: Record<string, { label: string; bg: string; color: string }> 
   employee:    { label: "Employee",    bg: "#d1fae5", color: "#059669" },
   member:      { label: "Member",      bg: "#f3f4f6", color: "#6b7280" },
 };
+
+const pillStyle = (bg: string, color: string, border: string, extra?: React.CSSProperties): React.CSSProperties => ({
+  display: "inline-flex", alignItems: "center", gap: 4,
+  fontSize: "0.76rem", background: bg, color,
+  border: `1px solid ${border}`, borderRadius: 20,
+  padding: "2px 10px", fontWeight: 600,
+  ...extra,
+});
 
 export default function DashBoardHeader() {
   const { data: session, status } = useSession();
@@ -37,8 +48,8 @@ export default function DashBoardHeader() {
   if (!session) return null;
 
   const firstName  = (user?.fullName || session.user?.name || "there").split(" ")[0];
-  const role        = user?.role ?? "member";
-  const roleConf    = ROLE_CONFIG[role] ?? ROLE_CONFIG.member;
+  const role       = user?.role ?? "member";
+  const roleConf   = ROLE_CONFIG[role] ?? ROLE_CONFIG.member;
   const isSuperUser = ["super_admin", "admin"].includes(role);
 
   return (
@@ -49,58 +60,69 @@ export default function DashBoardHeader() {
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
       {isSuperUser ? (
-        /* ── Super Admin / Admin greeting ── */
         <>
           <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 10, marginBottom: 6 }}>
-            <h1 style={{ margin: 0 }}>Welcome back, {firstName} 👑</h1>
-            <span style={{ fontSize: "0.75rem", fontWeight: 700, background: roleConf.bg, color: roleConf.color, borderRadius: 20, padding: "3px 10px" }}>
+            <h1 style={{ margin: 0 }}>Welcome back, {firstName}</h1>
+            <span style={pillStyle(roleConf.bg, roleConf.color, roleConf.color + "44")}>
+              <RiShieldCheckLine style={{ fontSize: 11 }} />
               {roleConf.label}
             </span>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
             <p style={{ margin: 0, color: "#64748b" }}>You have full control of your workspace.</p>
             {org?.name && (
-              <span style={{ fontSize: "0.78rem", background: "#f0fdf4", color: "#16a34a", border: "1px solid #bbf7d0", borderRadius: 20, padding: "2px 10px", fontWeight: 600 }}>
-                🏢 {org.name}
+              <span style={pillStyle("#f0fdf4", "#16a34a", "#bbf7d0")}>
+                <HiOutlineBuildingOffice2 style={{ fontSize: 12 }} />
+                {org.name}
               </span>
             )}
             {!user?.orgId && (
-              <span onClick={() => router.push("/sign-up")} style={{ fontSize: "0.78rem", background: "#fef3c7", color: "#d97706", border: "1px solid #fde68a", borderRadius: 20, padding: "2px 10px", fontWeight: 600, cursor: "pointer" }}>
-                ⚠️ No organisation yet
+              <span
+                onClick={() => router.push("/sign-up")}
+                style={pillStyle("#fef3c7", "#d97706", "#fde68a", { cursor: "pointer" })}
+              >
+                <MdOutlineWarningAmber style={{ fontSize: 12 }} />
+                No organisation yet
               </span>
             )}
             <span
               onClick={() => router.push("/dashboard/admin")}
-              style={{ fontSize: "0.78rem", background: "#ede9fe", color: "#7c3aed", border: "1px solid #c4b5fd", borderRadius: 20, padding: "2px 10px", fontWeight: 600, cursor: "pointer" }}
+              style={pillStyle("#ede9fe", "#7c3aed", "#c4b5fd", { cursor: "pointer" })}
             >
-              🛡️ Open Command Centre →
+              <MdOutlineAdminPanelSettings style={{ fontSize: 12 }} />
+              Open Command Centre
             </span>
           </div>
         </>
       ) : (
-        /* ── Regular user greeting ── */
         <>
           <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 10, marginBottom: 6 }}>
-            <h1 style={{ margin: 0 }}>Hi {firstName} 👋</h1>
-            <span style={{ fontSize: "0.75rem", fontWeight: 700, background: roleConf.bg, color: roleConf.color, borderRadius: 20, padding: "3px 10px" }}>
+            <h1 style={{ margin: 0 }}>Hi {firstName}</h1>
+            <span style={pillStyle(roleConf.bg, roleConf.color, roleConf.color + "44")}>
               {roleConf.label}
             </span>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
-            <p style={{ margin: 0, color: "#64748b" }}>Keep shining — your kindness makes a difference ✨</p>
+            <p style={{ margin: 0, color: "#64748b" }}>Keep shining. Your kindness makes a difference.</p>
             {org?.name && (
-              <span style={{ fontSize: "0.78rem", background: "#f0fdf4", color: "#16a34a", border: "1px solid #bbf7d0", borderRadius: 20, padding: "2px 10px", fontWeight: 600 }}>
-                🏢 {org.name}
+              <span style={pillStyle("#f0fdf4", "#16a34a", "#bbf7d0")}>
+                <HiOutlineBuildingOffice2 style={{ fontSize: 12 }} />
+                {org.name}
               </span>
             )}
             {user?.department && (
-              <span style={{ fontSize: "0.78rem", background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe", borderRadius: 20, padding: "2px 10px", fontWeight: 600 }}>
-                📍 {user.department}
+              <span style={pillStyle("#eff6ff", "#2563eb", "#bfdbfe")}>
+                <MdOutlineLocationOn style={{ fontSize: 12 }} />
+                {user.department}
               </span>
             )}
             {!user?.orgId && (
-              <span onClick={() => router.push("/onboarding")} style={{ fontSize: "0.78rem", background: "#fef3c7", color: "#d97706", border: "1px solid #fde68a", borderRadius: 20, padding: "2px 10px", fontWeight: 600, cursor: "pointer" }}>
-                ⚠️ No organisation — join one
+              <span
+                onClick={() => router.push("/onboarding")}
+                style={pillStyle("#fef3c7", "#d97706", "#fde68a", { cursor: "pointer" })}
+              >
+                <MdOutlineWarningAmber style={{ fontSize: 12 }} />
+                No organisation — join one
               </span>
             )}
           </div>

@@ -1,12 +1,20 @@
 // component/Dashboard/downLandingSection/DashboardLeaderboard.tsx
-// ─── Fetches real leaderboard from GET /api/leaderboard ──────────────────────
 "use client";
 import { useState, useEffect } from "react";
 import { FiRefreshCcw, FiChevronLeft, FiChevronRight, FiSearch } from "react-icons/fi";
+import { GiLaurelsTrophy } from "react-icons/gi";
+import { PiMedalFill } from "react-icons/pi";
 import { leaderboardApi } from "@/utils/api";
 import { LeaderboardEntry } from "@/types/auth";
 
 const ITEMS_PER_PAGE = 5;
+
+const RankBadge = ({ rank }: { rank: number }) => {
+  if (rank === 1) return <GiLaurelsTrophy style={{ color: "#f59e0b", fontSize: 18 }} />;
+  if (rank === 2) return <PiMedalFill style={{ color: "#9ca3af", fontSize: 18 }} />;
+  if (rank === 3) return <PiMedalFill style={{ color: "#b45309", fontSize: 18 }} />;
+  return <span style={{ fontWeight: 700, color: "#6b7280", fontSize: "0.85rem" }}>#{rank}</span>;
+};
 
 export default function DashboardLeaderboard() {
   const [data, setData]       = useState<LeaderboardEntry[]>([]);
@@ -39,13 +47,6 @@ export default function DashboardLeaderboard() {
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
   const start      = (page - 1) * ITEMS_PER_PAGE;
   const paginated  = filtered.slice(start, start + ITEMS_PER_PAGE);
-
-  const rankLabel = (rank: number) => {
-    if (rank === 1) return "🥇";
-    if (rank === 2) return "🥈";
-    if (rank === 3) return "🥉";
-    return rank;
-  };
 
   return (
     <div className="leadership-container">
@@ -93,14 +94,14 @@ export default function DashboardLeaderboard() {
                 ))
               : paginated.map((user) => (
                   <tr key={user.userId} className={user.isCurrentUser ? "current-user-row" : ""}>
-                    <td className="rank">{rankLabel(user.rank)}</td>
+                    <td className="rank"><RankBadge rank={user.rank} /></td>
                     <td className="name">
                       {user.fullName}
                       {user.isCurrentUser && (
                         <span className="you-badge"> (you)</span>
                       )}
                     </td>
-                    <td className="dept">{user.department ?? "—"}</td>
+                    <td className="dept">{user.department ?? "N/A"}</td>
                     <td className="points">{user.complimentsSent}</td>
                   </tr>
                 ))}

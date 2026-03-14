@@ -8,10 +8,11 @@ import { OrgMember } from "@/types/auth";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { FaPaperPlane, FaSearch } from "react-icons/fa";
+import { PiCoinsLight } from "react-icons/pi";
 import { RiInformationLine } from "react-icons/ri";
 
 const COMPLIMENT_STARTERS = [
-  "Your work on the last project was outstanding — ",
+  "Your work on the last project was outstanding. ",
   "I really appreciate how you always ",
   "The way you handled that situation showed real leadership. ",
   "Your creativity and dedication truly ",
@@ -223,8 +224,8 @@ export default function SendPage() {
                           </p>
                         </div>
                         {m.coins !== undefined && (
-                          <span style={{ fontSize: "0.75rem", color: "#a855f7", fontWeight: 600 }}>
-                            🪙 {m.coins}
+                          <span style={{ fontSize: "0.75rem", color: "#a855f7", fontWeight: 600, display: "flex", alignItems: "center", gap: 2 }}>
+                            <PiCoinsLight style={{ fontSize: 13 }} /> {m.coins}
                           </span>
                         )}
                       </li>
