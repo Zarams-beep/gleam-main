@@ -116,16 +116,15 @@ const Login: React.FC = () => {
 
     if (result?.error) {
       // NextAuth passes the error message through the URL — decode it
-      setAuthError(
-        result.error === "CredentialsSignin"
-          ? "Invalid email or password."
-          : decodeURIComponent(result.error)
-      );
+      const msg = result.error === "CredentialsSignin"
+        ? "Invalid email or password."
+        : decodeURIComponent(result.error);
+      setAuthError(msg);
       return;
     }
 
-    // Success — router push handled by the useEffect above when session updates
-    router.push("/dashboard");
+    // Success — let the useEffect handle redirect once session updates
+    // Don't push manually here — it races with session hydration
   };
 
   const allFieldsFilled = watch("email") && watch("password");

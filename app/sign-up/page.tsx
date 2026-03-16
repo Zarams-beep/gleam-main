@@ -73,10 +73,21 @@ const SignUpComponent: React.FC = () => {
   const watchedRole = watch("role");
   useEffect(() => { if (watchedRole) setSelectedRole(watchedRole); }, [watchedRole]);
 
+  const validateOrgName = (name: string): string | null => {
+    const t = name.trim();
+    if (!t) return "Organisation name is required.";
+    if (t.length < 3) return "Organisation name must be at least 3 characters.";
+    if (t.length > 60) return "Organisation name must be 60 characters or less.";
+    if (!/^[a-zA-Z0-9\s\-'&.,()]+$/.test(t)) return "Organisation name contains invalid characters.";
+    return null;
+  };
+
+  const [orgNameError, setOrgNameError] = useState<string | null>(null);
+
   const submitData = async (data: SignUpSubmitFormData) => {
-    if (isOrgCreator && !orgName.trim()) {
-      setError("Please enter your organisation name.");
-      return;
+    if (isOrgCreator) {
+      const nameErr = validateOrgName(orgName);
+      if (nameErr) { setOrgNameError(nameErr); return; }
     }
 
     try {
@@ -305,12 +316,20 @@ const SignUpComponent: React.FC = () => {
                       {/* Org name */}
                       <div className="input-group" style={{ marginBottom: "0.9rem" }}>
                         <label className="input-label">Organisation Name <span style={{ color: "#ef4444" }}>*</span></label>
-                        <div className="input-wrapper">
-                          <span style={{ fontSize: "1rem", flexShrink: 0 }}>🏢</span>
+                        <div className="input-wrapper" style={{ border: orgNameError ? "1.5px solid #f65252" : undefined }}>
+                          <HiOutlineBuildingOffice2 style={{ color: orgNameError ? "#f65252" : "#59676e", fontSize: 18, flexShrink: 0 }} />
                           <input type="text" placeholder="e.g. Acme Corp or Greenfield High" value={orgName}
-                            onChange={(e) => setOrgName(e.target.value)}
+                            onChange={(e) => { setOrgName(e.target.value); setOrgNameError(null); }}
+                            maxLength={60}
                             style={{ flex: 1, border: "none", outline: "none", background: "transparent", fontSize: "0.9rem", color: "#1a1740", fontFamily: "'DM Sans', sans-serif" }} />
+                          <span style={{ fontSize: "0.72rem", color: orgName.length > 50 ? "#f97316" : "#9ca3af", flexShrink: 0 }}>{orgName.length}/60</span>
                         </div>
+                        {orgNameError && (
+                          <div className="error-message">
+                            <RiInformationLine size={14} />
+                            <p className="error-text">{orgNameError}</p>
+                          </div>
+                        )}
                       </div>
 
                       {/* Org type */}
