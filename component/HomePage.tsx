@@ -16,7 +16,6 @@ export default function HomePageSection() {
   const scrollToFeatures = () => {
     document.getElementById("features-section")?.scrollIntoView({ behavior: "smooth" });
   };
-
   return (
     <div className="home-page-container">
       {/* Hero section */}
