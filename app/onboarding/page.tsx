@@ -89,7 +89,14 @@ export default function OnboardingPage() {
         department: selectedDept ?? undefined,
       });
       // Update Redux org state
-      dispatch(setOrg({ id: res.org.id, name: res.org.name, orgType: res.org.orgType, inviteCode: res.org.inviteCode }));
+      dispatch(setOrg({
+        id:          res.org.id,
+        name:        res.org.name,
+        orgType:     res.org.orgType,
+        inviteCode:  res.org.inviteCode,
+        departments: res.org.departments ?? [],
+        is_active:   true,
+      }));
       setStep("done");
     } catch (e: any) {
       setError(e.message || "Failed to join organisation.");
