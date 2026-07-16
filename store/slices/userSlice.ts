@@ -7,13 +7,11 @@ import { GleamUser } from "@/types/auth";
 
 interface UserState {
   user: GleamUser | null;
-  token: string | null;
   isAuthenticated: boolean;
 }
 
 const initialState: UserState = {
   user: null,
-  token: null,
   isAuthenticated: false,
 };
 
@@ -23,10 +21,9 @@ const userSlice = createSlice({
   reducers: {
     setCredentials: (
       state,
-      action: PayloadAction<{ user: GleamUser; token: string }>
+      action: PayloadAction<{ user: GleamUser }>
     ) => {
       state.user = action.payload.user;
-      state.token = action.payload.token;
       state.isAuthenticated = true;
     },
     updateUser: (state, action: PayloadAction<Partial<GleamUser>>) => {
@@ -36,7 +33,6 @@ const userSlice = createSlice({
     },
     clearCredentials: (state) => {
       state.user = null;
-      state.token = null;
       state.isAuthenticated = false;
     },
   },

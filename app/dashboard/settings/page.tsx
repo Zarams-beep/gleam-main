@@ -39,7 +39,6 @@ export default function SettingsPage() {
       await userApi.deleteAccount(password);
       dispatch(clearStats());
       dispatch(clearOrg());
-      localStorage.removeItem("gleam_access_token");
       await signOut({ redirect: false });
       router.replace("/");
     } catch (e: any) {

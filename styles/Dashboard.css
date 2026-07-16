@@ -417,7 +417,7 @@
 
 /* message styling starts */
 .chat-sidebar {
-  @apply h-screen w-full md:w-[400px] text-primary sticky inset-0 py-[10px] px-6 border bg-foreground border-neutral-300 rounded-2xl shadow-md flex flex-col gap-4 overflow-y-auto;
+  @apply h-screen w-full md:w-[400px] text-primary sticky inset-0 py-[10px] px-6 border bg-foreground border-neutral-300 rounded-2xl shadow-md flex flex-col gap-4 overflow-y-auto relative;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   transition: width 0.2s ease;
@@ -435,54 +435,87 @@
 }
 .chat-sidebar header .header-1 h2{
   @apply text-[1.5rem] font-semibold text-primary font-calligraphy;
-} 
+}
+.header-1-icons{
+  @apply flex items-center gap-3 text-lg text-primary-surface;
+}
+.header-1-icons svg{
+  @apply cursor-pointer hover:text-accent transition;
+}
 .chat-sidebar .search-container{
   @apply border-neutral-500
+}
+.chat-container{
+  @apply flex flex-col gap-1 flex-1;
+}
+.chat-empty-state{
+  @apply text-center text-sm text-neutral-400 py-8 px-2 leading-relaxed;
 }
 
 .chat-item{
   @apply  flex items-center gap-3 p-2 hover:bg-foreground-subtle cursor-pointer rounded-lg;
 }
+.chat-item-active{
+  @apply bg-foreground-subtle;
+}
 .chat-avatar{
-  @apply  w-12 h-12 rounded-full object-cover
+  @apply  w-12 h-12 rounded-full object-cover shrink-0
+}
+.chat-avatar-fallback{
+  @apply flex items-center justify-center bg-accent text-white font-semibold;
 }
 .chat-details{
-  @apply flex-1 flex flex-col gap-1
+  @apply flex-1 flex flex-col gap-1 min-w-0
 }
 .chat-header{
   @apply  flex justify-between;
 }
 .chat-name{
-  @apply font-semibold text-primary
+  @apply font-semibold text-primary truncate
 }
 .chat-time{
-  @apply text-xs text-neutral-400 self-end
+  @apply text-xs text-neutral-400 self-end shrink-0
 }
 .little-chat-detail{
-  @apply flex items-center justify-between;
+  @apply flex items-center justify-between gap-2;
 }
 .chat-preview{
   @apply text-neutral-500 text-sm truncate w-full
 }
 .unread-count{
-  @apply  bg-green-500 text-white text-xs px-2 py-1 rounded-full
+  @apply  bg-green-500 text-white text-xs px-2 py-1 rounded-full shrink-0
+}
+
+/* new-chat panel */
+.new-chat-overlay{
+  @apply absolute inset-0 bg-black/30 rounded-2xl flex items-start justify-center pt-6 z-50;
+}
+.new-chat-panel{
+  @apply bg-foreground w-[92%] max-h-[85%] rounded-2xl shadow-xl p-4 flex flex-col gap-3 overflow-y-auto;
+}
+.new-chat-panel-header{
+  @apply flex items-center justify-between;
+}
+.new-chat-panel-header h3{
+  @apply font-semibold text-primary text-lg;
+}
+.new-chat-panel-header svg{
+  @apply cursor-pointer text-xl text-neutral-400 hover:text-black;
+}
+.new-chat-member-list{
+  @apply flex flex-col gap-1 overflow-y-auto;
 }
 
 /* chat window styling starts */
 .message-main-container{
-  @apply flex gap-3
+  @apply flex gap-3 h-full;
 }
 .chat-window{
-  @apply flex flex-col h-screen bg-foreground border border-neutral-300 rounded-2xl shadow-md w-full overflow-y-auto;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  @apply flex flex-col h-screen bg-foreground border border-neutral-300 rounded-2xl shadow-md w-full overflow-hidden;
   transition: width 0.2s ease;
 }
-.chat-sidebar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
 .chat-window .chat-header{
-  @apply  flex items-center gap-3 p-6 border-b border-b-neutral-300 
+  @apply  flex items-center gap-3 p-4 md:p-6 border-b border-b-neutral-300 shrink-0
 }
 .chat-window .chat-header-left{
   @apply flex justify-between items-center w-full;
@@ -490,29 +523,39 @@
 .chat-header-left button{
   @apply flex md:hidden text-2xl text-neutral-400 hover:text-black
 }
-.chat-header-left > div:first-child {
+.chat-header-left-inner {
   @apply flex items-center gap-1 ;
 }
+.chat-header-left > div:not(.chat-header-left-inner) {
+  @apply flex flex-col;
+}
+.chat-typing-indicator{
+  @apply text-xs text-accent m-0;
+}
 .chat-window .chat-header-right{
-  @apply flex items-center border border-neutral-500 text-primary;
+  @apply flex items-center gap-2 text-primary;
 }
 .iconCall{
-  @apply border border-neutral-500 h-10 w-10 p-2 text-[10px] self-center cursor-pointer hover:bg-foreground-subtle
+  @apply rounded-full h-9 w-9 p-2 text-[16px] self-center cursor-pointer text-primary-surface hover:bg-foreground-subtle transition
 }
-.chat-window .chat-header img{
-  @apply w-10 h-10 rounded-full object-cover;
+.iconCall-disabled{
+  @apply opacity-40 cursor-not-allowed hover:bg-transparent;
+}
+.chat-window .chat-header img,
+.chat-header-avatar-fallback{
+  @apply w-10 h-10 rounded-full object-cover shrink-0;
 }
 .chat-window .chat-header h2{
   @apply font-semibold text-primary
 }
 .chat-messages{
-  @apply  flex-1 p-6 overflow-y-auto bg-foreground-subtle;
+  @apply  flex-1 p-4 md:p-6 overflow-y-auto bg-foreground-subtle flex flex-col;
 }
 .chat-messages p{
   @apply mb-2;
 }
 .chat-line{
-  @apply flex  
+  @apply flex
 }
 .chat-line.with-you{
   @apply justify-end
@@ -521,15 +564,27 @@
   @apply justify-start
 }
 .message-bubble{
-  @apply px-3 py-2 rounded-2xl max-w-[70%]
+  @apply px-3 py-2 rounded-2xl max-w-[70%] flex flex-col gap-1
 }
 .message-bubble.text-right-highlight{
-  @apply text-right bg-primary text-neutral-400 
+  @apply text-right bg-primary text-white
   self-end
 }
 
 .message-bubble.text-left-highlight{
-  @apply text-left bg-neutral-400 text-primary self-start
+  @apply text-left bg-white text-primary self-start shadow-sm
+}
+.message-time{
+  @apply text-[10px] opacity-60 self-end;
+}
+.chat-input-container{
+  @apply flex items-center gap-2 p-3 md:p-4 border-t border-t-neutral-300 shrink-0 bg-foreground;
+}
+.chat-input-container input{
+  @apply flex-1 border border-neutral-300 rounded-full px-4 py-2 outline-none text-primary placeholder:text-neutral-400 focus:border-accent transition;
+}
+.chat-send-btn{
+  @apply w-10 h-10 shrink-0 rounded-full bg-accent text-white flex items-center justify-center text-lg hover:bg-accent-hover transition disabled:opacity-40 disabled:cursor-not-allowed;
 }
 /* chat window styling ends */
 /* message styling ends */
@@ -540,14 +595,14 @@
   @apply w-full md:w-[400px] md:flex;
 }
 .show-bar-container.dont-show-bar {
-  @apply hidden md:flex; 
+  @apply hidden md:flex;
 }
 
 .show-chat-main {
   @apply transition-all duration-300 w-full;
 }
 .show-chat-main.show-chat {
-  @apply hidden md:flex; 
+  @apply hidden md:flex;
 }
 .show-chat-main.dont-show-chat {
   @apply flex md:flex;
@@ -556,3 +611,51 @@
 .chat-not-selected {
   @apply flex items-center justify-center w-full text-neutral-500;
 }
+
+/* ── Call modal (WebRTC) styling starts ── */
+.call-modal-overlay{
+  @apply fixed inset-0 bg-black/60 z-[2000] flex items-center justify-center backdrop-blur-sm;
+}
+.call-modal{
+  @apply bg-primary text-white rounded-3xl shadow-2xl w-[90%] max-w-[360px] p-8 flex flex-col items-center gap-8 relative overflow-hidden;
+}
+.call-modal.call-modal-video{
+  @apply max-w-[720px] w-[95%] aspect-video p-0 justify-end;
+}
+.call-remote-video{
+  @apply absolute inset-0 w-full h-full object-cover bg-black;
+}
+.call-local-video{
+  @apply absolute bottom-24 right-4 w-28 h-20 md:w-36 md:h-24 rounded-xl object-cover border-2 border-white/40 shadow-lg z-10;
+}
+.call-avatar-block{
+  @apply flex flex-col items-center gap-3 text-center;
+}
+.call-avatar{
+  @apply w-24 h-24 rounded-full object-cover;
+}
+.call-avatar.call-avatar-fallback{
+  @apply flex items-center justify-center bg-accent text-3xl font-semibold;
+}
+.call-status-text{
+  @apply text-white/70 text-sm;
+}
+.call-controls{
+  @apply flex items-center gap-5 relative z-10 mb-6;
+}
+.call-modal:not(.call-modal-video) .call-controls{
+  @apply mb-0;
+}
+.call-btn{
+  @apply w-14 h-14 rounded-full flex items-center justify-center text-2xl cursor-pointer transition shadow-lg;
+}
+.call-btn-accept{
+  @apply bg-green-500 hover:bg-green-600 text-white;
+}
+.call-btn-reject{
+  @apply bg-red-500 hover:bg-red-600 text-white;
+}
+.call-btn-muted-toggle{
+  @apply bg-white/15 hover:bg-white/25 text-white;
+}
+/* ── Call modal (WebRTC) styling ends ── */

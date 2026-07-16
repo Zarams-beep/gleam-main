@@ -22,7 +22,6 @@ export type SignUpSubmitFormData = {
   email: string;
   password: string;
   confirmPassword?: string;
-  role?: "super_admin" | "admin" | "org_admin" | "hr" | "employee" | "member";
 };
 
 export type LoginFormData = {
@@ -128,4 +127,29 @@ export type DeptLeaderboardEntry = {
   department: string;
   totalCompliments: number;
   activeMembers: number;
+};
+
+// ─── Messaging ────────────────────────────────────────────────────────────────
+export type ConversationParticipant = {
+  id: string;
+  fullName: string;
+  image: string | null;
+  department: string | null;
+};
+
+export type Conversation = {
+  id: string;
+  otherUser: ConversationParticipant | null;
+  lastMessage: string | null;
+  lastMessageTime: string | null;
+  lastSenderId: string | null;
+  unreadCount: number;
+};
+
+export type ChatMessage = {
+  id: string;
+  conversationId: string;
+  senderId: string;
+  content: string;
+  createdAt: string;
 };

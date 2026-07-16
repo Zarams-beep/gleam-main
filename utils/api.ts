@@ -1,36 +1,27 @@
 /**
  * Gleam API client
- * Token is always read from gleam_access_token in localStorage.
- * Pass an explicit token to any function to bypass localStorage entirely.
+ * All requests go through the same-origin /api/proxy route, which reads the
+ * Express JWT server-side from the NextAuth session (httpOnly cookie) and
+ * attaches it as a Bearer token to the backend request. The raw token never
+ * reaches this client-side code, localStorage, or the browser's JS runtime.
  */
 
-const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-
-// ─── Token reader ─────────────────────────────────────────────────────────────
-function getToken(): string | null {
-  if (typeof window === "undefined") return null;
-  try {
-    return localStorage.getItem("gleam_access_token");
-  } catch {
-    return null;
-  }
-}
+const PROXY_BASE = "/api/proxy";
 
 // ─── Core fetch wrapper ───────────────────────────────────────────────────────
 async function req<T = any>(
   path: string,
   options: RequestInit = {},
-  explicitToken?: string  // bypasses getToken() entirely when provided
+  explicitToken?: string  // used only for the brief window right after register,
+                          // before the background NextAuth sign-in completes
 ): Promise<T> {
-  const token = explicitToken ?? getToken();
-
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     ...(options.headers as Record<string, string>),
   };
-  if (token) headers["Authorization"] = `Bearer ${token}`;
+  if (explicitToken) headers["X-Gleam-Token"] = explicitToken;
 
-  const res = await fetch(`${BASE}${path}`, { ...options, headers });
+  const res = await fetch(`${PROXY_BASE}${path}`, { ...options, headers });
   const data = await res.json().catch(() => ({}));
 
   if (!res.ok) {
@@ -54,7 +45,18 @@ export const authApi = {
   login: (body: { email: string; password: string }) =>
     req("/api/auth/login", { method: "POST", body: JSON.stringify(body) }),
 
+  forgotPassword: (body: { email: string }) =>
+    req("/api/auth/forgot-password", { method: "POST", body: JSON.stringify(body) }),
+
+  resetPassword: (body: { email: string; pin: string; newPassword: string }) =>
+    req("/api/auth/reset-password", { method: "POST", body: JSON.stringify(body) }),
+
   me: (token?: string) => req("/api/auth/me", {}, token),
+
+  // Mints a short-lived (30s) single-purpose token used ONLY to authenticate
+  // the socket.io handshake — the real, long-lived accessToken never leaves
+  // this server-side proxy layer. See gleam-backend/controllers/authController.js.
+  socketTicket: () => req<{ ticket: string }>("/api/auth/socket-ticket", { method: "POST" }),
 };
 
 // ─── Org ──────────────────────────────────────────────────────────────────────
@@ -129,6 +131,31 @@ export const statsApi = {
 export const fortuneApi = {
   today: () => req("/api/fortune/today"),
   random: () => req("/api/fortune/random"),
+};
+
+// ─── Messages ─────────────────────────────────────────────────────────────────
+export const messageApi = {
+  conversations: () => req("/api/message/conversations"),
+
+  start: (recipientId: string) =>
+    req("/api/message/conversations", { method: "POST", body: JSON.stringify({ recipientId }) }),
+
+  messages: (conversationId: string, opts?: { before?: string; limit?: number }) => {
+    const params = new URLSearchParams();
+    if (opts?.before) params.set("before", opts.before);
+    if (opts?.limit) params.set("limit", String(opts.limit));
+    const qs = params.toString();
+    return req(`/api/message/conversations/${conversationId}/messages${qs ? `?${qs}` : ""}`);
+  },
+
+  send: (conversationId: string, content: string) =>
+    req(`/api/message/conversations/${conversationId}/messages`, {
+      method: "POST",
+      body: JSON.stringify({ content }),
+    }),
+
+  markRead: (conversationId: string) =>
+    req(`/api/message/conversations/${conversationId}/read`, { method: "POST" }),
 };
 
 // ─── Admin ───────────────────────────────────────────────────────────────────

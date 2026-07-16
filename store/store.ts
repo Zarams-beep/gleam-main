@@ -2,19 +2,13 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-import authReducer from "./slices/authSlices";
-import authLoginReducer from "./slices/loginSlices";
 import sideBarReducer from "./slices/sidebarSlices_";
 import userReducer from "./slices/userSlice";
 import orgReducer from "./slices/orgSlice";
 import statsReducer from "./slices/statsSlice";
 
 const rootReducer = combineReducers({
-  // legacy (kept for existing auth pages)
-  auth: authReducer,
-  loginAuth: authLoginReducer,
   sidebar: sideBarReducer,
-  // new gleam slices
   user: userReducer,
   org: orgReducer,
   stats: statsReducer,
@@ -23,11 +17,11 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage,
-  // Only persist auth + org
+  // Only persist org.
   // sidebar is excluded because it contains non-serializable icon functions
   // user is excluded because it must always be re-fetched fresh from /me
-  whitelist: ["auth", "org"],
-  blacklist: ["sidebar", "user", "loginAuth", "stats"],
+  whitelist: ["org"],
+  blacklist: ["sidebar", "user", "stats"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

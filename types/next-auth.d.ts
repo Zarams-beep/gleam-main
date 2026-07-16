@@ -12,8 +12,11 @@ declare module "next-auth" {
       orgId:       string | null;
       role:        string;
       department:  string | null;
-      accessToken: string | null;
     } & DefaultSession["user"];
+    // Set when an OAuth sign-in (Google/GitHub) fails to sync with the
+    // Express backend (e.g. account pending/rejected) — no accessToken exists
+    // in that case, so the client should show this and sign the user out.
+    error?: string;
   }
 
   interface User extends DefaultUser {
@@ -34,5 +37,6 @@ declare module "next-auth/jwt" {
     role:        string;
     department:  string | null;
     accessToken: string | null;
+    error?:      string;
   }
 }

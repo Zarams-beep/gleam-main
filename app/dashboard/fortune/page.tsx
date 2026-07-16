@@ -11,6 +11,9 @@ export default function FortunePage() {
   const [message, setMessage]   = useState<string | null>(null);
   const [loading, setLoading]   = useState(true);
   const [fetching, setFetching] = useState(false);
+  const [cracksRemaining, setCracksRemaining] = useState(0);
+  const [cracksTotal, setCracksTotal]         = useState(0);
+  const [crackError, setCrackError]           = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -19,17 +22,26 @@ export default function FortunePage() {
         setFortune(r.fortune ?? null);
         setUnlocked(r.unlocked ?? false);
         setMessage(r.message ?? null);
+        setCracksRemaining(r.cracksRemaining ?? 0);
+        setCracksTotal(r.cracksTotal ?? 0);
       })
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
 
   const getNew = async () => {
+    if (cracksRemaining <= 0) return;
     setFetching(true);
+    setCrackError(null);
     try {
       const r = await fortuneApi.random();
       setFortune(r.fortune ?? null);
-    } catch (e) { console.error(e); }
+      setCracksRemaining(r.cracksRemaining ?? 0);
+    } catch (e: any) {
+      console.error(e);
+      setCrackError(e.message || "You've used all your fortune cracks for today. Come back tomorrow! 🥠");
+      setCracksRemaining(0);
+    }
     finally { setFetching(false); }
   };
 
@@ -131,17 +143,17 @@ export default function FortunePage() {
           </AnimatePresence>
 
           <motion.button
-            whileHover={{ scale: 1.04, boxShadow: "0 8px 28px rgba(245,158,11,0.35)" }}
-            whileTap={{ scale: 0.97 }}
+            whileHover={cracksRemaining > 0 ? { scale: 1.04, boxShadow: "0 8px 28px rgba(245,158,11,0.35)" } : {}}
+            whileTap={cracksRemaining > 0 ? { scale: 0.97 } : {}}
             onClick={getNew}
-            disabled={fetching}
+            disabled={fetching || cracksRemaining <= 0}
             style={{
-              background: "linear-gradient(135deg, #f59e0b, #fbbf24)",
-              color: "#fff", border: "none", borderRadius: 14,
+              background: cracksRemaining > 0 ? "linear-gradient(135deg, #f59e0b, #fbbf24)" : "#e5e7eb",
+              color: cracksRemaining > 0 ? "#fff" : "#9ca3af", border: "none", borderRadius: 14,
               padding: "0.85rem 2.25rem", fontSize: "0.95rem",
-              fontWeight: 700, cursor: fetching ? "not-allowed" : "pointer",
+              fontWeight: 700, cursor: (fetching || cracksRemaining <= 0) ? "not-allowed" : "pointer",
               fontFamily: "'Sora', sans-serif",
-              boxShadow: "0 4px 20px rgba(245,158,11,0.25)",
+              boxShadow: cracksRemaining > 0 ? "0 4px 20px rgba(245,158,11,0.25)" : "none",
               display: "inline-flex", alignItems: "center", gap: 8,
             }}
           >
@@ -150,10 +162,21 @@ export default function FortunePage() {
                 <motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}>🥠</motion.span>
                 Cracking…
               </>
-            ) : (
+            ) : cracksRemaining > 0 ? (
               <>🥠 Crack a New One</>
+            ) : (
+              <>🔒 No Cracks Left</>
             )}
           </motion.button>
+
+          <p style={{ marginTop: 12, fontSize: "0.82rem", color: "#9ca3af" }}>
+            {cracksRemaining > 0
+              ? `${cracksRemaining} of ${cracksTotal} extra cracks left today`
+              : "Come back tomorrow for more fortunes 🥠"}
+          </p>
+          {crackError && (
+            <p style={{ marginTop: 4, fontSize: "0.8rem", color: "#dc2626" }}>{crackError}</p>
+          )}
         </>
       )}
     </div>

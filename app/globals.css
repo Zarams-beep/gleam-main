@@ -28,84 +28,74 @@ body {
 }
 /* splash styling starts */
 .splash-container {
-  @apply fixed inset-0 bg-primary flex flex-col items-center justify-center z-50 py-10 px-4 md:px-11;
+  @apply fixed inset-0 flex flex-col items-center justify-center z-50 py-10 px-6 md:px-12 overflow-hidden;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, rgba(145, 92, 255, 0.18), transparent 25%),
+              radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.14), transparent 18%),
+              linear-gradient(180deg, #0b1330 0%, #12172b 100%);
+}
+
+.splash-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.08), transparent 20%);
+  pointer-events: none;
 }
 
 .splash-letter-container {
-  @apply flex space-x-3 h-screen w-screen px-10;
+  @apply relative flex flex-wrap justify-center items-center w-full max-w-[860px] overflow-hidden;
+  padding: 2rem 1rem;
 }
 
-.card {
-  @apply md:w-[25rem] w-full h-full md:h-[20rem];
+.splash-letter {
+  display: inline-block;
+  font-weight: 800;
+  line-height: 1;
+  font-size: clamp(3.4rem, 11vw, 8rem);
+  background: linear-gradient(135deg, #ffffff 0%, #cdbcff 55%, #7a58ef 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 8px 30px rgba(122, 88, 239, 0.45));
+  transition: filter 0.6s ease-out;
+  will-change: transform, opacity;
 }
 
-.card-inner {
-  transition: transform 0.8s;
-  transform-style: preserve-3d;
-  position: relative;
-  width: 100%;
-  height: 100%;
+.splash-letter-lit {
+  filter: drop-shadow(0 8px 30px rgba(122, 88, 239, 0.45))
+    drop-shadow(0 0 22px rgba(255, 255, 255, 0.4));
 }
 
-.card.flipped .card-inner {
-  transform: rotateY(180deg);
-}
-
-.card-front,
-.card-back {
-  @apply rounded shadow flex items-center justify-center text-[4rem] sm:text-[8rem] md:text-[12rem] lg:text-[20rem] font-bold;
+/* Diagonal beam of light that sweeps across the landed letters, like a
+   glare/reflection passing over glass — sits above the text via mix-blend
+   so it brightens rather than obscures. */
+.splash-sweep {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-}
-
-.card-front {
-  @apply bg-primary;
-}
-
-.card-back {
-  @apply text-purple-50  p-3;
-  transform: rotateY(180deg);
-}
-
-.smile-svg {
-  width: 200px;
-  height: 100px;
-  margin-top: 2rem;
-}
-
-.smile-path {
-  stroke: #fff;
-  stroke-width: 3;
-  stroke-dasharray: 200;
-  stroke-dashoffset: 200;
-  animation: drawSmile 1s forwards ease-out, glitter 3s infinite ease-in-out;
-}
-
-@keyframes drawSmile {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes glitter {
-  0%, 100% {
-    stroke: #fff;
-    filter: drop-shadow(0 0 5px #fff);
-  }
-  50% {
-    stroke: #ffe066;
-    filter: drop-shadow(0 0 10px #ffe066);
-  }
+  top: -30%;
+  bottom: -30%;
+  width: 30%;
+  background: linear-gradient(
+    75deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.7) 45%,
+    rgba(255, 255, 255, 0.95) 50%,
+    rgba(255, 255, 255, 0.7) 55%,
+    transparent 100%
+  );
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  filter: blur(3px);
 }
 
 .splash-tagline {
-  @apply text-white text-center mt-4 text-[13px] sm:text-[15px] md:text-[18px] font-light;
+  @apply text-white text-center mt-6 leading-relaxed;
+  font-size: clamp(0.95rem, 2vw, 1.2rem);
+  max-width: 32rem;
 }
 
 .sparkle-text {
-  background: linear-gradient(90deg, #fff, #ffe066, #fff);
+  background: linear-gradient(90deg, #ffffff, #ffe066, #ffffff);
   background-size: 200% auto;
   color: transparent;
   background-clip: text;

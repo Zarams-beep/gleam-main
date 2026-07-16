@@ -1,10 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useAppDispatch } from "@/store/hooks";
-import { setCredentials } from "@/store/slices/userSlice";
 import Image from "next/image";
 import Link from "next/link";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { CiMail, CiLock } from "react-icons/ci";
 import { FaEye, FaEyeSlash, FaRegCircle } from "react-icons/fa";
 import { RiInformationLine } from "react-icons/ri";
@@ -13,7 +11,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormData } from "@/types/auth";
 import { loginSchema } from "@/features/LoginSchema";
 import { useRouter, useSearchParams } from "next/navigation";
-import ForgotPasswordModal from "@/component/ForgotttenPasswordModal";
 import "@/styles/auth.css";
 import { FcGoogle } from "react-icons/fc";
 import { GrGithub } from "react-icons/gr";
@@ -22,13 +19,11 @@ import { motion } from "framer-motion";
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading]       = useState(false);
-  const [forgotOpen, setForgotOpen]     = useState(false);
   const [authError, setAuthError]       = useState<string | null>(null);
 
   const { data: session, status } = useSession();
   const router       = useRouter();
   const searchParams = useSearchParams();
-  const dispatch     = useAppDispatch();
 
   const successMessage = searchParams.get("success");
 
@@ -42,64 +37,26 @@ const Login: React.FC = () => {
     mode: "onChange",
   });
 
-  // Redirect if already authenticated — admins go to command centre
+  // OAuth sign-in can fail to sync with the backend (e.g. account pending
+  // approval) — there's no accessToken in that case, so sign out immediately
+  // instead of letting an unusable session sit around, and surface why.
   useEffect(() => {
-    if (status === "authenticated") {
-      const role = (session?.user as any)?.role ?? "member";
+    if (status === "authenticated" && session?.error) {
+      setAuthError(session.error);
+      signOut({ redirect: false });
+    }
+  }, [status, session]);
+
+  // Redirect if already authenticated — admins go to command centre.
+  // The dashboard layout re-fetches /me on its own mount, so there's no need
+  // to duplicate that fetch here just to populate Redux before navigating.
+  useEffect(() => {
+    if (status === "authenticated" && session?.user && !session.error) {
+      const role = (session.user as any)?.role ?? "member";
       const isAdmin = ["super_admin", "admin"].includes(role);
       router.push(isAdmin ? "/dashboard/admin" : "/dashboard");
     }
   }, [status, router, session]);
-
-  // Once session is populated, ALWAYS clear stale state then fetch fresh user
-  useEffect(() => {
-    if (status === "authenticated" && session?.user) {
-      const u = session.user as any;
-      if (!u.accessToken) return;
-
-      // Store token for api.ts
-      localStorage.setItem("gleam_access_token", u.accessToken);
-
-      // ✅ Immediately clear any persisted user (could be stale from previous session)
-      // then fetch fresh data — this prevents showing wrong name/role on load
-      import("@/utils/api").then(({ authApi }) => {
-        authApi.me(u.accessToken).then((meRes: any) => {
-          dispatch(setCredentials({
-            token: u.accessToken,
-            user: {
-              id:         meRes.user.id,
-              fullName:   meRes.user.fullName  || u.name || "",
-              email:      meRes.user.email     || u.email || "",
-              image:      meRes.user.image     ?? u.image ?? null,
-              orgType:    meRes.user.orgType   ?? null,
-              orgId:      meRes.user.orgId     ?? null,
-              department: meRes.user.department ?? null,
-              role:       meRes.user.role      ?? "member",
-              stats: {
-                coins:         meRes.user.stats?.coins         ?? 0,
-                streak:        meRes.user.stats?.streak        ?? 0,
-                performance:   meRes.user.stats?.performance   ?? 0,
-                totalSent:     meRes.user.stats?.totalSent     ?? 0,
-                totalReceived: meRes.user.stats?.totalReceived ?? 0,
-              },
-            },
-          }));
-        }).catch(() => {
-          // Fallback: use session data directly
-          dispatch(setCredentials({
-            token: u.accessToken,
-            user: {
-              id: u.id, fullName: u.fullName || u.name || "",
-              email: u.email || "", image: u.image ?? null,
-              orgType: u.orgType ?? null, orgId: u.orgId ?? null,
-              department: u.department ?? null, role: u.role ?? "member",
-              stats: { coins: 0, streak: 0, performance: 0, totalSent: 0, totalReceived: 0 },
-            },
-          }));
-        });
-      });
-    }
-  }, [status, session, dispatch]);
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
@@ -133,7 +90,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="auth-container">
-      {/* Left side image */}
+      {/* Left side image + hero panel */}
       <motion.div
         className="auth-left"
         initial={{ x: -80, opacity: 0, scale: 0.95 }}
@@ -146,7 +103,23 @@ const Login: React.FC = () => {
           width={470}
           height={470}
           quality={100}
+          className="auth-left-img"
         />
+        <div className="auth-left-overlay">
+          <div className="auth-hero-content">
+            <span className="hero-badge">Team recognition made easy</span>
+            <h2 className="hero-title">Welcome back to Gleam</h2>
+            <p className="hero-copy">
+              Sign in to celebrate wins, send thoughtful recognition, and keep your team engaged with a beautiful workspace.
+            </p>
+            <div className="hero-grid">
+              <div className="hero-chip">Fast login</div>
+              <div className="hero-chip">Reward moments</div>
+              <div className="hero-chip">Team-first feed</div>
+              <div className="hero-chip">Better culture</div>
+            </div>
+          </div>
+        </div>
       </motion.div>
 
       {/* Right side form */}
@@ -276,15 +249,15 @@ const Login: React.FC = () => {
               </motion.div>
 
               {/* Forgot password */}
-              <motion.p
-                onClick={() => setForgotOpen(true)}
-                className="forgot-password-link"
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3, delay: 0.5 }}
               >
-                Forgot password?
-              </motion.p>
+                <Link href="/forgot-password" className="forgot-password-link">
+                  Forgot password?
+                </Link>
+              </motion.div>
             </div>
 
             {/* Submit */}
@@ -342,12 +315,6 @@ const Login: React.FC = () => {
         </div>
       </motion.div>
 
-      {forgotOpen && (
-        <ForgotPasswordModal
-          open={forgotOpen}
-          onClose={() => setForgotOpen(false)}
-        />
-      )}
     </div>
   );
 };

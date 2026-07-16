@@ -2,74 +2,90 @@
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 
-const letters = ['G', 'l', 'e', 'a', 'm']
+type Letter = { char: string; x: number; y: number; rotate: number }
+
+// Each letter flies in from its own distinct direction/angle instead of a
+// uniform slide — this is what gives the "flying in from different angles"
+// feel rather than a single-axis stagger.
+const letters: Letter[] = [
+  { char: "G", x: -280, y: -190, rotate: -50 },
+  { char: "l", x: 10, y: -300, rotate: 25 },
+  { char: "e", x: 300, y: -160, rotate: 55 },
+  { char: "a", x: -240, y: 230, rotate: -35 },
+  { char: "m", x: 260, y: 210, rotate: 40 },
+]
+
+const letterVariants = {
+  hidden: (l: Letter) => ({
+    opacity: 0,
+    x: l.x,
+    y: l.y,
+    rotate: l.rotate,
+    scale: 0.4,
+  }),
+  visible: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    rotate: 0,
+    scale: 1,
+    transition: { type: "spring" as const, stiffness: 260, damping: 20 },
+  },
+}
+
+type Stage = "flying" | "sweep" | "tagline"
 
 export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
-  const [flippedIndexes, setFlippedIndexes] = useState<number[]>([])
-  const [showSmile, setShowSmile] = useState(false)
-  const [showTagline, setShowTagline] = useState(false)
+  const [stage, setStage] = useState<Stage>("flying")
 
   useEffect(() => {
-    letters.forEach((_, i) => {
-      setTimeout(() => {
-        setFlippedIndexes(prev => [...prev, i])
-      }, i * 500)
-    })
-
-    const smileTimer = setTimeout(() => {
-      setShowSmile(true)
-    }, letters.length * 500 + 300)
-
-    const taglineTimer = setTimeout(() => {
-      setShowTagline(true)
-    }, letters.length * 500 + 1300)
-
-    const finishTimer = setTimeout(() => {
-      onFinish()
-    }, letters.length * 500 + 3000)
+    // Letters finish landing (last one starts at (letters.length-1)*0.12s and
+    // takes ~0.7s to settle) — then the light sweep glides through, then the
+    // tagline, then we hand off to the homepage crossfade.
+    const sweepTimer = setTimeout(() => setStage("sweep"), 1450)
+    const taglineTimer = setTimeout(() => setStage("tagline"), 2650)
+    const finishTimer = setTimeout(() => onFinish(), 3900)
 
     return () => {
+      clearTimeout(sweepTimer)
       clearTimeout(taglineTimer)
       clearTimeout(finishTimer)
-      clearTimeout(smileTimer)
     }
   }, [onFinish])
 
   return (
     <div className="splash-container" onClick={onFinish}>
       <div className="splash-letter-container">
-        {letters.map((char, i) => (
-          <div key={i} className={`card ${flippedIndexes.includes(i) ? 'flipped' : ''}`}>
-            <div className="card-inner">
-              <div className="card-front"></div>
-              <div className="card-back">{char}</div>
-            </div>
-          </div>
+        {letters.map((l, i) => (
+          <motion.span
+            key={l.char}
+            className={`splash-letter ${stage !== "flying" ? "splash-letter-lit" : ""}`}
+            custom={l}
+            variants={letterVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: i * 0.12 }}
+          >
+            {l.char}
+          </motion.span>
         ))}
+
+        {stage !== "flying" && (
+          <motion.div
+            className="splash-sweep"
+            initial={{ x: "-160%" }}
+            animate={{ x: "160%" }}
+            transition={{ duration: 1.1, ease: "easeInOut" }}
+          />
+        )}
       </div>
 
-      {showSmile && (
-        <motion.svg
-          className="smile-svg"
-          viewBox="0 0 100 50"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          <path
-            d="M10,10 Q50,50 90,10"
-            className="smile-path"
-            fill="transparent"
-          />
-        </motion.svg>
-      )}
-
-      {showTagline && (
+      {stage === "tagline" && (
         <motion.p
           className="splash-tagline sparkle-text"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
           Brighten Someone&apos;s Day, One Word at a Time.
         </motion.p>

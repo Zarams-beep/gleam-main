@@ -7,6 +7,9 @@ import DashboardSidebar from "@/component/Dashboard/DashBoardSideBar";
 import { useAppDispatch } from "@/store/hooks";
 import { setCredentials } from "@/store/slices/userSlice";
 import { authApi } from "@/utils/api";
+import { SocketProvider } from "@/context/SocketContext";
+import { CallProvider } from "@/context/CallContext";
+import CallModal from "@/component/Dashboard/DashboardMessage/CallModal";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
@@ -24,14 +27,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   useEffect(() => {
     if (status !== "authenticated" || !session?.user || synced.current) return;
     const u = session.user as any;
-    const token = u.accessToken || localStorage.getItem("gleam_access_token");
-    if (!token) return;
 
     synced.current = true;
-    authApi.me(token).then((meRes: any) => {
+    // authApi.me() goes through the proxy, which attaches the token from the
+    // server-side NextAuth session — no client-held token needed here.
+    authApi.me().then((meRes: any) => {
       if (!meRes?.user) return;
       dispatch(setCredentials({
-        token,
         user: {
           id:         meRes.user.id,
           fullName:   meRes.user.fullName  || u.name || "",
@@ -68,14 +70,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   if (!session) return null;
 
   return (
-    <div className="dashboard-main-container">
-      <DashboardSidebar />
-      <div className="dashboard-main-container-2">
-        <DashboardNavBarPage />
-        <div className="dashboard-content">
-          {children}
+    <SocketProvider>
+      <CallProvider>
+        <div className="dashboard-main-container">
+          <DashboardSidebar />
+          <div className="dashboard-main-container-2">
+            <DashboardNavBarPage />
+            <div className="dashboard-content">
+              {children}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+        <CallModal />
+      </CallProvider>
+    </SocketProvider>
   );
 }
