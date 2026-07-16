@@ -4,6 +4,7 @@
 import "@/styles/HomePage.css";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import FeaturesSection from "./HomePageFeatures";
 import HomePageThird from "./HomePageThird";
 import FAQComponent from "@/component/FAQ";
@@ -12,6 +13,8 @@ import { motion } from "framer-motion";
 
 export default function HomePageSection() {
   const router = useRouter();
+  const { data: session, status } = useSession();
+  const isAuthed = status === "authenticated" && !!session;
 
   const scrollToFeatures = () => {
     document.getElementById("features-section")?.scrollIntoView({ behavior: "smooth" });
@@ -33,14 +36,15 @@ export default function HomePageSection() {
             at a time.
           </p>
           <div className="hero-cta">
-            {/* ✅ Wired to sign-up page */}
+            {/* Already-signed-in visitors go straight to their dashboard
+                instead of being sent back through sign-up. */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="cta-primary"
-              onClick={() => router.push("/sign-up")}
+              onClick={() => router.push(isAuthed ? "/dashboard" : "/sign-up")}
             >
-              Start for Free
+              {isAuthed ? "Go to Dashboard" : "Start for Free"}
             </motion.button>
 
             {/* ✅ Scrolls down to the features section */}
