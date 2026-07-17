@@ -109,7 +109,7 @@ export default function OnboardingPage() {
 
   return (
     <div style={{
-      minHeight: "100vh",
+      minHeight: "100dvh",
       background: "linear-gradient(135deg, #f4f3ff 0%, #faf9ff 50%, #ede9ff 100%)",
       display: "flex",
       alignItems: "center",

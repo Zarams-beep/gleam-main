@@ -90,7 +90,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }, [status]);
 
   if (status === "loading") return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", background: "#f9fafb", fontFamily: "'DM Sans', sans-serif" }}>
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100dvh", background: "#f9fafb", fontFamily: "'DM Sans', sans-serif" }}>
       <div style={{ textAlign: "center" }}>
         <div style={{ width: 36, height: 36, borderRadius: "50%", border: "3px solid #ede9fe", borderTopColor: "#5b50e8", animation: "spin 0.8s linear infinite", margin: "0 auto 12px" }} />
         <p style={{ color: "#9ca3af", fontSize: "0.9rem" }}>Loading...</p>
@@ -110,7 +110,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   if (trialExpired) {
     return (
       <div style={{
-        minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center",
+        minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center",
         background: "linear-gradient(135deg, #1a1740 0%, #2e2a6e 50%, #3d37a8 100%)",
         fontFamily: "'DM Sans', sans-serif", padding: "2rem",
       }}>

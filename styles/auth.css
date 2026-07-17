@@ -30,6 +30,12 @@
 .auth-container {
   width: 100%;
   min-height: 100vh;
+  /* 100vh on mobile is measured against the layout viewport (address bar
+     included), which is taller than what's actually visible on load —
+     that's what caused the oversized top/bottom gaps around the card on
+     phones. 100dvh tracks the real visible viewport instead. Browsers that
+     don't support dvh just keep the 100vh fallback above. */
+  min-height: 100dvh;
   display: flex;
   flex-direction: row;
   background: var(--auth-bg);
