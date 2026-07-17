@@ -1,5 +1,8 @@
 .gleam-footer{
-    @apply bg-primary text-foreground-subtle pt-9 pb-4 w-full flex flex-col gap-9;
+    @apply bg-primary text-foreground-subtle pt-9 pb-4 w-full;
+}
+.footer-inner{
+    @apply flex flex-col gap-9;
 }
 .footer-top{
     @apply flex justify-between items-start gap-x-5 gap-y-10 w-full mdd:flex-row flex-col

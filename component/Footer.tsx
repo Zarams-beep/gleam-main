@@ -42,12 +42,13 @@ export default function FooterSection() {
 
   return (
     <motion.footer
-      className="gleam-footer container"
+      className="gleam-footer"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, amount: 0.3 }}
       transition={{ duration: 0.6 }}
     >
+      <div className="footer-inner container">
       <div className="footer-top">
         {/* Brand */}
         <motion.div
@@ -160,6 +161,7 @@ export default function FooterSection() {
           Made with ❤️ by the Gleam team & community
         </p>
       </motion.div>
+      </div>
     </motion.footer>
   );
 }
