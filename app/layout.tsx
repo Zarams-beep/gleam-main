@@ -5,6 +5,13 @@ import "@/styles/Footer.css";
 export const metadata = {
   title: "Gleam",
   description: "Gleam",
+  // app/favicon.ico (now the real Gleam logo, not the leftover CRA default)
+  // is auto-detected by Next's file convention and needs no entry here.
+  // Declaring icon.png as the modern PNG variant via `icons` — instead of a
+  // manual <link> in <head> — avoids emitting duplicate rel="icon" tags.
+  icons: {
+    icon: "/icon.png",
+  },
 };
 
 export default function RootLayout({
@@ -16,9 +23,6 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-       <head>
-        <link rel="icon" href="/icon.png" type="image/png" />
-      </head>
       <body>
         <MainWrapper>{children}</MainWrapper>
       </body>
