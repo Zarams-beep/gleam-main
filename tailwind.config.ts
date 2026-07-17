@@ -10,8 +10,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Aligned to the dashboard/blog brand tokens (styles/Dashboard.css,
+        // styles/Blog.css: --dash-accent / --blog-accent / --blog-ink) so the
+        // marketing site, auth flow, and app all read as one product instead
+        // of three different palettes.
         primary: {
-          DEFAULT: "#1A1023",
+          DEFAULT: "#1a1740", // was #1A1023 — now matches --blog-ink exactly
           soft: "#2E1A35",
           surface: "#3B2E4A",
         },
@@ -20,8 +24,8 @@ const config: Config = {
           subtle: "#D6CFE6",
         },
         accent: {
-          DEFAULT: "#B794F4",
-          hover: "#A076F4",
+          DEFAULT: "#5b50e8", // was #B794F4 — now matches --dash-accent/--blog-accent
+          hover: "#4640d4", // was #A076F4 — now matches --dash-accent-hover
         },
         highlight: {
           DEFAULT: "#FFD166",
@@ -34,8 +38,13 @@ const config: Config = {
         },
       },
       fontFamily: {
-        classic: ['"Cormorant Garamond"', "serif"],
-        clean: ['"Open Sans"', "sans-serif"],
+        // classic/clean now resolve to the dashboard/blog brand fonts
+        // (Sora for headings, DM Sans for body) instead of the old
+        // Cormorant Garamond/Open Sans marketing-only pairing — every
+        // existing font-classic/font-clean class site-wide picks this up
+        // automatically, no JSX changes needed.
+        classic: ["Sora", "sans-serif"],
+        clean: ['"DM Sans"', "sans-serif"],
         divine: ['"EB Garamond"', "serif"],
         scripture: ['"Crimson Pro"', "serif"],
         calligraphy: ['"Great Vibes"', "cursive"],

@@ -1,7 +1,7 @@
 import ContactUs from "@/component/Contact/ContactUs";
 export const metadata = {
-  title: "Gleam Blog",
-  description: "This is Blog Page",
+  title: "Contact Us — Gleam",
+  description: "Get in touch with the Gleam team — questions, feedback, or just to say hi.",
 };
 export default function ContactUsPage (){
   return(

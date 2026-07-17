@@ -149,7 +149,7 @@ export default function FullStoryPage() {
                   whileTap={{ scale: 0.95 }}
                   viewport={{ once: false, amount: 0.3 }}
                 >
-                  <Link href="/auth/signup">
+                  <Link href="/sign-up">
                     <button className="">Join the Movement →</button>
                   </Link>
                 </motion.div>

@@ -133,16 +133,16 @@ export default function FooterSection() {
           <h4 className="footer-subtitle">Explore</h4>
           <ul className="link-list">
             <li>
-              <Link href="/about">About</Link>
+              <Link href="/about-us">About</Link>
             </li>
             <li>
-              <Link href="/features">Features</Link>
+              <Link href="/#features-section">Features</Link>
             </li>
             <li>
-              <Link href="/how-it-works">How It Works</Link>
+              <Link href="/#features-section">How It Works</Link>
             </li>
             <li>
-              <Link href="/story">Our Story</Link>
+              <Link href="/about-us/story">Our Story</Link>
             </li>
           </ul>
         </motion.div>

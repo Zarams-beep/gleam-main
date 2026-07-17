@@ -41,10 +41,10 @@
     @apply w-full py-3 px-2 outline-none border-none text-primary placeholder:text-primary placeholder:font-clean h-full sm:rounded-tl-md sm:rounded-bl-md rounded-none font-clean;
 }
 .email-input-group button{
-    @apply flex items-center justify-center gap-1 sm:w-[10rem] w-full bg-[#860404d6] hover:bg-[#8e040491] hover:cursor-pointer h-full text-foreground-subtle font-bold sm:rounded-tr-md sm:rounded-br-md rounded-none text-[13px] smm:text-[16px] font-clean;
+    @apply flex items-center justify-center gap-1 sm:w-[10rem] w-full bg-accent hover:bg-accent-hover hover:cursor-pointer h-full text-white font-bold sm:rounded-tr-md sm:rounded-br-md rounded-none text-[13px] smm:text-[16px] font-clean;
 }
 .form-error{
-    @apply text-[#860404d6] text-[12px] smm:text-[14px] font-bold font-clean;
+    @apply text-red-400 text-[12px] smm:text-[14px] font-bold font-clean;
 }
 .footer-socials{
     @apply flex items-center justify-between
@@ -59,7 +59,7 @@
     @apply flex flex-row mdd:flex-col gap-4 
 }
 .footer-links .link-list a{
-    @apply text-[12px] smm:text-[14px] text-foreground-subtle hover:text-[#6c6cf68c] font-clean;
+    @apply text-[12px] smm:text-[14px] text-foreground-subtle hover:text-accent font-clean;
 }
 .footer-credit{
     @apply text-[13px] smm:text-[15px] font-bold text-center

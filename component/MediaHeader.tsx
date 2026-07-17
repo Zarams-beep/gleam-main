@@ -42,9 +42,14 @@ export default function MediaHeaderSection() {
           </Link>
 
           {/* Burger */}
-          <div onClick={() => setDrawerOpen(true)} aria-label="menu" style={{ cursor: "pointer" }}>
+          <button
+            type="button"
+            onClick={() => setDrawerOpen(true)}
+            aria-label="Open menu"
+            style={{ cursor: "pointer", background: "none", border: "none", padding: 0, display: "flex" }}
+          >
             <CiMenuBurger className="burger-menu" />
-          </div>
+          </button>
         </div>
       </header>
 

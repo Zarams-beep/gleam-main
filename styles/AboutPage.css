@@ -4,7 +4,7 @@
 }
 /* about hero styling starts */
 .about-hero{
-    @apply bg-[#545850] py-10;
+    @apply bg-primary py-10;
 }
 .about-hero-2{
     @apply flex items-center justify-between flex-col lg:flex-row-reverse gap-10
@@ -84,7 +84,7 @@
     @apply flex flex-col items-center justify-center text-center gap-2
   }
   .story-page-2 .story-page-title h1{
-    @apply text-[#545850] font-bold text-[15px] sm:text-[18px] uppercase font-classic
+    @apply text-primary-surface font-bold text-[15px] sm:text-[18px] uppercase font-classic
   }
   .story-page-2 .story-page-title h2{
     @apply text-[20px] md:text-[30px] text-primary font-bold font-clean
@@ -96,7 +96,7 @@
     @apply text-center grid grid-cols-[repeat(auto-fit,minmax(70px,1fr))] w-full items-center justify-center gap-x-10 gap-y-0 pt-10;
   }
   .story-page-2 .story-page-year button{
-    @apply px-5 py-3 text-[#545850] cursor-pointer border-t-2 border-b-2 border-foreground-subtle rounded-md my-5 md:text-[16px] text-[14px] font-classic;
+    @apply px-5 py-3 text-primary-surface cursor-pointer border-t-2 border-b-2 border-foreground-subtle rounded-md my-5 md:text-[16px] text-[14px] font-classic;
   }
   .story-page-2 .story-page-year .story-active-year{
     @apply text-primary border-t-2 border-b-2 border-primary ;
@@ -114,7 +114,7 @@
     @apply text-center text-[15px] md:text-[20px] text-primary font-semibold underline font-classic;
   }
   .story-motion p{
-    @apply text-justify text-[#545850] leading-loose text-[13px] md:text-[15px] font-thin font-clean;
+    @apply text-justify text-primary-surface leading-loose text-[13px] md:text-[15px] font-thin font-clean;
   }
   .story-motion-btn{
     @apply flex items-center justify-center

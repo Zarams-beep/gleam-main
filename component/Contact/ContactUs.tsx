@@ -43,7 +43,6 @@ export default function ContactUs() {
         "J4dTxIKT0OvYb470E" // Your public key
       );
 
-      console.log("EmailJS result:", result.text);
       setSubmitted(true);
       reset();
     } catch (error) {
