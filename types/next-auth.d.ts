@@ -20,11 +20,14 @@ declare module "next-auth" {
   }
 
   interface User extends DefaultUser {
-    fullName:    string;
-    orgId:       string | null;
-    role:        string;
-    department:  string | null;
-    accessToken: string | null;
+    fullName:     string;
+    orgId:        string | null;
+    role:         string;
+    department:   string | null;
+    accessToken:  string | null;
+    // Present on credentials/OAuth sign-in so the jwt callback can silently
+    // mint a fresh access token instead of the session dying after 15 minutes.
+    refreshToken?: string | null;
   }
 }
 
@@ -37,6 +40,8 @@ declare module "next-auth/jwt" {
     role:        string;
     department:  string | null;
     accessToken: string | null;
+    refreshToken?:       string | null;
+    accessTokenExpires?: number | null; // ms epoch — decoded from the access JWT's `exp` claim
     error?:      string;
   }
 }

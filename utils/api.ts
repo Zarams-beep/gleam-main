@@ -25,6 +25,19 @@ async function req<T = any>(
   const data = await res.json().catch(() => ({}));
 
   if (!res.ok) {
+    // A 401 this far into a session means the backend rejected the token
+    // outright (expired refresh token, account deactivated, etc. — the
+    // proactive refresh in lib/auth.ts's jwt callback handles the normal
+    // 15-minute expiry before it ever gets here). Previously the raw backend
+    // string (e.g. "Token is invalid or expired.") was thrown as-is and
+    // rendered directly inside whatever widget made the call (see
+    // DashboardLeaderboard.tsx). Instead, treat it as "the session is dead"
+    // globally and send the user back to log in, rather than leaking a raw
+    // auth error into random dashboard UI.
+    if (res.status === 401 && typeof window !== "undefined" && !window.location.pathname.startsWith("/login")) {
+      window.location.href = "/login?reason=session_expired";
+      throw new Error("Your session has expired. Redirecting you to log in...");
+    }
     throw new Error(data?.error || `Request failed (${res.status})`);
   }
   return data as T;
@@ -81,6 +94,15 @@ export const orgApi = {
 
   updateDepartment: (department: string) =>
     req("/api/org/department", { method: "PATCH", body: JSON.stringify({ department }) }),
+
+  // Manual bank-transfer billing flow (no payment gateway integrated) — see
+  // gleam-backend/controllers/billingController.js. Deliberately reachable
+  // even when the org's trial/plan has lapsed (unlike the rest of orgApi's
+  // write routes), since this is exactly how an expired org gets unblocked.
+  billing: () => req("/api/org/billing"),
+
+  markPaid: (note?: string) =>
+    req("/api/org/billing/mark-paid", { method: "POST", body: JSON.stringify({ note }) }),
 };
 
 // ─── User ─────────────────────────────────────────────────────────────────────
