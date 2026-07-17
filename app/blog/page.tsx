@@ -1,11 +1,10 @@
-import BlogAll from "@/component/Blog/BlogAll";
+import BlogListing from "@/component/Blog/BlogListing";
 
 export const metadata = {
-  title: "Gleam Blog",
-  description: "This is Blog Page",
+  title: "Gleam Stories — Blog",
+  description: "Stories, wins, and lessons shared by the Gleam community.",
 };
+
 export default function Blog() {
- return(
-  <BlogAll/>
- )
+  return <BlogListing />;
 }

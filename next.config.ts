@@ -18,6 +18,13 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'cdn.pixabay.com',
       },
+      // Cloudinary — profile pictures (imgComponent.tsx) and blog cover
+      // images (Blog/BlogEditor.tsx) are both uploaded here directly from
+      // the browser, so next/image needs this host whitelisted to render them.
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
     ],
   },
 };

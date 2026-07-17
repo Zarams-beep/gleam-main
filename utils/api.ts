@@ -179,3 +179,32 @@ export const leaderboardApi = {
   },
   departments: () => req("/api/leaderboard/departments"),
 };
+
+// ─── Blog ─────────────────────────────────────────────────────────────────────
+// Public reads need no session; write/like/comment routes require one. Any
+// signed-in Gleam user (any org, or none) can author a post — see
+// gleam-backend/routes/postRoutes.js.
+export const blogApi = {
+  list: (page = 1, limit = 10) =>
+    req(`/api/posts?page=${page}&limit=${limit}`),
+
+  mine: () => req("/api/posts/mine"),
+
+  get: (slug: string) => req(`/api/posts/${slug}`),
+
+  create: (body: { title: string; content: string; excerpt?: string; coverImage?: string | null; status?: "draft" | "published" }) =>
+    req("/api/posts", { method: "POST", body: JSON.stringify(body) }),
+
+  update: (id: string, body: Partial<{ title: string; content: string; excerpt: string; coverImage: string | null; status: "draft" | "published" }>) =>
+    req(`/api/posts/${id}`, { method: "PATCH", body: JSON.stringify(body) }),
+
+  remove: (id: string) => req(`/api/posts/${id}`, { method: "DELETE" }),
+
+  toggleLike: (id: string) => req<{ liked: boolean; likeCount: number }>(`/api/posts/${id}/like`, { method: "POST" }),
+
+  addComment: (id: string, content: string) =>
+    req(`/api/posts/${id}/comments`, { method: "POST", body: JSON.stringify({ content }) }),
+
+  deleteComment: (postId: string, commentId: string) =>
+    req(`/api/posts/${postId}/comments/${commentId}`, { method: "DELETE" }),
+};

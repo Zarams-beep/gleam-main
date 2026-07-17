@@ -7,9 +7,10 @@ import { FaPen, FaTrash } from "react-icons/fa";
 interface ImageUploaderProps {
   onUploaded: (file: { url: string; publicId: string } | null) => void;
   folder?: string; // optional, defaults to "user_profiles"
+  label?: string;  // optional caption below the dropzone, defaults to "Upload Profile Picture"
 }
 
-const ImageUploader: React.FC<ImageUploaderProps> = ({ onUploaded, folder }) => {
+const ImageUploader: React.FC<ImageUploaderProps> = ({ onUploaded, folder, label }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -120,7 +121,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUploaded, folder }) => 
           <p>Click or drag to upload</p>
         </div>
       )}
-      <h4 className="input-label">Upload Profile Picture</h4>
+      <h4 className="input-label">{label || "Upload Profile Picture"}</h4>
     </div>
   );
 };
