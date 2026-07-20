@@ -61,7 +61,12 @@ export default function DashboardSidebar() {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="side-bar-header">
+      <div
+        className="side-bar-header"
+        onClick={() => router.push("/dashboard")}
+        style={{ cursor: "pointer" }}
+        title="Go to dashboard home"
+      >
         <PiSmileyMeltingFill className="logo-icon" />
         {!isCollapsed && <h3>GLEAM</h3>}
       </div>
