@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { fortuneApi } from "@/utils/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { FaShareAlt, FaCheck } from "react-icons/fa";
 
 export default function FortunePage() {
   const [fortune, setFortune]   = useState<string | null>(null);
@@ -14,7 +15,31 @@ export default function FortunePage() {
   const [cracksRemaining, setCracksRemaining] = useState(0);
   const [cracksTotal, setCracksTotal]         = useState(0);
   const [crackError, setCrackError]           = useState<string | null>(null);
+  const [copied, setCopied]                   = useState(false);
   const router = useRouter();
+
+  // Native share sheet where available (mobile / supported browsers), with a
+  // clipboard-copy fallback everywhere else — no backend involved, so a
+  // locked/unlocked fortune can be shared the instant it's on screen.
+  const handleShare = async () => {
+    if (!fortune) return;
+    const shareText = `🥠 "${fortune}" — shared from Gleam`;
+    if (typeof navigator !== "undefined" && (navigator as any).share) {
+      try {
+        await (navigator as any).share({ text: shareText, title: "My fortune cookie" });
+      } catch {
+        // user canceled the share sheet — not an error
+      }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(shareText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // clipboard blocked (permissions, insecure context) — silently no-op
+    }
+  };
 
   useEffect(() => {
     fortuneApi.today()
@@ -142,32 +167,52 @@ export default function FortunePage() {
             </motion.div>
           </AnimatePresence>
 
-          <motion.button
-            whileHover={cracksRemaining > 0 ? { scale: 1.04, boxShadow: "0 8px 28px rgba(245,158,11,0.35)" } : {}}
-            whileTap={cracksRemaining > 0 ? { scale: 0.97 } : {}}
-            onClick={getNew}
-            disabled={fetching || cracksRemaining <= 0}
-            style={{
-              background: cracksRemaining > 0 ? "linear-gradient(135deg, #f59e0b, #fbbf24)" : "#e5e7eb",
-              color: cracksRemaining > 0 ? "#fff" : "#9ca3af", border: "none", borderRadius: 14,
-              padding: "0.85rem 2.25rem", fontSize: "0.95rem",
-              fontWeight: 700, cursor: (fetching || cracksRemaining <= 0) ? "not-allowed" : "pointer",
-              fontFamily: "'Sora', sans-serif",
-              boxShadow: cracksRemaining > 0 ? "0 4px 20px rgba(245,158,11,0.25)" : "none",
-              display: "inline-flex", alignItems: "center", gap: 8,
-            }}
-          >
-            {fetching ? (
-              <>
-                <motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}>🥠</motion.span>
-                Cracking…
-              </>
-            ) : cracksRemaining > 0 ? (
-              <>🥠 Crack a New One</>
-            ) : (
-              <>🔒 No Cracks Left</>
-            )}
-          </motion.button>
+          <div style={{ display: "flex", justifyContent: "center", gap: 10, flexWrap: "wrap" }}>
+            <motion.button
+              whileHover={cracksRemaining > 0 ? { scale: 1.04, boxShadow: "0 8px 28px rgba(245,158,11,0.35)" } : {}}
+              whileTap={cracksRemaining > 0 ? { scale: 0.97 } : {}}
+              onClick={getNew}
+              disabled={fetching || cracksRemaining <= 0}
+              style={{
+                background: cracksRemaining > 0 ? "linear-gradient(135deg, #f59e0b, #fbbf24)" : "#e5e7eb",
+                color: cracksRemaining > 0 ? "#fff" : "#9ca3af", border: "none", borderRadius: 14,
+                padding: "0.85rem 2.25rem", fontSize: "0.95rem",
+                fontWeight: 700, cursor: (fetching || cracksRemaining <= 0) ? "not-allowed" : "pointer",
+                fontFamily: "'Sora', sans-serif",
+                boxShadow: cracksRemaining > 0 ? "0 4px 20px rgba(245,158,11,0.25)" : "none",
+                display: "inline-flex", alignItems: "center", gap: 8,
+              }}
+            >
+              {fetching ? (
+                <>
+                  <motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}>🥠</motion.span>
+                  Cracking…
+                </>
+              ) : cracksRemaining > 0 ? (
+                <>🥠 Crack a New One</>
+              ) : (
+                <>🔒 No Cracks Left</>
+              )}
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={handleShare}
+              style={{
+                background: copied ? "#ecfdf5" : "#fff",
+                color: copied ? "#059669" : "#92400e",
+                border: `1.5px solid ${copied ? "#a7f3d0" : "#fde68a"}`,
+                borderRadius: 14,
+                padding: "0.85rem 1.75rem", fontSize: "0.95rem",
+                fontWeight: 700, cursor: "pointer",
+                fontFamily: "'Sora', sans-serif",
+                display: "inline-flex", alignItems: "center", gap: 8,
+              }}
+            >
+              {copied ? (<><FaCheck size={13} /> Copied!</>) : (<><FaShareAlt size={13} /> Share</>)}
+            </motion.button>
+          </div>
 
           <p style={{ marginTop: 12, fontSize: "0.82rem", color: "#9ca3af" }}>
             {cracksRemaining > 0

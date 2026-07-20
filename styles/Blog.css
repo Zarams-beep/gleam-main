@@ -446,6 +446,25 @@
 }
 .blog-toolbar-toggle button.active { background: var(--blog-accent); color: #fff; }
 
+.blog-editor-image-panel {
+  border: 1.5px solid var(--blog-border);
+  border-top: none;
+  background: #f8f7ff;
+  padding: 0.9rem 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.blog-editor-image-panel-head {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.blog-editor-image-panel-head span { font-size: 0.8rem; font-weight: 700; color: var(--blog-ink); }
+.blog-editor-image-panel-cancel {
+  border: none; background: transparent; color: var(--blog-muted);
+  font-size: 0.78rem; font-weight: 600; cursor: pointer;
+}
+.blog-editor-image-panel-hint { font-size: 0.76rem; color: var(--blog-muted); margin: 0; }
+
 .blog-editor-panes {
   display: grid;
   grid-template-columns: 1fr 1fr;

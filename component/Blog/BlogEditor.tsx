@@ -30,6 +30,10 @@ export default function BlogEditor({ mode, postId, initial }: BlogEditorProps) {
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showImagePanel, setShowImagePanel] = useState(false);
+  // Bumping this remounts <ImageUploader/> with fresh internal state after
+  // each insert, so its preview/error don't linger for the next image.
+  const [imageUploaderKey, setImageUploaderKey] = useState(0);
 
   // Inserts markdown syntax around the current selection (or at the cursor,
   // with a placeholder, if nothing's selected) — a lightweight stand-in for
@@ -62,6 +66,33 @@ export default function BlogEditor({ mode, postId, initial }: BlogEditorProps) {
     });
   };
 
+  // Drops text at the cursor without touching any existing selection —
+  // used for the image markdown, which is generated after an async upload
+  // rather than typed by hand.
+  const insertAtCursor = (text: string) => {
+    const ta = textareaRef.current;
+    if (!ta) { setContent((c) => c + text); return; }
+    const start = ta.selectionStart;
+    const end = ta.selectionEnd;
+    const next = content.slice(0, start) + text + content.slice(end);
+    setContent(next);
+    requestAnimationFrame(() => {
+      ta.focus();
+      const cursor = start + text.length;
+      ta.setSelectionRange(cursor, cursor);
+    });
+  };
+
+  const handleImageUploaded = (file: { url: string; publicId: string } | null) => {
+    if (file?.url) {
+      insertAtCursor(`![image](${file.url})`);
+      setShowImagePanel(false);
+    }
+    // Force a fresh <ImageUploader/> next time the panel opens, whether
+    // this upload succeeded or the user picked a bad file.
+    setImageUploaderKey((k) => k + 1);
+  };
+
   const toolbar = [
     { icon: <FaBold size={13} />, label: "Bold", action: () => wrapSelection("**", "**", "bold text") },
     { icon: <FaItalic size={13} />, label: "Italic", action: () => wrapSelection("_", "_", "italic text") },
@@ -71,6 +102,7 @@ export default function BlogEditor({ mode, postId, initial }: BlogEditorProps) {
     { icon: <FaListOl size={13} />, label: "Numbered list", action: () => insertLinePrefix("1. ") },
     { icon: <FaLink size={13} />, label: "Link", action: () => wrapSelection("[", "](https://)", "link text") },
     { icon: <FaCode size={13} />, label: "Code", action: () => wrapSelection("`", "`", "code") },
+    { icon: <FaImage size={13} />, label: "Insert image", action: () => setShowImagePanel((v) => !v) },
   ];
 
   const validate = () => {
@@ -144,6 +176,26 @@ export default function BlogEditor({ mode, postId, initial }: BlogEditorProps) {
           <button type="button" className={viewMode === "preview" ? "active" : ""} onClick={() => setViewMode("preview")}>Preview</button>
         </div>
       </div>
+
+      {showImagePanel && (
+        <div className="blog-editor-image-panel">
+          <div className="blog-editor-image-panel-head">
+            <span>Insert an image into your story</span>
+            <button type="button" className="blog-editor-image-panel-cancel" onClick={() => setShowImagePanel(false)}>
+              Cancel
+            </button>
+          </div>
+          <ImageUploader
+            key={imageUploaderKey}
+            folder="blog_images"
+            label="Upload an image — it'll drop in at your cursor"
+            onUploaded={handleImageUploaded}
+          />
+          <p className="blog-editor-image-panel-hint">
+            Inserts as Markdown (<code>![image](url)</code>) wherever your cursor was in the text box.
+          </p>
+        </div>
+      )}
 
       <div className={`blog-editor-panes ${viewMode !== "split" ? "single-pane" : ""}`}>
         {viewMode !== "preview" && (

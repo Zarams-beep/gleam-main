@@ -1,9 +1,37 @@
 "use client";
 import { IoIosCall, IoIosVideocam, IoIosArrowBack, IoIosSend } from "react-icons/io";
+import { MdHistory, MdClose, MdCallMissed, MdCallEnd, MdCall } from "react-icons/md";
 import { useEffect, useRef, useState } from "react";
 import { useSocket } from "@/context/SocketContext";
 import { useCall } from "@/context/CallContext";
+import { messageApi } from "@/utils/api";
 import type { ChatMessage, Conversation } from "@/types/auth";
+
+type CallLogEntry = {
+  id: string;
+  callType: "audio" | "video";
+  status: "ringing" | "accepted" | "missed" | "rejected" | "canceled" | "completed";
+  startedAt: string;
+  durationSeconds: number;
+  caller: { id: string; fullName: string; image?: string | null } | null;
+  callee: { id: string; fullName: string; image?: string | null } | null;
+};
+
+const formatDuration = (seconds: number) => {
+  if (!seconds) return null;
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${String(s).padStart(2, "0")}`;
+};
+
+const callStatusLabel: Record<CallLogEntry["status"], string> = {
+  ringing: "Ringing…",
+  accepted: "In call",
+  missed: "Missed",
+  rejected: "Declined",
+  canceled: "Canceled",
+  completed: "Completed",
+};
 
 type ChatWindowProps = {
   conversation: Conversation;
@@ -26,6 +54,9 @@ export default function ChatWindow({
 
   const [draft, setDraft] = useState("");
   const [sending, setSending] = useState(false);
+  const [showCallLog, setShowCallLog] = useState(false);
+  const [callLogs, setCallLogs] = useState<CallLogEntry[]>([]);
+  const [loadingCallLogs, setLoadingCallLogs] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isTypingLocallyRef = useRef(false);
@@ -85,6 +116,20 @@ export default function ChatWindow({
 
   const callDisabled = !otherUser || callStatus !== "idle";
 
+  const openCallLog = async () => {
+    setShowCallLog(true);
+    setLoadingCallLogs(true);
+    try {
+      const res: any = await messageApi.callLogs(conversation.id);
+      setCallLogs(res.calls || []);
+    } catch (err) {
+      console.error("Failed to load call log:", err);
+      setCallLogs([]);
+    } finally {
+      setLoadingCallLogs(false);
+    }
+  };
+
   return (
     <div className="chat-window">
       {/* Header */}
@@ -109,6 +154,12 @@ export default function ChatWindow({
         </div>
 
         <div className="chat-header-right">
+          <MdHistory
+            className="iconCall"
+            title="Call history"
+            aria-label="Call history"
+            onClick={openCallLog}
+          />
           <IoIosCall
             className={`iconCall ${callDisabled ? "iconCall-disabled" : ""}`}
             onClick={() => otherUser && !callDisabled && startCall(
@@ -168,6 +219,75 @@ export default function ChatWindow({
           <IoIosSend />
         </button>
       </div>
+
+      {/* Call history modal — audit trail of every ring/accept/reject/cancel/end */}
+      {showCallLog && (
+        <div
+          onClick={() => setShowCallLog(false)}
+          style={{
+            position: "fixed", inset: 0, background: "rgba(15,15,30,0.45)",
+            display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200,
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: "#fff", borderRadius: 16, width: "min(420px, 92vw)",
+              maxHeight: "70vh", overflow: "hidden", display: "flex", flexDirection: "column",
+              boxShadow: "0 12px 48px rgba(0,0,0,0.25)",
+            }}
+          >
+            <div style={{
+              display: "flex", alignItems: "center", justifyContent: "space-between",
+              padding: "1rem 1.25rem", borderBottom: "1px solid #eee",
+            }}>
+              <h3 style={{ margin: 0, fontSize: "1.05rem", fontFamily: "'Sora', sans-serif" }}>Call history</h3>
+              <button
+                onClick={() => setShowCallLog(false)}
+                aria-label="Close"
+                style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.3rem", color: "#888", display: "flex" }}
+              >
+                <MdClose />
+              </button>
+            </div>
+            <div style={{ overflowY: "auto", padding: "0.5rem 0.75rem" }}>
+              {loadingCallLogs ? (
+                <p style={{ padding: "1rem", color: "#999", fontSize: "0.9rem" }}>Loading…</p>
+              ) : callLogs.length === 0 ? (
+                <p style={{ padding: "1rem", color: "#999", fontSize: "0.9rem" }}>No calls yet with {otherUser?.fullName ?? "this person"}.</p>
+              ) : (
+                callLogs.map((c) => {
+                  const outgoing = c.caller?.id === currentUserId;
+                  const icon = c.status === "missed" || c.status === "canceled"
+                    ? <MdCallMissed color="#dc2626" />
+                    : c.status === "rejected"
+                    ? <MdCallEnd color="#dc2626" />
+                    : <MdCall color="#16a34a" />;
+                  const duration = formatDuration(c.durationSeconds);
+                  return (
+                    <div key={c.id} style={{
+                      display: "flex", alignItems: "center", gap: 10,
+                      padding: "0.65rem 0.5rem", borderBottom: "1px solid #f3f3f5",
+                    }}>
+                      <span style={{ fontSize: "1.1rem", display: "flex" }}>{icon}</span>
+                      <div style={{ flex: 1 }}>
+                        <p style={{ margin: 0, fontSize: "0.88rem", fontWeight: 600, color: "#1a1740" }}>
+                          {outgoing ? "Outgoing" : "Incoming"} {c.callType === "video" ? "video" : "audio"} call
+                        </p>
+                        <p style={{ margin: "2px 0 0", fontSize: "0.78rem", color: "#9ca3af" }}>
+                          {new Date(c.startedAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}
+                          {" · "}{callStatusLabel[c.status]}
+                          {duration ? ` · ${duration}` : ""}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

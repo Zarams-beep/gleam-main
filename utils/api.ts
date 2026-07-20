@@ -178,6 +178,11 @@ export const messageApi = {
 
   markRead: (conversationId: string) =>
     req(`/api/message/conversations/${conversationId}/read`, { method: "POST" }),
+
+  // Call audit trail — every ring/accept/reject/cancel/end for this
+  // conversation. See gleam-backend/models/CallLog.js.
+  callLogs: (conversationId: string) =>
+    req(`/api/message/conversations/${conversationId}/calls`),
 };
 
 // ─── Admin ───────────────────────────────────────────────────────────────────
@@ -190,6 +195,16 @@ export const adminApi = {
     req(`/api/admin/reject/${userId}`, { method: "POST", body: JSON.stringify(body) }),
   updateMember: (userId: string, body: { role?: string; department?: string }) =>
     req(`/api/admin/member/${userId}`, { method: "PATCH", body: JSON.stringify(body) }),
+
+  // Platform-wide fortune cookie pool — super_admin only (see
+  // gleam-backend/controllers/adminController.js).
+  fortunes: {
+    list: () => req("/api/admin/fortunes"),
+    create: (text: string, category?: string) =>
+      req("/api/admin/fortunes", { method: "POST", body: JSON.stringify({ text, category }) }),
+    setActive: (id: string, isActive: boolean) =>
+      req(`/api/admin/fortunes/${id}`, { method: "PATCH", body: JSON.stringify({ isActive }) }),
+  },
 };
 
 // ─── Leaderboard ─────────────────────────────────────────────────────────────
@@ -221,6 +236,11 @@ export const blogApi = {
     req(`/api/posts/${id}`, { method: "PATCH", body: JSON.stringify(body) }),
 
   remove: (id: string) => req(`/api/posts/${id}`, { method: "DELETE" }),
+
+  // Coin-gated read — see gleam-backend/controllers/postController.js
+  // (BLOG_UNLOCK_COST). Flat price per post, charged once per reader.
+  unlock: (id: string) =>
+    req<{ message: string; content: string; newCoinBalance?: number }>(`/api/posts/${id}/unlock`, { method: "POST" }),
 
   toggleLike: (id: string) => req<{ liked: boolean; likeCount: number }>(`/api/posts/${id}/like`, { method: "POST" }),
 

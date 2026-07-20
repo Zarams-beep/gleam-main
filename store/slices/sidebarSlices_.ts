@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RiHomeSmileLine, RiTeamFill } from "react-icons/ri";
 import { LuMessageCircleHeart } from "react-icons/lu";
 import { FaAward, FaPaperPlane, FaInbox } from "react-icons/fa";
-import { MdCookie, MdLeaderboard, MdAdminPanelSettings } from "react-icons/md";
+import { MdCookie, MdLeaderboard, MdAdminPanelSettings, MdSportsEsports } from "react-icons/md";
 import { FiSettings, FiUser } from "react-icons/fi";
 import { IconType } from "react-icons";
 
@@ -31,6 +31,7 @@ export const initialState: SidebarState = {
     { id: "team",        label: "Team",        icon: RiTeamFill,           path: "/dashboard/team" },
     { id: "fortune",     label: "Fortune",     icon: MdCookie,             path: "/dashboard/fortune" },
     { id: "awards",      label: "Awards",      icon: FaAward,              path: "/dashboard/awards" },
+    { id: "games",       label: "Games",       icon: MdSportsEsports,      path: "/dashboard/games" },
     { id: "message",     label: "Message",     icon: LuMessageCircleHeart,    path: "/dashboard/message" },
     { id: "admin",       label: "Admin Panel",  icon: MdAdminPanelSettings,   path: "/dashboard/admin", adminOnly: true },
     { id: "profile",     label: "Profile",      icon: FiUser,                 path: "/dashboard/profile" },

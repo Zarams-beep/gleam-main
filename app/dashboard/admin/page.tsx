@@ -10,11 +10,13 @@ import {
   MdAdminPanelSettings, MdPeople, MdOutlinePendingActions,
   MdOutlineBusinessCenter, MdOutlineBarChart, MdOutlineSettings,
 } from "react-icons/md";
-import { FiCopy, FiCheck, FiUsers, FiArrowRight, FiUserPlus } from "react-icons/fi";
+import { FiCopy, FiCheck, FiUsers, FiArrowRight, FiUserPlus, FiPlus, FiToggleLeft, FiToggleRight } from "react-icons/fi";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { RiShieldStarFill } from "react-icons/ri";
 import { FaUserCheck, FaUserTimes, FaUserCog, FaCrown } from "react-icons/fa";
 import { orgApi as orgApiImport } from "@/utils/api";
+
+type FortuneRow = { id: string; text: string; category: string; isActive: boolean; createdAt: string };
 
 const ROLES = ["member", "employee", "hr", "org_admin", "admin"];
 
@@ -36,8 +38,11 @@ export default function SuperAdminDashboard() {
   const router = useRouter();
 
   const isAdmin = ["super_admin", "admin", "org_admin"].includes(user?.role ?? "");
+  // Fortunes are a platform-wide pool (not org-scoped), so management is
+  // restricted to super_admin only — matches the backend's isSuperAdmin() gate.
+  const isSuperAdmin = user?.role === "super_admin";
 
-  const [activeTab, setActiveTab]       = useState<"overview" | "pending" | "members" | "org">("overview");
+  const [activeTab, setActiveTab]       = useState<"overview" | "pending" | "members" | "org" | "fortunes">("overview");
   const [pending, setPending]           = useState<PendingUser[]>([]);
   const [members, setMembers]           = useState<Member[]>([]);
   const [orgData, setOrgData]           = useState<any>(null);
@@ -49,6 +54,14 @@ export default function SuperAdminDashboard() {
   const [processing, setProcessing]     = useState<string | null>(null);
   const [toast, setToast]               = useState<{ msg: string; type: "success" | "error" } | null>(null);
   const [copied, setCopied]             = useState(false);
+
+  const [fortunes, setFortunes]           = useState<FortuneRow[]>([]);
+  const [fortunesLoading, setFortunesLoading] = useState(false);
+  const [newFortuneText, setNewFortuneText]   = useState("");
+  const [newFortuneCategory, setNewFortuneCategory] = useState("general");
+  const [fortuneSubmitting, setFortuneSubmitting]   = useState(false);
+  const [fortuneToggling, setFortuneToggling]       = useState<string | null>(null);
+  const [fortuneError, setFortuneError]             = useState<string | null>(null);
 
   useEffect(() => {
     // Give Redux 300ms to hydrate from persist before checking role
@@ -74,6 +87,51 @@ export default function SuperAdminDashboard() {
       if (sRes.status === "fulfilled") setOrgStats(sRes.value?.stats ?? null);
     } catch (e) { console.error(e); }
     finally { setLoading(false); }
+  };
+
+  const loadFortunes = async () => {
+    setFortunesLoading(true);
+    try {
+      const res: any = await adminApi.fortunes.list();
+      setFortunes(res.fortunes ?? []);
+    } catch (e) { console.error(e); }
+    finally { setFortunesLoading(false); }
+  };
+
+  useEffect(() => {
+    if (isSuperAdmin && activeTab === "fortunes" && fortunes.length === 0 && !fortunesLoading) {
+      loadFortunes();
+    }
+  }, [isSuperAdmin, activeTab]);
+
+  const handleCreateFortune = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const text = newFortuneText.trim();
+    if (!text || fortuneSubmitting) return;
+    setFortuneSubmitting(true);
+    setFortuneError(null);
+    try {
+      const res: any = await adminApi.fortunes.create(text, newFortuneCategory.trim() || "general");
+      setFortunes((f) => [res.fortune, ...f]);
+      setNewFortuneText("");
+      showToast("🥠 Fortune added!");
+    } catch (e: any) {
+      setFortuneError(e.message || "Couldn't add that fortune.");
+    } finally {
+      setFortuneSubmitting(false);
+    }
+  };
+
+  const handleToggleFortune = async (f: FortuneRow) => {
+    setFortuneToggling(f.id);
+    try {
+      const res: any = await adminApi.fortunes.setActive(f.id, !f.isActive);
+      setFortunes((prev) => prev.map((x) => x.id === f.id ? { ...x, isActive: res.fortune?.isActive ?? !f.isActive } : x));
+    } catch (e: any) {
+      showToast("❌ " + (e.message || "Failed"), "error");
+    } finally {
+      setFortuneToggling(null);
+    }
   };
 
   const showToast = (msg: string, type: "success" | "error" = "success") => {
@@ -150,6 +208,7 @@ export default function SuperAdminDashboard() {
     { id: "pending",  label: `Pending (${pending.length})`, icon: <MdOutlinePendingActions size={16} /> },
     { id: "members",  label: `Members (${members.length})`, icon: <MdPeople size={16} /> },
     { id: "org",      label: "Organisation", icon: <HiOutlineBuildingOffice2 size={16} /> },
+    ...(isSuperAdmin ? [{ id: "fortunes", label: "Fortunes", icon: <span style={{ fontSize: 14 }}>🥠</span> }] : []),
   ] as const;
 
   return (
@@ -580,6 +639,97 @@ export default function SuperAdminDashboard() {
                 </div>
               </div>
             )}
+          </motion.div>
+        )}
+
+        {/* ─── FORTUNES (super_admin only) ─── */}
+        {activeTab === "fortunes" && isSuperAdmin && (
+          <motion.div key="fortunes" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              {/* Add new fortune */}
+              <div style={{ background: "#fff", borderRadius: 18, border: "1.5px solid #f0eeff", padding: "1.5rem", boxShadow: "0 2px 16px rgba(91,80,232,0.05)" }}>
+                <h3 style={{ fontFamily: "'Sora', sans-serif", fontWeight: 700, fontSize: "1rem", margin: "0 0 1rem", color: "#1a1740" }}>
+                  🥠 Add a New Fortune
+                </h3>
+                <form onSubmit={handleCreateFortune} style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "flex-start" }}>
+                  <textarea
+                    placeholder="Write a new fortune… (3–300 characters)"
+                    value={newFortuneText}
+                    onChange={(e) => setNewFortuneText(e.target.value)}
+                    maxLength={300}
+                    rows={2}
+                    style={{ flex: "1 1 320px", padding: "0.6rem 0.8rem", borderRadius: 10, border: "1.5px solid #e4e2f8", fontSize: "0.85rem", resize: "none", boxSizing: "border-box", fontFamily: "'DM Sans', sans-serif" }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="category"
+                    value={newFortuneCategory}
+                    onChange={(e) => setNewFortuneCategory(e.target.value)}
+                    style={{ width: 130, padding: "0.6rem 0.8rem", borderRadius: 10, border: "1.5px solid #e4e2f8", fontSize: "0.85rem", boxSizing: "border-box", fontFamily: "'DM Sans', sans-serif" }}
+                  />
+                  <button
+                    type="submit"
+                    disabled={!newFortuneText.trim() || fortuneSubmitting}
+                    style={{ display: "flex", alignItems: "center", gap: 6, background: "#5b50e8", color: "#fff", border: "none", borderRadius: 10, padding: "0.6rem 1.2rem", fontWeight: 700, cursor: "pointer", fontSize: "0.85rem", fontFamily: "'DM Sans', sans-serif", opacity: (!newFortuneText.trim() || fortuneSubmitting) ? 0.6 : 1, whiteSpace: "nowrap" }}
+                  >
+                    <FiPlus size={14} /> {fortuneSubmitting ? "Adding…" : "Add Fortune"}
+                  </button>
+                </form>
+                {fortuneError && <p style={{ marginTop: 10, fontSize: "0.8rem", color: "#dc2626" }}>{fortuneError}</p>}
+                <p style={{ marginTop: 10, fontSize: "0.78rem", color: "#9ca3af" }}>
+                  New fortunes go live for everyone within about a minute (cached for 60s on the server).
+                </p>
+              </div>
+
+              {/* List */}
+              <div style={{ background: "#fff", borderRadius: 18, border: "1.5px solid #f0eeff", padding: "1.5rem", boxShadow: "0 2px 16px rgba(91,80,232,0.05)" }}>
+                <h3 style={{ fontFamily: "'Sora', sans-serif", fontWeight: 700, fontSize: "1rem", margin: "0 0 1.25rem", color: "#1a1740" }}>
+                  All Fortunes ({fortunes.length})
+                </h3>
+                {fortunesLoading ? (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                    {[...Array(4)].map((_, i) => <div key={i} style={{ height: 52, borderRadius: 10, background: "#f5f3ff" }} />)}
+                  </div>
+                ) : fortunes.length === 0 ? (
+                  <p style={{ color: "#9ca3af", fontSize: "0.85rem" }}>No fortunes yet — add the first one above.</p>
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    {fortunes.map((f) => (
+                      <div key={f.id} style={{
+                        display: "flex", alignItems: "center", gap: 12,
+                        padding: "0.75rem 1rem", borderRadius: 12,
+                        background: f.isActive ? "#faf9ff" : "#f9fafb",
+                        border: `1.5px solid ${f.isActive ? "#e4e2f8" : "#f0f0f0"}`,
+                        opacity: f.isActive ? 1 : 0.6,
+                      }}>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <p style={{ margin: 0, fontSize: "0.87rem", color: "#1a1740", fontWeight: 600 }}>{f.text}</p>
+                          <span style={{ fontSize: "0.7rem", background: "#ede9fe", color: "#7c3aed", borderRadius: 20, padding: "1px 8px", fontWeight: 700, marginTop: 4, display: "inline-block" }}>
+                            {f.category}
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => handleToggleFortune(f)}
+                          disabled={fortuneToggling === f.id}
+                          style={{
+                            display: "flex", alignItems: "center", gap: 6,
+                            background: "none", border: "none", cursor: "pointer",
+                            color: f.isActive ? "#059669" : "#9ca3af",
+                            fontWeight: 700, fontSize: "0.8rem",
+                            fontFamily: "'DM Sans', sans-serif",
+                            opacity: fortuneToggling === f.id ? 0.5 : 1,
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {f.isActive ? <FiToggleRight size={22} /> : <FiToggleLeft size={22} />}
+                          {f.isActive ? "Active" : "Inactive"}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

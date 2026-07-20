@@ -45,6 +45,12 @@ export interface BlogPost {
   updatedAt: string;
   likedByViewer?: boolean;
   author: BlogAuthor;
+  // Coin-gated reads — see gleam-backend/controllers/postController.js.
+  // `locked` is only meaningful on the single-post detail response (the list
+  // endpoint never includes full content anyway); `unlockCost` is included
+  // whenever `locked` is present so the UI never has to hardcode the price.
+  locked?: boolean;
+  unlockCost?: number;
 }
 
 export interface BlogComment {

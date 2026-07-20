@@ -7,10 +7,12 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import {
   FaArrowLeft, FaHeart, FaRegHeart, FaRegComment, FaRegEye,
-  FaPen, FaTrash, FaClock,
+  FaPen, FaTrash, FaClock, FaLock, FaCoins,
 } from "react-icons/fa";
 import "@/styles/Blog.css";
 import { blogApi } from "@/utils/api";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setStats } from "@/store/slices/statsSlice";
 import { BlogComment, BlogPost, formatRelative, initials } from "./blogUtils";
 
 export default function BlogPostDetail({ slug }: { slug: string }) {
@@ -18,6 +20,8 @@ export default function BlogPostDetail({ slug }: { slug: string }) {
   const router = useRouter();
   const isAuthed = status === "authenticated" && !!session;
   const viewerId = (session?.user as any)?.id as string | undefined;
+  const dispatch = useAppDispatch();
+  const stats = useAppSelector((s) => s.stats.stats);
 
   const [post, setPost] = useState<BlogPost | null>(null);
   const [comments, setComments] = useState<BlogComment[]>([]);
@@ -27,6 +31,8 @@ export default function BlogPostDetail({ slug }: { slug: string }) {
   const [commentText, setCommentText] = useState("");
   const [postingComment, setPostingComment] = useState(false);
   const [deletingId, setDeletingId] = useState(false);
+  const [unlocking, setUnlocking] = useState(false);
+  const [unlockError, setUnlockError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -86,6 +92,24 @@ export default function BlogPostDetail({ slug }: { slug: string }) {
       await blogApi.deleteComment(post.id, commentId);
     } catch {
       load(); // reconcile on failure
+    }
+  };
+
+  const handleUnlock = async () => {
+    if (!post) return;
+    if (!isAuthed) { router.push("/login"); return; }
+    setUnlocking(true);
+    setUnlockError(null);
+    try {
+      const res = await blogApi.unlock(post.id);
+      setPost((p) => p ? { ...p, content: res.content, locked: false } : p);
+      if (typeof res.newCoinBalance === "number" && stats) {
+        dispatch(setStats({ ...stats, coins: res.newCoinBalance }));
+      }
+    } catch (err: any) {
+      setUnlockError(err?.message || "Couldn't unlock this post. Please try again.");
+    } finally {
+      setUnlocking(false);
     }
   };
 
@@ -163,9 +187,51 @@ export default function BlogPostDetail({ slug }: { slug: string }) {
         )}
       </div>
 
-      <div className="blog-article">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content || ""}</ReactMarkdown>
-      </div>
+      {post.locked && post.excerpt && (
+        <p style={{ fontSize: "1.05rem", lineHeight: 1.7, color: "#3a3660", margin: "0 0 0.5rem" }}>
+          {post.excerpt}
+        </p>
+      )}
+
+      {post.locked ? (
+        <div
+          style={{
+            background: "linear-gradient(135deg, #f5f3ff, #ede9fe)",
+            border: "1.5px solid #ddd6fe",
+            borderRadius: 20, padding: "2.5rem 2rem",
+            textAlign: "center", margin: "1.5rem 0",
+          }}
+        >
+          <div style={{ fontSize: "2.25rem", color: "#7c3aed", marginBottom: 10 }}><FaLock /></div>
+          <p style={{ fontWeight: 700, color: "#4c1d95", margin: "0 0 6px", fontSize: "1.05rem", fontFamily: "'Sora', sans-serif" }}>
+            The rest of this story is locked
+          </p>
+          <p style={{ color: "#6d28d9", margin: "0 0 20px", fontSize: "0.88rem", lineHeight: 1.6 }}>
+            Unlock the full read for {post.unlockCost ?? 3} coins — earned by sending compliments.
+          </p>
+          <button
+            className="blog-btn blog-btn-primary"
+            disabled={unlocking}
+            onClick={handleUnlock}
+            style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
+          >
+            <FaCoins size={13} />
+            {unlocking ? "Unlocking…" : `Unlock for ${post.unlockCost ?? 3} coins`}
+          </button>
+          {unlockError && (
+            <p style={{ marginTop: 12, fontSize: "0.82rem", color: "#dc2626" }}>{unlockError}</p>
+          )}
+          {!isAuthed && (
+            <p style={{ marginTop: 12, fontSize: "0.8rem", color: "#7c6ef5" }}>
+              <Link href="/login" style={{ color: "inherit", textDecoration: "underline" }}>Sign in</Link> to unlock and read.
+            </p>
+          )}
+        </div>
+      ) : (
+        <div className="blog-article">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content || ""}</ReactMarkdown>
+        </div>
+      )}
 
       {post.status === "published" && (
         <>
