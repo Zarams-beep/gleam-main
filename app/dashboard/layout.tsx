@@ -1,6 +1,6 @@
 "use client";
 import { useSession, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import DashboardNavBarPage from "@/component/Dashboard/DashBoardNavBar";
 import DashboardSidebar from "@/component/Dashboard/DashBoardSideBar";
@@ -41,6 +41,7 @@ const PLAN_POLL_MS = 60_000;
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
   const router   = useRouter();
+  const pathname = usePathname();
   const dispatch = useAppDispatch();
   const synced    = useRef(false); // prevent double-fetch
   const [orgPlan, setOrgPlan]     = useState<OrgPlanStatus | null>(null);
@@ -128,6 +129,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const trialExpired = orgPlan?.plan === "expired" || orgPlan?.plan === "canceled";
 
+  // Messaging/calling within conversations you already have cost nothing to
+  // keep running (WebRTC calls are peer-to-peer, and the backend only gates
+  // *starting new* conversations on an expired trial — see
+  // gleam-backend/routes/messageRoutes.js), so unlike every other dashboard
+  // route, /dashboard/message stays reachable through the grace period
+  // instead of being replaced by the full-screen paywall below.
+  const isMessagingRoute = pathname?.startsWith("/dashboard/message") ?? false;
+  const showPaywall = trialExpired && !isMessagingRoute;
+
   // Fetch bank-transfer details + any existing payment claim once the org
   // actually hits the paywall — no point loading this for everyone else.
   useEffect(() => {
@@ -180,7 +190,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   // show the account to pay into, let the admin flag "I've paid", and the
   // site owner approves it by email (see gleam-backend/controllers/
   // billingController.js). Approval flips the org straight back to active.
-  if (trialExpired) {
+  if (showPaywall) {
     return (
       <div style={{
         minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center",
@@ -280,6 +290,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           )}
 
           <button
+            onClick={() => router.push("/dashboard/message")}
+            style={{
+              width: "100%", padding: "0.75rem", marginBottom: 10,
+              background: "#f0edff", border: "1.5px solid #ddd6fe", borderRadius: 14,
+              color: "#5b50e8", fontWeight: 700, fontSize: "0.88rem", cursor: "pointer",
+            }}
+          >
+            💬 Messaging & calls still work — go to Messages
+          </button>
+
+          <button
             onClick={() => signOut({ callbackUrl: "/login" })}
             style={{
               width: "100%", padding: "0.75rem", background: "none",
@@ -301,7 +322,27 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <DashboardSidebar />
           <div className="dashboard-main-container-2">
             <DashboardNavBarPage />
-            {trialDaysLeft !== null && (
+            {trialExpired ? (
+              // Only reachable here when isMessagingRoute — everywhere else
+              // showPaywall already took over the whole screen above.
+              <div style={{
+                background: "#fef3c7", color: "#92400e",
+                textAlign: "center", fontSize: "0.82rem", fontWeight: 600,
+                padding: "0.55rem 1rem", fontFamily: "'DM Sans', sans-serif",
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 10, flexWrap: "wrap",
+              }}>
+                <span>
+                  Your trial has ended — messaging & calls stay on during your grace period
+                  {graceDaysLeft !== null ? ` (${graceDaysLeft} day${graceDaysLeft === 1 ? "" : "s"} left)` : ""}, but the rest of the dashboard is paused.
+                </span>
+                <button
+                  onClick={() => router.push("/dashboard")}
+                  style={{ background: "#92400e", color: "#fff", border: "none", borderRadius: 8, padding: "3px 10px", fontWeight: 700, fontSize: "0.76rem", cursor: "pointer" }}
+                >
+                  View billing
+                </button>
+              </div>
+            ) : trialDaysLeft !== null && (
               <div style={{
                 background: trialDaysLeft <= 5 ? "#fef3c7" : "#f0edff",
                 color: trialDaysLeft <= 5 ? "#92400e" : "#5b50e8",
