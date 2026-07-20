@@ -51,6 +51,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [markPaidBusy, setMarkPaidBusy]     = useState(false);
   const [markPaidError, setMarkPaidError]   = useState<string | null>(null);
   const [markPaidJustSubmitted, setMarkPaidJustSubmitted] = useState(false);
+  const [showTrialPopup, setShowTrialPopup] = useState(false);
 
   // Auth protection
   useEffect(() => {
@@ -139,9 +140,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const showPaywall = trialExpired && !isMessagingRoute;
 
   // Fetch bank-transfer details + any existing payment claim once the org
-  // actually hits the paywall — no point loading this for everyone else.
+  // hits the paywall, OR while still on an active trial (so the once-a-day
+  // popup and the dashboard-home reminder card below can show the same bank
+  // details ahead of time, letting people pay before they're ever blocked).
+  const needsBillingInfo = trialExpired || orgPlan?.plan === "trial";
   useEffect(() => {
-    if (!trialExpired) { setBilling(null); return; }
+    if (!needsBillingInfo) { setBilling(null); return; }
     let cancelled = false;
     setBillingLoading(true);
     orgApi.billing().then((r: any) => {
@@ -151,7 +155,24 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       // renders without bank details until a retry succeeds.
     }).finally(() => { if (!cancelled) setBillingLoading(false); });
     return () => { cancelled = true; };
-  }, [trialExpired]);
+  }, [needsBillingInfo]);
+
+  // Once-a-day "you'll need to pay" reminder while the trial is still
+  // running (not yet expired — the expired/grace state already takes over
+  // the whole screen via the paywall below, so a popup on top of that would
+  // just be noise). Scoped per user + calendar day via localStorage so it
+  // shows once each day someone opens the dashboard, not on every navigation.
+  useEffect(() => {
+    if (orgPlan?.plan !== "trial") return;
+    const userId = (session?.user as any)?.id;
+    if (!userId || typeof window === "undefined") return;
+    const key = `gleam_trial_popup_${userId}`;
+    const today = new Date().toDateString();
+    if (window.localStorage.getItem(key) !== today) {
+      window.localStorage.setItem(key, today);
+      setShowTrialPopup(true);
+    }
+  }, [orgPlan?.plan, session]);
 
   const handleMarkPaid = async () => {
     setMarkPaidBusy(true);
@@ -360,6 +381,92 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
         </div>
         <CallModal />
+
+        {showTrialPopup && (
+          <div style={{
+            position: "fixed", inset: 0, zIndex: 99998,
+            background: "rgba(26,23,64,0.55)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            padding: "1.5rem", fontFamily: "'DM Sans', sans-serif",
+          }}>
+            <div style={{
+              background: "#fff", borderRadius: 22, padding: "2rem 1.85rem",
+              maxWidth: 420, width: "100%", boxShadow: "0 24px 70px rgba(0,0,0,0.35)",
+            }}>
+              <div style={{
+                width: 54, height: 54, borderRadius: 16, margin: "0 auto 14px",
+                background: "linear-gradient(135deg, #fef3c7, #fde68a)",
+                display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem",
+              }}>
+                ⏰
+              </div>
+              <h2 style={{ textAlign: "center", fontFamily: "'Sora', sans-serif", fontWeight: 800, fontSize: "1.15rem", color: "#1a1740", margin: "0 0 8px" }}>
+                {trialDaysLeft === 0
+                  ? "Your free trial ends today"
+                  : `${trialDaysLeft ?? "A few"} day${trialDaysLeft === 1 ? "" : "s"} left in your free trial`}
+              </h2>
+              <p style={{ textAlign: "center", color: "#7b77a8", fontSize: "0.86rem", lineHeight: 1.6, margin: "0 0 18px" }}>
+                Once it ends, you'll need to pay by bank transfer to keep full access to the dashboard.
+                Messaging & calls will keep working either way — everything else pauses until payment is confirmed.
+              </p>
+
+              {billing?.bank && (
+                <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: 14, padding: "1rem 1.1rem", marginBottom: 16, textAlign: "left" }}>
+                  <p style={{ fontWeight: 700, color: "#1a1740", fontSize: "0.82rem", margin: "0 0 8px" }}>Pay by bank transfer, anytime</p>
+                  {[
+                    ["Bank", billing.bank.bankName],
+                    ["Account name", billing.bank.accountName],
+                    ["Account number", billing.bank.accountNumber],
+                    ...(billing.bank.routingCode ? [["Routing / IFSC / SWIFT", billing.bank.routingCode]] : []),
+                  ].map(([label, value]) => (
+                    <div key={label} style={{ display: "flex", justifyContent: "space-between", padding: "3px 0", fontSize: "0.8rem" }}>
+                      <span style={{ color: "#94a3b8" }}>{label}</span>
+                      <span style={{ fontWeight: 700, color: "#374151" }}>{value}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {hasPendingSubmission || markPaidJustSubmitted ? (
+                <div style={{
+                  background: "#eff6ff", border: "1.5px solid #bfdbfe", borderRadius: 12,
+                  padding: "0.7rem 0.9rem", color: "#1d4ed8", fontSize: "0.82rem", fontWeight: 600, marginBottom: 14,
+                }}>
+                  Thanks! We'll confirm your payment and email you once it's approved.
+                </div>
+              ) : (
+                <>
+                  {markPaidError && (
+                    <p style={{ color: "#dc2626", fontSize: "0.78rem", margin: "0 0 8px", fontWeight: 600 }}>{markPaidError}</p>
+                  )}
+                  <button
+                    onClick={handleMarkPaid}
+                    disabled={markPaidBusy}
+                    style={{
+                      width: "100%", padding: "0.75rem", marginBottom: 10,
+                      background: "linear-gradient(135deg, #5b50e8, #7c6ef5)", color: "#fff",
+                      border: "none", borderRadius: 12, fontWeight: 700, fontSize: "0.85rem",
+                      cursor: markPaidBusy ? "not-allowed" : "pointer", opacity: markPaidBusy ? 0.7 : 1,
+                    }}
+                  >
+                    {markPaidBusy ? "Submitting…" : "I've already made this payment"}
+                  </button>
+                </>
+              )}
+
+              <button
+                onClick={() => setShowTrialPopup(false)}
+                style={{
+                  width: "100%", padding: "0.7rem", background: "none",
+                  border: "1.5px solid #e4e2f8", borderRadius: 12,
+                  color: "#7b77a8", fontWeight: 700, fontSize: "0.85rem", cursor: "pointer",
+                }}
+              >
+                Remind me tomorrow
+              </button>
+            </div>
+          </div>
+        )}
       </CallProvider>
     </SocketProvider>
   );

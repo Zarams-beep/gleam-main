@@ -10,6 +10,7 @@ import PerformanceChart from "@/component/Dashboard/DashBoardChart1";
 import DashBoardHeader from "@/component/Dashboard/DashBoardHeader";
 import GleamDashboardSections from "@/component/Dashboard/downLandingSection/OtherLanding";
 import WalletCard from "@/component/Dashboard/wallet/WalletCard";
+import TrialBillingNotice from "@/component/Dashboard/TrialBillingNotice";
 import { statsApi } from "@/utils/api";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setStats } from "@/store/slices/statsSlice";
@@ -48,6 +49,8 @@ export default function Dashboard() {
     <div style={{ padding: "1.75rem", fontFamily: "'DM Sans', sans-serif" }}>
       <div className="home-container">
         <DashBoardHeader />
+
+        <TrialBillingNotice />
 
         {/* ── Wallet Cards — all driven by real stats ── */}
         <div className="wallet-arrange-container">
